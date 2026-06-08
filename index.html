@@ -32,8 +32,6 @@
     .hero-headline em{font-style:italic;color:var(--terra)}
     .hero-sub{font-size:1.05rem;color:var(--text-mid);max-width:580px;margin-bottom:44px;line-height:1.8;opacity:0;animation:fadeUp .9s ease .4s forwards}
     .form-wrapper{max-width:520px;opacity:0;animation:fadeUp .9s ease .55s forwards}
-    .btn-primary{background:var(--terra);color:#FDF9F4;border:none;border-radius:2px;padding:14px 28px;font-family:var(--sans);font-size:.88rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s;white-space:nowrap;text-decoration:none;display:inline-block}
-    .btn-primary:hover{background:var(--terra-mid);transform:translateY(-1px)}
     .trust-line{margin-top:14px;font-size:.78rem;color:var(--text-dim)}
     section{padding:80px 0}
     .section-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);margin-bottom:20px}
@@ -86,6 +84,10 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
     .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
     .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* Beehiiv form overrides — match site style */
+    .beehiiv-form-wrap { position: relative; z-index: 1; }
+    .beehiiv-form-wrap iframe { border: none !important; }
   </style>
 </head>
 <body>
@@ -103,8 +105,8 @@
         <em>LimenBridge is built for the other 167 hours.</em>
       </h1>
       <p class="hero-sub">For the days when anxiety creeps back and your next appointment feels miles away. A short audio track every morning and evening, a seamless mood journal, and a 14-day progress chart. No apps to download — LimenBridge integrates right into your existing calendar upon registration.</p>
-      <div class="form-wrapper">
-        <a href="https://limenbridge.beehiiv.com/subscribe" class="btn-primary">Start Your Free 3-Day Trial</a>
+      <div class="form-wrapper beehiiv-form-wrap">
+        <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="552c54e2-fd79-431e-aa6d-5eaf7db7f07b"></script>
         <p class="trust-line">No card required. No commitments. Unsubscribe anytime.</p>
       </div>
     </div>
@@ -257,8 +259,8 @@
     <div class="container">
       <h2 class="final-headline reveal">An hour a week with a therapist is vital work. But the week keeps going long after you leave the room.</h2>
       <p class="final-sub reveal">LimenBridge is built for the other 167 hours. It is your daily point of support on the days when your next session still feels far away.</p>
-      <div class="final-form-wrapper">
-        <a href="https://limenbridge.beehiiv.com/subscribe" class="btn-primary">Start Free — No Card Required</a>
+      <div class="final-form-wrapper beehiiv-form-wrap">
+        <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="552c54e2-fd79-431e-aa6d-5eaf7db7f07b"></script>
         <p class="final-reassurance reveal">Try it free for three days. No credit card required. No commitments.</p>
       </div>
     </div>
@@ -272,6 +274,9 @@
       </div>
     </div>
   </footer>
+
+  <!-- Beehiiv attribution tracking -->
+  <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
 
   <script>
     const reveals = document.querySelectorAll('.reveal');
