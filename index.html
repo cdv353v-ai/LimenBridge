@@ -31,12 +31,8 @@
     .hero-headline{font-family:var(--serif);font-size:clamp(2.2rem,5.5vw,3.5rem);font-weight:400;line-height:1.2;color:var(--text);margin-bottom:32px;opacity:0;animation:fadeUp .9s ease .25s forwards}
     .hero-headline em{font-style:italic;color:var(--terra)}
     .hero-sub{font-size:1.05rem;color:var(--text-mid);max-width:580px;margin-bottom:44px;line-height:1.8;opacity:0;animation:fadeUp .9s ease .4s forwards}
-    .form-wrapper{max-width:520px}
-    .hero-form{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:fadeUp .9s ease .55s forwards;width:100%}
-    .hero-form input[type="email"]{flex:1;min-width:240px;background:var(--bg-card);border:1px solid var(--terra-border);border-radius:2px;padding:14px 20px;font-family:var(--sans);font-size:.95rem;color:var(--text);outline:none;transition:border-color .2s}
-    .hero-form input[type="email"]::placeholder{color:var(--text-dim)}
-    .hero-form input[type="email"]:focus{border-color:var(--terra)}
-    .btn-primary{background:var(--terra);color:#FDF9F4;border:none;border-radius:2px;padding:14px 28px;font-family:var(--sans);font-size:.88rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s;white-space:nowrap}
+    .form-wrapper{max-width:520px;opacity:0;animation:fadeUp .9s ease .55s forwards}
+    .btn-primary{background:var(--terra);color:#FDF9F4;border:none;border-radius:2px;padding:14px 28px;font-family:var(--sans);font-size:.88rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s;white-space:nowrap;text-decoration:none;display:inline-block}
     .btn-primary:hover{background:var(--terra-mid);transform:translateY(-1px)}
     .trust-line{margin-top:14px;font-size:.78rem;color:var(--text-dim)}
     section{padding:80px 0}
@@ -62,7 +58,6 @@
     .day-content-body{font-size:.95rem;color:var(--text-mid);line-height:1.75}
     .day-sms{margin-top:32px;font-size:.82rem;color:var(--text-dim);font-style:italic}
     .founder-block{max-width:600px}
-    .founder-photo-placeholder{width:72px;height:72px;border-radius:50%;background:var(--bg-3);border:1px solid var(--terra-border);margin-bottom:28px;display:flex;align-items:center;justify-content:center;font-size:.68rem;letter-spacing:.1em;color:var(--text-dim);text-transform:uppercase}
     .founder-text{font-size:1rem;color:var(--text-mid);line-height:1.85}
     .founder-text p+p{margin-top:16px}
     .proof{background:var(--bg-2)}
@@ -83,10 +78,6 @@
     .final-headline{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:400;color:var(--text);max-width:600px;margin:0 auto 20px;line-height:1.3}
     .final-sub{font-size:.95rem;color:var(--text-mid);max-width:500px;margin:0 auto 40px;line-height:1.8}
     .final-form-wrapper{max-width:480px;margin:0 auto}
-    .final-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;width:100%}
-    .final-form input[type="email"]{flex:1;min-width:220px;background:var(--bg-card);border:1px solid var(--terra-border);border-radius:2px;padding:14px 20px;font-family:var(--sans);font-size:.95rem;color:var(--text);outline:none;transition:border-color .2s}
-    .final-form input[type="email"]::placeholder{color:var(--text-dim)}
-    .final-form input[type="email"]:focus{border-color:var(--terra)}
     .final-reassurance{margin-top:16px;font-size:.78rem;color:var(--text-dim)}
     footer{border-top:1px solid var(--terra-border);padding:32px 0;position:relative;z-index:1}
     .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
@@ -95,8 +86,6 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
     .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
     .reveal.visible{opacity:1;transform:translateY(0)}
-    .form-success{display:none;font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--terra);padding:12px 0;text-align:left}
-    .final-cta .form-success{text-align:center}
   </style>
 </head>
 <body>
@@ -115,14 +104,9 @@
       </h1>
       <p class="hero-sub">For the days when anxiety creeps back and your next appointment feels miles away. A short audio track every morning and evening, a seamless mood journal, and a 14-day progress chart. No apps to download — LimenBridge integrates right into your existing calendar upon registration.</p>
       <div class="form-wrapper">
-        <form class="hero-form" id="form-hero" onsubmit="event.preventDefault();handleSubmit('hero-email','form-hero','hero-success')">
-          <input type="hidden" name="form_type" value="hero" />
-          <input type="email" id="hero-email" placeholder="Your email" autocomplete="email" required />
-          <button type="submit" class="btn-primary">Start Your Free 3-Day Trial</button>
-        </form>
-        <div class="form-success" id="hero-success">You're on the list. Check your inbox.</div>
+        <a href="https://limenbridge.beehiiv.com/subscribe" class="btn-primary">Start Your Free 3-Day Trial</a>
+        <p class="trust-line">No card required. No commitments. Unsubscribe anytime.</p>
       </div>
-      <p class="trust-line">No card required. No commitments. Unsubscribe anytime.</p>
     </div>
   </section>
 
@@ -221,7 +205,6 @@
     <div class="container">
       <p class="section-label reveal">Behind the Project</p>
       <div class="founder-block">
-        <div class="founder-photo-placeholder reveal" style="display:none"></div>
         <img src="founder.jpg" alt="Mark Vdovskikh" style="width:220px;height:280px;object-fit:cover;object-position:center top;border-radius:3px;display:block;margin-bottom:16px" />
         <p style="font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--text);margin-bottom:20px">Mark Vdovskikh</p>
         <div class="founder-text reveal">
@@ -275,14 +258,9 @@
       <h2 class="final-headline reveal">An hour a week with a therapist is vital work. But the week keeps going long after you leave the room.</h2>
       <p class="final-sub reveal">LimenBridge is built for the other 167 hours. It is your daily point of support on the days when your next session still feels far away.</p>
       <div class="final-form-wrapper">
-        <form class="final-form" id="form-final" onsubmit="event.preventDefault();handleSubmit('final-email','form-final','final-success')">
-          <input type="hidden" name="form_type" value="footer" />
-          <input type="email" id="final-email" placeholder="Your email" autocomplete="email" required />
-          <button type="submit" class="btn-primary">Start Free — No Card Required</button>
-        </form>
-        <div class="form-success" id="final-success">You're on the list. Check your inbox.</div>
+        <a href="https://limenbridge.beehiiv.com/subscribe" class="btn-primary">Start Free — No Card Required</a>
+        <p class="final-reassurance reveal">Try it free for three days. No credit card required. No commitments.</p>
       </div>
-      <p class="final-reassurance reveal">Try it free for three days. No credit card required. No commitments.</p>
     </div>
   </section>
 
@@ -303,29 +281,6 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     reveals.forEach(el => observer.observe(el));
-
-    function handleSubmit(inputId, formId, successId) {
-      const input = document.getElementById(inputId);
-      const form = document.getElementById(formId);
-      const success = document.getElementById(successId);
-      const email = input.value.trim();
-
-      if (!email || !email.includes('@')) {
-        input.style.borderColor = '#A04040';
-        setTimeout(() => input.style.borderColor = '', 1200);
-        return;
-      }
-
-      // Webhook — replace with your Make/n8n endpoint:
-      // fetch('YOUR_WEBHOOK_URL', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, form_type: formId })
-      // });
-
-      form.style.display = 'none';
-      success.style.display = 'block';
-    }
   </script>
 </body>
 </html>
