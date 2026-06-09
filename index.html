@@ -85,9 +85,47 @@
     .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
     .reveal.visible{opacity:1;transform:translateY(0)}
 
-    /* Beehiiv form overrides — match site style */
-    .beehiiv-form-wrap { position: relative; z-index: 1; }
-    .beehiiv-form-wrap iframe { border: none !important; }
+    /* MailerLite form overrides — match site style */
+    .ml-form-wrap { position: relative; z-index: 1; }
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper { background-color: transparent !important; border: none !important; }
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody { padding: 0 !important; }
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent { display: none !important; }
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input {
+      background-color: #FDFAF5 !important;
+      border-color: rgba(160,82,45,0.22) !important;
+      border-radius: 2px !important;
+      font-family: 'Jost', system-ui, sans-serif !important;
+      font-size: 0.95rem !important;
+      color: #2C2420 !important;
+      padding: 13px 16px !important;
+    }
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button,
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-horizontalRow button {
+      background-color: #A0522D !important;
+      border-color: #A0522D !important;
+      border-radius: 2px !important;
+      font-family: 'Jost', system-ui, sans-serif !important;
+      font-size: 0.88rem !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.06em !important;
+      text-transform: uppercase !important;
+      padding: 13px 28px !important;
+    }
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button:hover,
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-horizontalRow button:hover {
+      background-color: #C4703A !important;
+      border-color: #C4703A !important;
+    }
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent h4 {
+      font-family: 'Playfair Display', Georgia, serif !important;
+      font-size: 1.1rem !important;
+      font-weight: 400 !important;
+      color: #2C2420 !important;
+    }
+    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent p {
+      font-family: 'Jost', system-ui, sans-serif !important;
+      color: #5C4E46 !important;
+    }
   </style>
 </head>
 <body>
@@ -105,8 +143,45 @@
         <em>LimenBridge is built for the other 167 hours.</em>
       </h1>
       <p class="hero-sub">For the days when anxiety creeps back and your next appointment feels miles away. A short audio track every morning and evening, a seamless mood journal, and a 14-day progress chart. No apps to download — LimenBridge integrates right into your existing calendar upon registration.</p>
-      <div class="form-wrapper beehiiv-form-wrap">
-        <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="552c54e2-fd79-431e-aa6d-5eaf7db7f07b"></script>
+      <div class="form-wrapper ml-form-wrap">
+        <div id="mlb2-42383336" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-42383336">
+          <div class="ml-form-align-center">
+            <div class="ml-form-embedWrapper embedForm">
+              <div class="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
+                <div class="ml-form-embedContent" style=""></div>
+                <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2419426/forms/189792827471824024/subscribe" data-code="" method="post" target="_blank">
+                  <div class="ml-form-formContent horozintalForm">
+                    <div class="ml-form-horizontalRow">
+                      <div class="ml-input-horizontal">
+                        <div style="width:100%" class="horizontal-fields">
+                          <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                            <input type="email" class="form-control" name="fields[email]" placeholder="Your email address" autocomplete="email">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ml-button-horizontal primary">
+                        <button type="submit" class="primary">Start Free</button>
+                        <button disabled="disabled" style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="hidden" name="ml-submit" value="1">
+                  <div class="ml-mobileButton-horizontal">
+                    <button type="submit" class="primary">Start Free</button>
+                    <button disabled="disabled" style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
+                  </div>
+                  <input type="hidden" name="anticsrf" value="true">
+                </form>
+              </div>
+              <div class="ml-form-successBody row-success" style="display:none">
+                <div class="ml-form-successContent">
+                  <h4>You're in.</h4>
+                  <p>Check your inbox — we've sent you everything you need to get started.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <p class="trust-line">No card required. No commitments. Unsubscribe anytime.</p>
       </div>
     </div>
@@ -259,8 +334,45 @@
     <div class="container">
       <h2 class="final-headline reveal">An hour a week with a therapist is vital work. But the week keeps going long after you leave the room.</h2>
       <p class="final-sub reveal">LimenBridge is built for the other 167 hours. It is your daily point of support on the days when your next session still feels far away.</p>
-      <div class="final-form-wrapper beehiiv-form-wrap">
-        <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="552c54e2-fd79-431e-aa6d-5eaf7db7f07b"></script>
+      <div class="final-form-wrapper ml-form-wrap">
+        <div id="mlb2-42383336" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-42383336">
+          <div class="ml-form-align-center">
+            <div class="ml-form-embedWrapper embedForm">
+              <div class="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
+                <div class="ml-form-embedContent" style=""></div>
+                <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2419426/forms/189792827471824024/subscribe" data-code="" method="post" target="_blank">
+                  <div class="ml-form-formContent horozintalForm">
+                    <div class="ml-form-horizontalRow">
+                      <div class="ml-input-horizontal">
+                        <div style="width:100%" class="horizontal-fields">
+                          <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                            <input type="email" class="form-control" name="fields[email]" placeholder="Your email address" autocomplete="email">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ml-button-horizontal primary">
+                        <button type="submit" class="primary">Start Free</button>
+                        <button disabled="disabled" style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="hidden" name="ml-submit" value="1">
+                  <div class="ml-mobileButton-horizontal">
+                    <button type="submit" class="primary">Start Free</button>
+                    <button disabled="disabled" style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
+                  </div>
+                  <input type="hidden" name="anticsrf" value="true">
+                </form>
+              </div>
+              <div class="ml-form-successBody row-success" style="display:none">
+                <div class="ml-form-successContent">
+                  <h4>You're in.</h4>
+                  <p>Check your inbox — we've sent you everything you need to get started.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <p class="final-reassurance reveal">Try it free for three days. No credit card required. No commitments.</p>
       </div>
     </div>
@@ -275,8 +387,15 @@
     </div>
   </footer>
 
-  <!-- Beehiiv attribution tracking -->
-  <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
+  <script>
+    function ml_webform_success_42383336() {
+      var $ = ml_jQuery || jQuery;
+      $('.ml-subscribe-form-42383336 .row-success').show();
+      $('.ml-subscribe-form-42383336 .row-form').hide();
+    }
+  </script>
+  <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519" type="text/javascript"></script>
+  <script>fetch("https://assets.mailerlite.com/jsonp/2419426/forms/189792827471824024/takel")</script>
 
   <script>
     const reveals = document.querySelectorAll('.reveal');
