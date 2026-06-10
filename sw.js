@@ -1,14 +1,28 @@
+importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js');
+
+firebase.initializeApp({
+  apiKey: "AIzaSyBP1VOwZt1hOPqFd0HY96x6ipLWa1TGPeg",
+  authDomain: "limenbridge.firebaseapp.com",
+  projectId: "limenbridge",
+  storageBucket: "limenbridge.firebasestorage.app",
+  messagingSenderId: "795817059671",
+  appId: "1:795817059671:web:e40d740c68e984be608a12"
+});
+
+const messaging = firebase.messaging();
+
 const CACHE = 'limenbridge-v1';
 const STATIC = ['/', '/index.html', '/icon-192.png', '/icon-512.png'];
 
-// Install — cache static assets
+// Install
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll(STATIC)).then(() => self.skipWaiting())
   );
 });
 
-// Activate — clean old caches
+// Activate
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -31,29 +45,26 @@ self.addEventListener('fetch', e => {
   );
 });
 
-// Push notification handler
-self.addEventListener('push', e => {
-  const data = e.data ? e.data.json() : {};
-  const title = data.title || 'LimenBridge';
-  const options = {
-    body: data.body || 'Your track is ready.',
+// Background push notifications (when site is closed)
+messaging.onBackgroundMessage(payload => {
+  const { title, body, url } = payload.data || {};
+  self.registration.showNotification(title || 'LimenBridge', {
+    body: body || 'Your track is ready.',
     icon: '/icon-192.png',
     badge: '/icon-192.png',
-    data: { url: data.url || '/' },
-    vibrate: [100, 50, 100],
-    requireInteraction: false
-  };
-  e.waitUntil(self.registration.showNotification(title, options));
+    data: { url: url || '/' },
+    vibrate: [100, 50, 100]
+  });
 });
 
-// Notification click — open the site
+// Notification click
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   e.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
       const existing = list.find(c => c.url.includes('limenbridge.cc'));
       if (existing) return existing.focus();
-      return clients.openWindow(e.notification.data.url || '/');
+      return clients.openWindow(e.notification.data?.url || '/');
     })
   );
 });
