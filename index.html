@@ -766,6 +766,7 @@ function showRecommendation(u) {
       '<a href="' + generateICS(u) + '" download="limenbridge-' + kindLabel + '.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Download calendar reminder (.ics)</a>' +
       '</div>' +
       '<button class="btn btn-ghost btn-full" onclick="route()">Go to dashboard</button>' +
+      '<p style="margin-top:1.25rem;font-size:.9rem;color:var(--muted);text-align:center;line-height:1.6">Or simply come back tomorrow at ' + timeLabel + '.<br>LimenBridge remembers you — your program will be waiting.</p>' +
       '</div>';
   } else {
     const kindLabel = isMorning ? 'morning' : 'evening';
