@@ -316,8 +316,7 @@ input[type=time]:focus{border-color:var(--accent)}
   <!-- Founder -->
   <section class="section wrap">
     <div class="founder-row">
-   <div class="founder-photo" role="img" aria-label="MARK VDOVSKIKH"></div>
-<p style="margin-top:.6rem;font-size:.9rem;color:var(--muted)">MARK VDOVSKIKH</p>
+      <div class="founder-photo" role="img" aria-label="FOUNDER_NAME"></div>
       <div style="flex:1;min-width:220px">
         <p style="line-height:1.8">LimenBridge was created by a physician with many years of working with people who carry their stress in their bodies.<br><br>The same moment kept repeating: a person walks out of a session and is left alone with what surfaced in it. The next appointment is still far away. No structure. No support.<br><br>LimenBridge is the answer to that gap. Not a replacement for psychotherapy — what happens between.</p>
       </div>
@@ -567,8 +566,8 @@ async function submitRegistration() {
   btn.disabled = true; btn.textContent = 'Creating…';
 
   // MailerLite — replace placeholders before going live
-  const MAILERLITE_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiOGM0ODY4MmI1NjY2YjM4Y2NmZjRkMTFjNjk2ZDI2OGQ3N2I2YzNkMDM3NGNhZDI4YTdmNDUwYWU3NTczZDI3Yzk4MGI2YWRlNmJhZWFjZWQiLCJpYXQiOjE3ODEwODE3NjguOTYyMjA3LCJuYmYiOjE3ODEwODE3NjguOTYyMjA5LCJleHAiOjQ5MzY3NTUzNjguOTU4MTgzLCJzdWIiOiIyNDM3NDM3Iiwic2NvcGVzIjpbXX0.lSN4HRHBE9D2ZoQjUGiC9XI2jVRA31W79VZgoXOX0GgmdiP2T78eNfJP1tzBnbGw62FoJJZOaCK24vlB6LGLYLoIid-lBL4hMPudOVMsFL0pi1J6cIOw2f3aMQR9s_RIrAgdLVRPYI6RSi6Yxq32oGE96oDtH_k1XgPg8-uVOUGraTwvaSbA0MdijpXgH205uxmmO8PhRGzWXUwY5j7OyRyfoyg0v4dsg22eHB_f0-XH4Tcf8A_V6oCerSxlUU953-4ysMe4X-kD3rRz1slSCQz77XICZzuN_B2BXvB5aD6VDo1dqjq06sEMo-TwbRJlYI8kC34UjHuMfAbQJE74ELdQ8otOAPHC1onGkskKMR4GMdKQwD6FiWhUSFKjhf_XyDXUls2AZScy8dWtTA6Tw85FSx-rwaTy1cQQABJy48Yk5-3WQ6nkyJWHKTC2p40uK9_B-ScN2CO7-Fzvk74Dgxj7IM3w5Cqn_hw4UWnYA6yhkufOHSWiAJyVQAWvfiWOGuK1LoAN8J3FhhAadWsRS8GBKUtpx8Sf8w_1QouoL5ibrwwXBygYsF2oyPUfReRL_A47jeWRZ-b07Ut2aneHDNdsaeItNRJXh_JbiBGcsEvErICfpfKhqCUS0bGgAeHgF4vMidnHk82O5O2H2yrii93Ip5PZmq8i4ZNjayiFN0o';
-  const MAILERLITE_GROUP_ID = '189792851698124588';
+  const MAILERLITE_API_KEY = 'YOUR_MAILERLITE_API_KEY';
+  const MAILERLITE_GROUP_ID = 'YOUR_MAILERLITE_GROUP_ID';
   try {
     await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
@@ -739,9 +738,10 @@ function showRecommendation(u) {
   const eveningTimeLabel = u.eveningTime || '22:00';
   const userEveningHour = parseInt(eveningTimeLabel.split(':')[0], 10);
 
-  // Morning track but it's afternoon/evening — next opportunity is tomorrow
-  const morningComingTomorrow = isMorning && hour >= 14;
-  // Evening track but too early — more than 1hr before evening time
+  const userMorningHour = parseInt((u.morningTime || '07:00').split(':')[0], 10);
+  // Morning track: show "coming tomorrow" if current time is more than 2hrs past wake time
+  const morningComingTomorrow = isMorning && hour >= userMorningHour + 2;
+  // Evening track: show "coming later" if more than 1hr before evening time
   const eveningComingLater = !isMorning && hour < userEveningHour - 1;
   const trackComingLater = morningComingTomorrow || eveningComingLater;
 
