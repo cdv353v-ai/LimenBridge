@@ -1,410 +1,1053 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LimenBridge — Support Between Psychotherapy Sessions</title>
-  <meta name="description" content="You spend one hour a week with your psychotherapist. LimenBridge is built for the other 167 hours." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg:#F5F0E8;--bg-2:#EDE7DA;--bg-3:#E4DDD0;--bg-card:#FDFAF5;
-      --terra:#A0522D;--terra-mid:#C4703A;--terra-dim:rgba(160,82,45,0.1);--terra-border:rgba(160,82,45,0.22);
-      --text:#2C2420;--text-mid:#5C4E46;--text-dim:#9A8E86;
-      --serif:'Playfair Display',Georgia,serif;--sans:'Jost',system-ui,sans-serif;
-      --max:820px;--max-wide:1100px;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
-    .wave-divider{width:100%;display:flex;justify-content:center;padding:16px 0;opacity:.35}
-    .wave-divider svg{width:min(480px,90vw)}
-    .container{max-width:var(--max);margin:0 auto;padding:0 24px;position:relative;z-index:1}
-    .container--wide{max-width:var(--max-wide);margin:0 auto;padding:0 24px;position:relative;z-index:1}
-    header{padding:32px 0 0;position:relative;z-index:1}
-    .logo{font-family:var(--serif);font-size:1.05rem;font-weight:400;letter-spacing:.1em;color:var(--terra);text-transform:uppercase}
-    .hero{padding:80px 0 60px}
-    .eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terra-mid);margin-bottom:28px;opacity:0;animation:fadeUp .8s ease .1s forwards}
-    .hero-headline{font-family:var(--serif);font-size:clamp(2.2rem,5.5vw,3.5rem);font-weight:400;line-height:1.2;color:var(--text);margin-bottom:32px;opacity:0;animation:fadeUp .9s ease .25s forwards}
-    .hero-headline em{font-style:italic;color:var(--terra)}
-    .hero-sub{font-size:1.05rem;color:var(--text-mid);max-width:580px;margin-bottom:44px;line-height:1.8;opacity:0;animation:fadeUp .9s ease .4s forwards}
-    .form-wrapper{max-width:520px;opacity:0;animation:fadeUp .9s ease .55s forwards}
-    .trust-line{margin-top:14px;font-size:.78rem;color:var(--text-dim)}
-    section{padding:80px 0}
-    .section-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);margin-bottom:20px}
-    .section-title{font-family:var(--serif);font-size:clamp(1.9rem,4vw,2.8rem);font-weight:400;line-height:1.25;color:var(--text);margin-bottom:24px}
-    .section-body{font-size:1rem;color:var(--text-mid);line-height:1.8}
-    .section-body p+p{margin-top:16px}
-    .problem{background:var(--bg-2)}
-    .chrono-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
-    @media(max-width:600px){.chrono-grid{grid-template-columns:1fr}}
-    .chrono-card{background:var(--bg-card);border:1px solid var(--terra-border);border-radius:2px;padding:40px 36px}
-    .chrono-time{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);margin-bottom:16px}
-    .chrono-title{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--text);margin-bottom:16px}
-    .chrono-body{font-size:.92rem;color:var(--text-mid);line-height:1.75}
-    .chrono-wave{margin-top:24px;opacity:.2}
-    .day{background:var(--bg-2)}
-    .day-intro{font-size:1rem;color:var(--text-mid);margin-bottom:48px;max-width:560px;line-height:1.8}
-    .day-steps{display:flex;flex-direction:column}
-    .day-step{display:grid;grid-template-columns:110px 1fr;gap:0 32px;padding:28px 0;border-bottom:1px solid var(--terra-border)}
-    .day-step:last-child{border-bottom:none}
-    .day-time{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--terra);padding-top:2px}
-    .day-content-title{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
-    .day-content-body{font-size:.95rem;color:var(--text-mid);line-height:1.75}
-    .day-sms{margin-top:32px;font-size:.82rem;color:var(--text-dim);font-style:italic}
-    .founder-block{max-width:600px}
-    .founder-text{font-size:1rem;color:var(--text-mid);line-height:1.85}
-    .founder-text p+p{margin-top:16px}
-    .proof{background:var(--bg-2)}
-    .proof-placeholder{border:1px dashed var(--terra-border);border-radius:2px;padding:40px;text-align:center;color:var(--text-dim);font-size:.88rem;font-style:italic}
-    .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
-    @media(max-width:560px){.pricing-grid{grid-template-columns:1fr}}
-    .price-card{background:var(--bg-card);border:1px solid var(--terra-border);border-radius:2px;padding:40px 36px;display:flex;flex-direction:column}
-    .price-card--featured{background:var(--terra-dim);border-color:var(--terra)}
-    .price-badge{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-bottom:20px}
-    .price-amount{font-family:var(--serif);font-size:2.8rem;font-weight:400;color:var(--text);line-height:1;margin-bottom:6px}
-    .price-period{font-size:.82rem;color:var(--text-dim);margin-bottom:24px}
-    .price-desc{font-size:.9rem;color:var(--text-mid);line-height:1.7;margin-bottom:28px}
-    .price-includes{font-size:.78rem;color:var(--text-dim);line-height:1.9;margin-top:auto}
-    .price-note{margin-top:20px;font-size:.82rem;color:var(--terra);font-style:italic}
-    .pricing-note{margin-top:28px;font-size:.85rem;color:var(--text-dim);text-align:center}
-    .final-cta{padding:100px 0;text-align:center;background:var(--bg-3);position:relative}
-    .final-cta::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--terra-border))}
-    .final-headline{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:400;color:var(--text);max-width:600px;margin:0 auto 20px;line-height:1.3}
-    .final-sub{font-size:.95rem;color:var(--text-mid);max-width:500px;margin:0 auto 40px;line-height:1.8}
-    .final-form-wrapper{max-width:480px;margin:0 auto}
-    .final-reassurance{margin-top:16px;font-size:.78rem;color:var(--text-dim)}
-    footer{border-top:1px solid var(--terra-border);padding:32px 0;position:relative;z-index:1}
-    .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-    .footer-logo{font-family:var(--serif);font-size:.9rem;letter-spacing:.08em;color:var(--terra)}
-    .footer-note{font-size:.78rem;color:var(--text-dim)}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-    .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
-    .reveal.visible{opacity:1;transform:translateY(0)}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LimenBridge — Daily support between psychotherapy sessions</title>
+<meta name="description" content="A daily audio program for people who work with a psychotherapist. Morning and evening tracks, mood journal, 14-day progress graph."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;background:#0F0E0D;color:#F2EDE6;font-family:'Jost',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.display{font-family:'Playfair Display',serif;font-weight:400;line-height:1.15;color:#F2EDE6}
+p{margin:0}
+button{font-family:'Jost',sans-serif;cursor:pointer;border:none;background:none}
+input,textarea{font-family:'Jost',sans-serif;color:#F2EDE6}
+a{color:inherit;text-decoration:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
-    /* MailerLite form overrides — match site style */
-    .ml-form-wrap { position: relative; z-index: 1; }
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper { background-color: transparent !important; border: none !important; }
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody { padding: 0 !important; }
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent { display: none !important; }
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input {
-      background-color: #FDFAF5 !important;
-      border-color: rgba(160,82,45,0.22) !important;
-      border-radius: 2px !important;
-      font-family: 'Jost', system-ui, sans-serif !important;
-      font-size: 0.95rem !important;
-      color: #2C2420 !important;
-      padding: 13px 16px !important;
-    }
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button,
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-horizontalRow button {
-      background-color: #A0522D !important;
-      border-color: #A0522D !important;
-      border-radius: 2px !important;
-      font-family: 'Jost', system-ui, sans-serif !important;
-      font-size: 0.88rem !important;
-      font-weight: 500 !important;
-      letter-spacing: 0.06em !important;
-      text-transform: uppercase !important;
-      padding: 13px 28px !important;
-    }
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button:hover,
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-horizontalRow button:hover {
-      background-color: #C4703A !important;
-      border-color: #C4703A !important;
-    }
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent h4 {
-      font-family: 'Playfair Display', Georgia, serif !important;
-      font-size: 1.1rem !important;
-      font-weight: 400 !important;
-      color: #2C2420 !important;
-    }
-    #mlb2-42383336.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent p {
-      font-family: 'Jost', system-ui, sans-serif !important;
-      color: #5C4E46 !important;
-    }
-  </style>
+/* ── Tokens ── */
+:root{
+  --bg:#0F0E0D;
+  --surface:#1A1917;
+  --accent:#C4703F;
+  --accent-soft:#D4956A;
+  --fg:#F2EDE6;
+  --muted:#8A8278;
+  --border:#2E2B27;
+  --success:#7A9E7E;
+  --radius:6px;
+  --narrow:680px;
+}
+
+/* ── Layout ── */
+.wrap{max-width:var(--narrow);margin-inline:auto;padding-inline:1.25rem}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+
+/* ── Typography ── */
+.eyebrow{color:var(--muted);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+.hero-h1{font-size:clamp(1.9rem,5vw,3rem);margin-bottom:1.5rem}
+.section-h2{font-size:clamp(1.5rem,4vw,2rem);margin-bottom:1rem}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 28px;border-radius:var(--radius);font-size:1rem;font-weight:500;transition:background 200ms,opacity 200ms,border-color 200ms;cursor:pointer;border:none}
+.btn-primary{background:var(--accent);color:#0F0E0D}
+.btn-primary:hover{background:var(--accent-soft)}
+.btn-primary:disabled{opacity:.5;cursor:default}
+.btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent-soft)}
+.btn-full{width:100%}
+
+/* ── Form elements ── */
+.field{display:block;margin-bottom:.85rem}
+.field label{display:block;margin-bottom:.35rem}
+.input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;color:var(--fg);outline:none;font-size:1rem;transition:border-color 200ms}
+.input:focus{border-color:var(--accent)}
+.input::placeholder{color:var(--muted)}
+
+/* ── Card ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem}
+.card-accent{border-color:var(--accent)}
+
+/* ── Animations ── */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn 350ms ease both}
+@keyframes waveAnim{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.4)}}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:1.25rem;z-index:100;opacity:0;pointer-events:none;transition:opacity 250ms}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;max-width:420px;width:100%}
+
+/* ── Trust line ── */
+.trust{margin-top:.75rem;font-size:.82rem;color:var(--muted);text-align:center}
+
+/* ── Waveform ── */
+.waveform-svg{display:block;width:100%;max-width:520px;margin:0 auto;overflow:visible}
+.waveform-svg .bar{transform-origin:center;animation:barPulse 2.4s ease-in-out infinite}
+@keyframes barPulse{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.25);opacity:.9}}
+/* staggered delays for organic feel */
+.waveform-svg .bar:nth-child(1){animation-delay:0s}
+.waveform-svg .bar:nth-child(2){animation-delay:.08s}
+.waveform-svg .bar:nth-child(3){animation-delay:.16s}
+.waveform-svg .bar:nth-child(4){animation-delay:.24s}
+.waveform-svg .bar:nth-child(5){animation-delay:.32s}
+.waveform-svg .bar:nth-child(6){animation-delay:.4s}
+.waveform-svg .bar:nth-child(7){animation-delay:.48s}
+.waveform-svg .bar:nth-child(8){animation-delay:.56s}
+.waveform-svg .bar:nth-child(9){animation-delay:.64s}
+.waveform-svg .bar:nth-child(10){animation-delay:.72s}
+.waveform-svg .bar:nth-child(11){animation-delay:.8s}
+.waveform-svg .bar:nth-child(12){animation-delay:.72s}
+.waveform-svg .bar:nth-child(13){animation-delay:.64s}
+.waveform-svg .bar:nth-child(14){animation-delay:.56s}
+.waveform-svg .bar:nth-child(15){animation-delay:.48s}
+.waveform-svg .bar:nth-child(16){animation-delay:.4s}
+.waveform-svg .bar:nth-child(17){animation-delay:.32s}
+.waveform-svg .bar:nth-child(18){animation-delay:.24s}
+.waveform-svg .bar:nth-child(19){animation-delay:.16s}
+.waveform-svg .bar:nth-child(20){animation-delay:.08s}
+.waveform-svg .bar:nth-child(21){animation-delay:0s}
+.waveform-svg .bar:nth-child(22){animation-delay:.08s}
+.waveform-svg .bar:nth-child(23){animation-delay:.16s}
+.waveform-svg .bar:nth-child(24){animation-delay:.24s}
+.waveform-svg .bar:nth-child(25){animation-delay:.32s}
+/* player waveform — active when playing */
+.waveform-player{display:flex;align-items:center;justify-content:center;gap:3px;height:40px}
+.waveform-player span{display:inline-block;width:3px;background:var(--accent);border-radius:2px;opacity:.6;transform-origin:center}
+.waveform-player.playing span{animation:barPulse 1.4s ease-in-out infinite}
+.waveform-player.playing span:nth-child(2n){animation-delay:.1s}
+.waveform-player.playing span:nth-child(3n){animation-delay:.2s}
+.waveform-player.playing span:nth-child(5n){animation-delay:.35s}
+
+/* ── Progress bar ── */
+.progress-wrap{height:2px;background:var(--border);border-radius:2px;width:100%;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 500ms linear}
+
+/* ── Mood scale ── */
+.mood-scale{display:flex;gap:.5rem;flex-wrap:wrap}
+.mood-btn{flex:1;min-width:44px;padding:.65rem .5rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:1rem;transition:border-color 200ms,color 200ms,background 200ms;cursor:pointer}
+.mood-btn:hover,.mood-btn.selected{border-color:var(--accent);color:var(--fg);background:rgba(196,112,63,.12)}
+
+/* ── Graph ── */
+.graph-wrap{position:relative;margin-top:1.25rem}
+.graph-locked{position:absolute;inset:0;background:rgba(15,14,13,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;border-radius:var(--radius);backdrop-filter:blur(3px)}
+.graph-locked svg{opacity:.5}
+
+/* ── Timeline ── */
+.timeline{list-style:none;border-left:1px solid var(--border);padding-left:1.5rem}
+.timeline li{margin-bottom:1.75rem;position:relative}
+.timeline li::before{content:'';position:absolute;left:-1.65rem;top:.45rem;width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+
+/* ── Streak ── */
+.streak-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(196,112,63,.15);border:1px solid rgba(196,112,63,.3);border-radius:20px;padding:.35rem .9rem;font-size:.85rem;color:var(--accent-soft)}
+
+/* ── Step indicator ── */
+.steps{display:flex;gap:.4rem;justify-content:center;margin-bottom:2rem}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background 250ms}
+.step-dot.active{background:var(--accent)}
+
+/* ── Pricing ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem}
+
+/* ── Player card ── */
+.player-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:2rem;text-align:center}
+.play-btn{width:72px;height:72px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;margin:1.5rem auto;cursor:pointer;transition:background 200ms,transform 100ms;border:none}
+.play-btn:hover{background:var(--accent-soft)}
+.play-btn:active{transform:scale(.95)}
+.play-btn svg{pointer-events:none}
+.track-label{font-size:.8rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
+.track-status{font-size:.82rem;color:var(--success);margin-top:.75rem;min-height:1.2rem}
+
+/* ── Day progress ── */
+.day-prog{margin-top:1.75rem}
+.day-prog-label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:.4rem}
+
+/* ── Sections ── */
+.section{padding-top:80px;padding-bottom:80px}
+@media(max-width:640px){.section{padding-top:48px;padding-bottom:48px}}
+
+/* ── How it works grid ── */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1.5rem}
+
+/* ── Founder ── */
+.founder-row{display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap}
+.founder-photo{width:88px;height:88px;border-radius:50%;background:var(--surface);border:1px solid var(--border);background-image:url(founder.jpg);background-size:cover;background-position:center;flex-shrink:0}
+
+/* ── Footer ── */
+footer{padding:2rem 0;color:var(--muted);font-size:.82rem}
+
+/* ── Nav ── */
+nav{padding:1.5rem 0 1rem}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem;letter-spacing:.01em}
+
+/* ── Onboarding ── */
+.onboard-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem}
+.onboard-card{width:100%;max-width:520px}
+.option-btn{width:100%;text-align:left;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--fg);font-size:1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color 200ms,background 200ms}
+.option-btn:hover,.option-btn.selected{border-color:var(--accent);background:rgba(196,112,63,.08)}
+.time-row{display:flex;gap:1rem;flex-wrap:wrap}
+.time-row .field{flex:1;min-width:140px}
+input[type=time]{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;color:var(--fg);font-size:1rem;width:100%;outline:none}
+input[type=time]:focus{border-color:var(--accent)}
+
+/* ── Trial ended ── */
+.trial-ended{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem;text-align:center}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
 </head>
 <body>
 
-  <header>
-    <div class="container"><div class="logo">LimenBridge</div></div>
-  </header>
+<!-- ═══════════════════════════════════════════
+     SCREEN: LANDING
+═══════════════════════════════════════════ -->
+<div id="screen-landing" class="screen">
 
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow">For people in psychotherapy looking for support between sessions.</p>
-      <h1 class="hero-headline">
-        You spend one hour a week with your psychotherapist.<br>
-        But the week doesn't end when you leave their office.<br>
-        <em>LimenBridge is built for the other 167 hours.</em>
-      </h1>
-      <p class="hero-sub">For the days when anxiety creeps back and your next appointment feels miles away. A short audio track every morning and evening, a seamless mood journal, and a 14-day progress chart. No apps to download — LimenBridge integrates right into your existing calendar upon registration.</p>
-      <div class="form-wrapper ml-form-wrap">
-        <div id="mlb2-42383336" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-42383336">
-          <div class="ml-form-align-center">
-            <div class="ml-form-embedWrapper embedForm">
-              <div class="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
-                <div class="ml-form-embedContent" style=""></div>
-                <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2419426/forms/189792827471824024/subscribe" data-code="" method="post" target="_blank">
-                  <div class="ml-form-formContent horozintalForm">
-                    <div class="ml-form-horizontalRow">
-                      <div class="ml-input-horizontal">
-                        <div style="width:100%" class="horizontal-fields">
-                          <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                            <input type="email" class="form-control" name="fields[email]" placeholder="Your email address" autocomplete="email">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ml-button-horizontal primary">
-                        <button type="submit" class="primary">Start Free</button>
-                        <button disabled="disabled" style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="hidden" name="ml-submit" value="1">
-                  <div class="ml-mobileButton-horizontal">
-                    <button type="submit" class="primary">Start Free</button>
-                    <button disabled="disabled" style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
-                  </div>
-                  <input type="hidden" name="anticsrf" value="true">
-                </form>
-              </div>
-              <div class="ml-form-successBody row-success" style="display:none">
-                <div class="ml-form-successContent">
-                  <h4>You're in.</h4>
-                  <p>Check your inbox — we've sent you everything you need to get started.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="trust-line">No card required. No commitments. Unsubscribe anytime.</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="wave-divider">
-    <svg viewBox="0 0 480 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 24 Q20 8 40 24 Q60 40 80 24 Q100 8 120 24 Q140 40 160 24 Q180 8 200 24 Q220 40 240 24 Q260 8 280 24 Q300 40 320 24 Q340 8 360 24 Q380 40 400 24 Q420 8 440 24 Q460 40 480 24" stroke="#A0522D" stroke-width="1" fill="none" opacity="0.5"/>
-      <path d="M0 24 Q20 14 40 24 Q60 34 80 24 Q100 14 120 24 Q140 34 160 24 Q180 14 200 24 Q220 34 240 24 Q260 14 280 24 Q300 34 320 24 Q340 14 360 24 Q380 34 400 24 Q420 14 440 24 Q460 34 480 24" stroke="#A0522D" stroke-width="0.5" fill="none" opacity="0.3"/>
-    </svg>
+  <div class="wrap">
+    <nav><div class="nav-inner">
+      <span class="logo">LimenBridge</span>
+    </div></nav>
   </div>
 
-  <section class="problem">
-    <div class="container">
-      <p class="section-label reveal">The Gap</p>
-      <div class="section-body reveal">
-        <p>You see your psychotherapist once a week. The session ends, you close the door, and you are back to navigating life on your own for the next six days.</p>
-        <p>There is no structure between appointments. No daily anchors. When anxiety returns, you just have to cope the best way you know how. Sometimes it hits as sheer exhaustion the day after a heavy session. Other times, it's that familiar midweek dread, arriving just as the tools you learned begin to fade. It can feel like walking this path entirely alone.</p>
-        <p>This doesn't mean your therapy isn't working. In fact, this is the reality for most people doing the hard work of personal change. You simply lose your footing exactly when you need support the most.</p>
+  <!-- Hero -->
+  <section class="wrap fade-in" style="padding-top:2rem">
+    <p class="eyebrow" style="margin-bottom:1.25rem">For those who work with a psychotherapist and need support between sessions</p>
+    <h1 class="hero-h1">One hour a week with a therapist is serious work. But the week doesn't end in that room. LimenBridge is built for the other 167 hours.</h1>
+    <p style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem">Every morning and every evening — a short audio track, a mood check, and a 14-day graph of how you've been feeling. No app. Connects to your calendar at registration.</p>
+    <button class="btn btn-primary" onclick="openModal()">Try free — 3 days, no card</button>
+    <p class="trust" style="text-align:left;margin-top:.75rem">No credit card required · Cancel anytime</p>
+
+    <!-- Waveform SVG animated -->
+    <div style="margin-top:3rem;margin-bottom:1rem;padding:1rem 0" aria-hidden="true">
+      <svg class="waveform-svg" viewBox="0 0 440 64" xmlns="http://www.w3.org/2000/svg">
+        <rect class="bar" x="0"   y="28" width="4" height="8"  rx="2" fill="#C4703F"/>
+        <rect class="bar" x="10"  y="20" width="4" height="24" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="20"  y="12" width="4" height="40" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="30"  y="6"  width="4" height="52" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="40"  y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="50"  y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="60"  y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="70"  y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="80"  y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="90"  y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="100" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="110" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="120" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="130" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="140" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="150" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="160" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="170" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="180" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="190" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="200" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="210" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="220" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="230" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="240" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="250" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="260" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="270" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="280" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="290" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="300" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="310" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="320" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="330" y="4"  width="4" height="56" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="340" y="6"  width="4" height="52" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="350" y="12" width="4" height="40" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="360" y="20" width="4" height="24" rx="2" fill="#C4703F"/>
+        <rect class="bar" x="370" y="28" width="4" height="8"  rx="2" fill="#C4703F"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Problem -->
+  <section class="section wrap">
+    <p style="font-size:1.1rem;color:var(--fg);line-height:1.8">
+      You go to your psychotherapist once a week. The session ends.<br>
+      You walk out — and the next one is six days away.<br><br>
+      Between sessions, there's no structure. No support. The anxiety comes back and there's nothing to do with it.<br><br>
+      Sometimes it's the exhaustion after a heavy session that doesn't lift the next day. Sometimes it's the anxiety that returns by Wednesday, when the things you talked about are already hard to reach. Sometimes it's just the feeling of managing alone — and not knowing if that's normal.<br><br>
+      We won't tell you to "just breathe" or "think positive." That doesn't work when you're anxious.<br><br>
+      LimenBridge does one thing: helps your body settle on its own, without effort. No magic. Just sound — matched to where your nervous system actually is, right now.
+    </p>
+  </section>
+
+  <!-- How it works -->
+  <section class="section wrap">
+    <h2 class="section-h2">How it works</h2>
+    <p style="color:var(--muted);margin-bottom:1.5rem">The way you feel throughout the day isn't random. It follows a biological logic. LimenBridge is built around it: the morning track and the evening track are different, because morning and evening are different states of your body.</p>
+    <div class="how-grid">
+      <div class="card">
+        <div class="eyebrow" style="color:var(--accent);margin-bottom:.6rem">Morning</div>
+        <p>About thirty minutes after waking, the body shifts from sleep into the day. This is a natural rise — not stress. The morning track is gentle, no sharp sounds. It works with that moment: helps you start the day without anxiety at the door.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow" style="color:var(--accent);margin-bottom:.6rem">Evening</div>
+        <p>By evening the body is ready to shift into recovery. But accumulated tension, screens, and news disrupt that transition. The evening track is slower, deeper. It helps the shift happen — so you fall asleep with less anxiety and wake a little lighter.</p>
       </div>
     </div>
   </section>
 
-  <div class="wave-divider">
-    <svg viewBox="0 0 480 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 28 Q30 10 60 28 Q90 46 120 28 Q150 10 180 28 Q210 46 240 28 Q270 10 300 28 Q330 46 360 28 Q390 10 420 28 Q450 46 480 28" stroke="#A0522D" stroke-width="1" fill="none" opacity="0.3"/>
-    </svg>
+  <!-- One day -->
+  <section class="section wrap">
+    <h2 class="section-h2">One day with LimenBridge</h2>
+    <p style="color:var(--muted);margin-bottom:2rem">When you're anxious or tired, choosing what to listen to is one more effort. LimenBridge removes that choice: the right thing arrives at the right time.</p>
+    <ul class="timeline">
+      <li>
+        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem">Your morning</div>
+        <p style="color:var(--muted)">Your calendar reminds you — at the time you set yourself. Open the track. A few minutes. Afterwards, one simple question: How are you right now? Not a journal entry, not an analysis — just a note to yourself.</p>
+      </li>
+      <li>
+        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem">During the day</div>
+        <p style="color:var(--muted)">The whole day is yours. Work, people you care about — everything that makes up an ordinary life.</p>
+      </li>
+      <li>
+        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem">Your evening</div>
+        <p style="color:var(--muted)">Your calendar reminds you again. A track and one short question: How did the day go? Two minutes, no more.</p>
+      </li>
+      <li>
+        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem">14 days</div>
+        <p style="color:var(--muted)">LimenBridge remembers your answers. Not to judge or analyze. To show you, two weeks in, a simple graph: how your state shifted morning and evening, day by day.</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Founder -->
+  <section class="section wrap">
+    <div class="founder-row">
+      <div class="founder-photo" role="img" aria-label="MARK VDOVSKIKH"></div>
+      <div style="flex:1;min-width:220px">
+        <p style="line-height:1.8">LimenBridge was created by a physician with many years of working with people who carry their stress in their bodies.<br><br>The same moment kept repeating: a person walks out of a session and is left alone with what surfaced in it. The next appointment is still far away. No structure. No support.<br><br>LimenBridge is the answer to that gap. Not a replacement for psychotherapy — what happens between.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section wrap">
+    <h2 class="section-h2">Three days free. Then your choice.</h2>
+    <div class="pricing-grid">
+      <div class="card">
+        <div class="eyebrow" style="margin-bottom:.5rem">Monthly</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.9rem;margin:.4rem 0">$19 / month</div>
+        <p style="color:var(--muted)">Full access. Cancel anytime.</p>
+      </div>
+      <div class="card card-accent">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+          <span class="eyebrow">Annual</span>
+          <span style="font-size:.72rem;background:var(--accent);color:#0F0E0D;padding:.2rem .6rem;border-radius:20px;font-weight:500">Two months free</span>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.9rem;margin:.4rem 0">$163 / year</div>
+        <p style="color:var(--muted)">For those in it for the long run.</p>
+      </div>
+    </div>
+    <p style="color:var(--muted);margin-top:1rem;font-size:.9rem">Both plans include: morning and evening tracks, mood journal, 14-day progress tracking.</p>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section wrap">
+    <p style="font-size:1.05rem;line-height:1.8;margin-bottom:1.75rem">One hour a week with a therapist is serious work. But the week doesn't end in that room.<br><br>LimenBridge is built for the other 167 hours. Every morning and every evening — a quiet point of support on the days when the next session still feels far away.<br><br>Try three days free. No card. No commitment.</p>
+    <form onsubmit="handleCtaForm(event)" style="display:flex;flex-wrap:wrap;gap:.6rem">
+      <input type="email" required placeholder="you@email.com" id="cta-email" class="input" style="flex:1;min-width:200px"/>
+      <button type="submit" class="btn btn-primary">Start free</button>
+    </form>
+    <p class="trust" style="text-align:left">Enter your email and we'll send everything you need to get started.</p>
+  </section>
+
+  <footer class="wrap"><p>© LimenBridge · limenbridge.cc</p></footer>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: REGISTER
+═══════════════════════════════════════════ -->
+<div id="modal" class="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box fade-in" onclick="event.stopPropagation()">
+    <div id="modal-form">
+      <h3 class="display" style="font-size:1.5rem;margin-bottom:1.25rem">Start your free 3 days</h3>
+      <div class="field">
+        <label class="eyebrow" for="reg-email">Email</label>
+        <input type="email" id="reg-email" class="input" placeholder="you@email.com" required/>
+      </div>
+      <div class="field">
+        <label class="eyebrow" for="reg-name">Name</label>
+        <input type="text" id="reg-name" class="input" placeholder="Your name (optional)"/>
+      </div>
+      <button class="btn btn-primary btn-full" id="reg-submit" onclick="submitRegistration()">Create free account</button>
+      <p class="trust">No credit card · 3 days free · Unsubscribe anytime</p>
+    </div>
+    <div id="modal-done" style="display:none;text-align:center;padding:1rem 0">
+      <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">Check your inbox</h3>
+      <p style="color:var(--muted)">We've sent everything you need to get started.</p>
+    </div>
   </div>
+</div>
 
-  <section>
-    <div class="container">
-      <p class="section-label reveal">How It Works</p>
-      <h2 class="section-title reveal">Morning and evening are two distinct states of your body.</h2>
-      <p class="section-body reveal">Your body changes throughout the day, following a strict biological rhythm. LimenBridge is designed around this science. Our morning and evening tracks serve entirely different purposes because your body is in two distinct states at the beginning and the end of the day.</p>
+<!-- ═══════════════════════════════════════════
+     SCREEN: ONBOARDING
+═══════════════════════════════════════════ -->
+<div id="screen-onboarding" class="screen">
+  <div class="onboard-wrap">
+    <div class="onboard-card fade-in">
+      <div class="steps" id="ob-steps"></div>
+      <div id="ob-content"></div>
     </div>
-    <div class="container--wide">
-      <div class="chrono-grid">
-        <div class="chrono-card reveal">
-          <p class="chrono-time">06:00 — 09:00</p>
-          <h3 class="chrono-title">Morning</h3>
-          <p class="chrono-body">About 30 minutes after you wake up, your cortisol levels naturally peak as your body transitions from sleep to alertness. Often, this shift feels like morning anxiety or stress. The morning track works with this exact window: it gently stabilizes your nervous system without overwhelming it, helping you start the day grounded.</p>
-          <div class="chrono-wave">
-            <svg viewBox="0 0 200 30" fill="none"><path d="M0 15 Q10 5 20 15 Q30 25 40 15 Q50 5 60 15 Q70 25 80 15 Q90 5 100 15 Q110 25 120 15 Q130 5 140 15 Q150 25 160 15 Q170 5 180 15 Q190 25 200 15" stroke="#A0522D" stroke-width="1.2" fill="none"/></svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN: APP (Player)
+═══════════════════════════════════════════ -->
+<div id="screen-app" class="screen">
+  <div class="wrap">
+    <nav><div class="nav-inner">
+      <span class="logo">LimenBridge</span>
+      <div style="display:flex;align-items:center;gap:1rem">
+        <span id="plan-badge" style="font-size:.78rem;color:var(--muted)"></span>
+        <button onclick="goHome()" style="background:var(--surface);border:1px solid var(--border);color:var(--fg);font-size:.9rem;cursor:pointer;padding:.5rem 1rem;border-radius:4px;transition:border-color 200ms;font-family:'Jost',sans-serif" onmouseover="this.style.borderColor='var(--accent-soft)'" onmouseout="this.style.borderColor='var(--border)'">← Back to site</button>
+      </div>
+    </div></nav>
+
+    <div id="app-content" style="padding-bottom:4rem"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN: TRIAL ENDED
+═══════════════════════════════════════════ -->
+<div id="screen-trial-ended" class="screen">
+  <div class="trial-ended fade-in">
+    <div style="max-width:460px;width:100%">
+      <h2 class="display" style="font-size:2rem;margin-bottom:1.25rem">Your 3 days are complete.</h2>
+      <p id="trial-ended-msg" style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem"></p>
+      <div style="display:flex;flex-direction:column;gap:.75rem">
+        <a href="MEMBERSPACE_MONTHLY_URL" class="btn btn-primary" style="text-decoration:none;justify-content:center">Continue — $19 / month</a>
+        <a href="MEMBERSPACE_ANNUAL_URL" class="btn btn-ghost" style="text-decoration:none;justify-content:center">Continue — $163 / year · Two months free</a>
+      </div>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:1.25rem">Your data won't be deleted if you wait.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden audio element -->
+<audio id="audio-player" preload="none"></audio>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE MANAGEMENT (from limen-state.ts)
+// ═══════════════════════════════════════════
+const KEY = 'limenbridge_user';
+
+function loadUser() {
+  try { const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; } catch { return null; }
+}
+function saveUser(u) { localStorage.setItem(KEY, JSON.stringify(u)); }
+
+function todayISO() { return new Date().toISOString().slice(0,10); }
+
+function daysSince(iso) {
+  const s = new Date(iso); s.setHours(0,0,0,0);
+  const t = new Date(); t.setHours(0,0,0,0);
+  return Math.floor((t - s) / 86400000);
+}
+
+function trialDay(u) { return daysSince(u.registeredAt) + 1; }
+
+function programDay(u) {
+  const d = daysSince(u.registeredAt) + 1;
+  return ((d - 1) % 14) + 1;
+}
+
+function trackIndex(u) { return ((programDay(u) - 1) % 7) + 1; }
+
+function deriveState(u) {
+  if (!u) return 'LANDING';
+  if (!u.onboardingComplete) return 'ONBOARDING';
+  if (u.plan === 'monthly' || u.plan === 'annual') return 'ACTIVE';
+  if (trialDay(u) > 3) return 'TRIAL_ENDED';
+  return 'TRIAL';
+}
+
+function currentTrackKind() {
+  return new Date().getHours() < 14 ? 'morning' : 'evening';
+}
+
+function greeting(name) {
+  const h = new Date().getHours();
+  const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  return name ? `${g}, ${name}` : g;
+}
+
+function streakDays(u) {
+  const byDate = new Set(u.moodLog.map(m => m.date));
+  let streak = 0;
+  const d = new Date(); d.setHours(0,0,0,0);
+  if (!byDate.has(d.toISOString().slice(0,10))) d.setDate(d.getDate()-1);
+  while (byDate.has(d.toISOString().slice(0,10))) { streak++; d.setDate(d.getDate()-1); }
+  return streak;
+}
+
+function hasListenedToday(u, kind) {
+  const l = u.lastListened;
+  if (!l || l.date !== todayISO()) return false;
+  return kind === 'morning' ? !!l.morning : !!l.evening;
+}
+
+function markListened(u, kind) {
+  if (!u.lastListened || u.lastListened.date !== todayISO()) {
+    u.lastListened = { date: todayISO() };
+  }
+  u.lastListened[kind] = true;
+  saveUser(u);
+}
+
+// ═══════════════════════════════════════════
+// ROUTING
+// ═══════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function route() {
+  const u = loadUser();
+  const state = deriveState(u);
+  if (state === 'LANDING') { showScreen('screen-landing'); return; }
+  if (state === 'ONBOARDING') { showScreen('screen-onboarding'); renderOnboarding(u); return; }
+  if (state === 'TRIAL_ENDED') { showScreen('screen-trial-ended'); renderTrialEnded(u); return; }
+  showScreen('screen-app');
+  renderApp(u);
+}
+
+function goHome() {
+  // Stop audio if playing
+  if (isPlaying) { audioEl.pause(); isPlaying = false; }
+  showScreen('screen-landing');
+}
+
+// ═══════════════════════════════════════════
+// WAVEFORM
+// ═══════════════════════════════════════════
+function buildWaveform(el, count) {
+  el.innerHTML = '';
+  const heights = [18,28,40,32,48,38,44,30,48,36,42,28,48,34,40,26,44,32,48,30,38,24,42,36,48,28,40,34,44,30];
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('span');
+    s.style.height = (heights[i % heights.length]) + 'px';
+    el.appendChild(s);
+  }
+}
+
+// Build hero waveform on landing
+
+// ═══════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════
+function openModal(prefillEmail) {
+  const m = document.getElementById('modal');
+  if (prefillEmail) document.getElementById('reg-email').value = prefillEmail;
+  m.classList.add('open');
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal')) {
+    document.getElementById('modal').classList.remove('open');
+  }
+}
+function handleCtaForm(e) {
+  e.preventDefault();
+  const email = document.getElementById('cta-email').value;
+  openModal(email);
+}
+
+async function submitRegistration() {
+  const email = document.getElementById('reg-email').value;
+  if (!email) return;
+  const name = document.getElementById('reg-name').value;
+  const btn = document.getElementById('reg-submit');
+  btn.disabled = true; btn.textContent = 'Creating…';
+
+  // MailerLite — replace placeholders before going live
+  const MAILERLITE_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiOGM0ODY4MmI1NjY2YjM4Y2NmZjRkMTFjNjk2ZDI2OGQ3N2I2YzNkMDM3NGNhZDI4YTdmNDUwYWU3NTczZDI3Yzk4MGI2YWRlNmJhZWFjZWQiLCJpYXQiOjE3ODEwODE3NjguOTYyMjA3LCJuYmYiOjE3ODEwODE3NjguOTYyMjA5LCJleHAiOjQ5MzY3NTUzNjguOTU4MTgzLCJzdWIiOiIyNDM3NDM3Iiwic2NvcGVzIjpbXX0.lSN4HRHBE9D2ZoQjUGiC9XI2jVRA31W79VZgoXOX0GgmdiP2T78eNfJP1tzBnbGw62FoJJZOaCK24vlB6LGLYLoIid-lBL4hMPudOVMsFL0pi1J6cIOw2f3aMQR9s_RIrAgdLVRPYI6RSi6Yxq32oGE96oDtH_k1XgPg8-uVOUGraTwvaSbA0MdijpXgH205uxmmO8PhRGzWXUwY5j7OyRyfoyg0v4dsg22eHB_f0-XH4Tcf8A_V6oCerSxlUU953-4ysMe4X-kD3rRz1slSCQz77XICZzuN_B2BXvB5aD6VDo1dqjq06sEMo-TwbRJlYI8kC34UjHuMfAbQJE74ELdQ8otOAPHC1onGkskKMR4GMdKQwD6FiWhUSFKjhf_XyDXUls2AZScy8dWtTA6Tw85FSx-rwaTy1cQQABJy48Yk5-3WQ6nkyJWHKTC2p40uK9_B-ScN2CO7-Fzvk74Dgxj7IM3w5Cqn_hw4UWnYA6yhkufOHSWiAJyVQAWvfiWOGuK1LoAN8J3FhhAadWsRS8GBKUtpx8Sf8w_1QouoL5ibrwwXBygYsF2oyPUfReRL_A47jeWRZ-b07Ut2aneHDNdsaeItNRJXh_JbiBGcsEvErICfpfKhqCUS0bGgAeHgF4vMidnHk82O5O2H2yrii93Ip5PZmq8i4ZNjayiFN0o';
+  const MAILERLITE_GROUP_ID = '189792851698124588';
+  try {
+    await fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${MAILERLITE_API_KEY}` },
+      body: JSON.stringify({ email, fields: { name }, groups: [MAILERLITE_GROUP_ID] })
+    });
+  } catch {}
+
+  const user = {
+    email, name: name || undefined,
+    registeredAt: new Date().toISOString(),
+    plan: 'free',
+    onboardingComplete: false,
+    moodLog: [],
+    lastListened: { date: todayISO() }
+  };
+  saveUser(user);
+
+  document.getElementById('modal-form').style.display = 'none';
+  document.getElementById('modal-done').style.display = 'block';
+  setTimeout(() => { document.getElementById('modal').classList.remove('open'); route(); }, 1200);
+}
+
+// ═══════════════════════════════════════════
+// ONBOARDING
+// ═══════════════════════════════════════════
+const OB_STEPS = 5;
+let obStep = 0;
+let obAnswers = {};
+
+function renderOnboarding(u) {
+  obStep = 0; obAnswers = {};
+  renderObStep();
+}
+
+function renderObStepDots() {
+  const el = document.getElementById('ob-steps');
+  el.innerHTML = '';
+  for (let i = 0; i < OB_STEPS; i++) {
+    const d = document.createElement('div');
+    d.className = 'step-dot' + (i === obStep ? ' active' : '');
+    el.appendChild(d);
+  }
+}
+
+function renderObStep() {
+  renderObStepDots();
+  const el = document.getElementById('ob-content');
+  el.innerHTML = '';
+
+  const steps = [
+    // Step 0 — welcome
+    () => {
+      el.innerHTML = `
+        <h2 class="display" style="font-size:1.75rem;margin-bottom:.75rem">Welcome to LimenBridge</h2>
+        <p style="color:var(--muted);margin-bottom:2rem">To match the program to you, please answer a few short questions. 5 questions · takes about a minute.</p>
+        <button class="btn btn-primary btn-full" onclick="obNext()">Let's go</button>
+      `;
+    },
+    // Step 1 — working with therapist
+    () => {
+      el.innerHTML = `
+        <p class="eyebrow" style="margin-bottom:1.25rem">Question 1 of 4</p>
+        <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">Are you currently working with a psychotherapist or psychologist?</h3>
+        ${['Yes, regularly','Sometimes / on and off','No, but I\'m interested'].map(o => `
+          <button class="option-btn${obAnswers.q1===o?' selected':''}" onclick="obSelect('q1','${o}',this)">${o}</button>
+        `).join('')}
+        <button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q1?'disabled':''} id="ob-next-1">Continue</button>
+      `;
+    },
+    // Step 2 — anxiety frequency
+    () => {
+      el.innerHTML = `
+        <p class="eyebrow" style="margin-bottom:1.25rem">Question 2 of 4</p>
+        <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">How often do you feel anxious between sessions?</h3>
+        ${['Rarely','Sometimes','Often','Almost always'].map(o => `
+          <button class="option-btn${obAnswers.q2===o?' selected':''}" onclick="obSelect('q2','${o}',this)">${o}</button>
+        `).join('')}
+        <button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q2?'disabled':''} id="ob-next-2">Continue</button>
+      `;
+    },
+    // Step 3 — what bothers most (determines first track)
+    () => {
+      el.innerHTML = `
+        <p class="eyebrow" style="margin-bottom:1.25rem">Question 3 of 4</p>
+        <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">What bothers you most right now?</h3>
+        ${[
+          ['Mornings — hard to start the day','morning'],
+          ['Evenings and sleep — hard to wind down','evening'],
+          ['A general background of tension throughout the day','auto'],
+          ['Everything equally','auto']
+        ].map(([label, val]) => `
+          <button class="option-btn${obAnswers.q3===val?' selected':''}" onclick="obSelect('q3','${val}',this)">${label}</button>
+        `).join('')}
+        <button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q3?'disabled':''} id="ob-next-3">Continue</button>
+      `;
+    },
+    // Step 4 — times
+    () => {
+      el.innerHTML = `
+        <p class="eyebrow" style="margin-bottom:1.25rem">Question 4 of 4</p>
+        <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">At what time do you usually wake up and go to sleep?</h3>
+        <div class="time-row">
+          <div class="field">
+            <label class="eyebrow" for="ob-morning-time">I wake up at</label>
+            <input type="time" id="ob-morning-time" value="07:00"/>
+          </div>
+          <div class="field">
+            <label class="eyebrow" for="ob-evening-time">I go to sleep at</label>
+            <input type="time" id="ob-evening-time" value="22:30"/>
           </div>
         </div>
-        <div class="chrono-card reveal">
-          <p class="chrono-time">20:00 — 23:00</p>
-          <h3 class="chrono-title">Evening</h3>
-          <p class="chrono-body">By nightfall, your body is wired to shift into recovery mode. However, accumulated stress, blue light, and racing thoughts block this natural transition. The evening track is deeper and more rhythmic. It guides your body to release tension so you can drift off without an anxious mind and wake up feeling a bit lighter.</p>
-          <div class="chrono-wave">
-            <svg viewBox="0 0 200 30" fill="none"><path d="M0 15 Q20 3 40 15 Q60 27 80 15 Q100 3 120 15 Q140 27 160 15 Q180 3 200 15" stroke="#A0522D" stroke-width="1.2" fill="none"/></svg>
-          </div>
+        <div class="field" style="margin-top:.5rem">
+          <label class="eyebrow" for="ob-source">How did you hear about LimenBridge? <span style="color:var(--muted)">(optional)</span></label>
+          <input type="text" id="ob-source" class="input" placeholder="Optional"/>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="day">
-    <div class="container">
-      <p class="section-label reveal">The Daily Ritual</p>
-      <h2 class="section-title reveal">No extra effort required.</h2>
-      <p class="day-intro reveal">When you are overwhelmed or exhausted, even choosing what music to listen to feels like an extra chore. LimenBridge removes that friction entirely: the right sound finds you exactly when you need it.</p>
-      <div class="day-steps">
-        <div class="day-step reveal">
-          <div class="day-time">Morning</div>
-          <div>
-            <p class="day-content-title">Your start</p>
-            <p class="day-content-body">Your calendar sends you a notification at your chosen time. You open the track — five minutes, or ten if you have the time. Right after, there is one simple question about how you feel. This isn't a long journal entry or a deep self-analysis; it's a quick check-in. It takes two seconds.</p>
-          </div>
-        </div>
-        <div class="day-step reveal">
-          <div class="day-time">Your Day</div>
-          <div>
-            <p class="day-content-title">Your time</p>
-            <p class="day-content-body">The rest of the day belongs to you, your work, your loved ones, and your life.</p>
-          </div>
-        </div>
-        <div class="day-step reveal">
-          <div class="day-time">Evening</div>
-          <div>
-            <p class="day-content-title">Your close</p>
-            <p class="day-content-body">Your calendar prompts your evening ritual. A short track, followed by a quick question: How did today go? Just two minutes to yourself — nothing more.</p>
-          </div>
-        </div>
-        <div class="day-step reveal">
-          <div class="day-time">After 14 Days</div>
-          <div>
-            <p class="day-content-title">Your story</p>
-            <p class="day-content-body">The system saves your check-ins, but never to judge or score you. After two weeks, you will see a clear, intuitive chart of your emotional trends. This is your personal story of self-care — mapped out in clear facts, free from guesswork.</p>
-          </div>
-        </div>
-      </div>
-      <p class="day-sms reveal">Prefer SMS reminders? You can add that at registration too.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <p class="section-label reveal">Behind the Project</p>
-      <div class="founder-block">
-        <img src="founder.jpg" alt="Mark Vdovskikh" style="width:220px;height:280px;object-fit:cover;object-position:center top;border-radius:3px;display:block;margin-bottom:16px" />
-        <p style="font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--text);margin-bottom:20px">Mark Vdovskikh</p>
-        <div class="founder-text reveal">
-          <p>LimenBridge was created by a practicing specialist with decades of clinical experience helping people whose stress lives physically in their bodies.</p>
-          <p>In clinical practice, the same story unfolds daily: a client leaves a profound session and suddenly finds themselves alone with everything that just surfaced. There is a whole week until the next appointment. No structure, no safety net.</p>
-          <p>LimenBridge was built to bridge this specific gap. It is not a replacement for your psychotherapist; it is a gentle, steady anchor between your sessions.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="proof">
-    <div class="container">
-      <p class="section-label reveal">What People Say</p>
-      <div class="proof-placeholder reveal">
-        In therapy circles, people constantly ask the same question:<br>
-        <em>"How do I get through the days between my sessions?"</em><br><br>
-        LimenBridge was built to be the answer.<br><br>
-        Testimonials will appear here after first users.
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <p class="section-label reveal">Pricing</p>
-      <h2 class="section-title reveal">Three days free. Then, choose your path.</h2>
-      <div class="pricing-grid">
-        <div class="price-card reveal">
-          <p class="price-badge">Monthly</p>
-          <div class="price-amount">$19</div>
-          <p class="price-period">per month</p>
-          <p class="price-desc">Full access to all features. Cancel anytime with a single click.</p>
-          <p class="price-includes">Morning and evening tracks<br>Daily mood journal<br>14-day progress insights</p>
-        </div>
-        <div class="price-card price-card--featured reveal">
-          <p class="price-badge">Annual</p>
-          <div class="price-amount">$163</div>
-          <p class="price-period">per year · get two months free</p>
-          <p class="price-desc">For those committed to long-term stability. Save 27% compared to monthly.</p>
-          <p class="price-includes">Morning and evening tracks<br>Daily mood journal<br>14-day progress insights</p>
-          <p class="price-note">Most Popular</p>
-        </div>
-      </div>
-      <p class="pricing-note reveal">Both plans include full access to all features from day one.</p>
-    </div>
-  </section>
-
-  <section class="final-cta">
-    <div class="container">
-      <h2 class="final-headline reveal">An hour a week with a therapist is vital work. But the week keeps going long after you leave the room.</h2>
-      <p class="final-sub reveal">LimenBridge is built for the other 167 hours. It is your daily point of support on the days when your next session still feels far away.</p>
-      <div class="final-form-wrapper ml-form-wrap">
-        <div id="mlb2-42383336" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-42383336">
-          <div class="ml-form-align-center">
-            <div class="ml-form-embedWrapper embedForm">
-              <div class="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
-                <div class="ml-form-embedContent" style=""></div>
-                <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2419426/forms/189792827471824024/subscribe" data-code="" method="post" target="_blank">
-                  <div class="ml-form-formContent horozintalForm">
-                    <div class="ml-form-horizontalRow">
-                      <div class="ml-input-horizontal">
-                        <div style="width:100%" class="horizontal-fields">
-                          <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                            <input type="email" class="form-control" name="fields[email]" placeholder="Your email address" autocomplete="email">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ml-button-horizontal primary">
-                        <button type="submit" class="primary">Start Free</button>
-                        <button disabled="disabled" style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="hidden" name="ml-submit" value="1">
-                  <div class="ml-mobileButton-horizontal">
-                    <button type="submit" class="primary">Start Free</button>
-                    <button disabled="disabled" style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
-                  </div>
-                  <input type="hidden" name="anticsrf" value="true">
-                </form>
-              </div>
-              <div class="ml-form-successBody row-success" style="display:none">
-                <div class="ml-form-successContent">
-                  <h4>You're in.</h4>
-                  <p>Check your inbox — we've sent you everything you need to get started.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="final-reassurance reveal">Try it free for three days. No credit card required. No commitments.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <span class="footer-logo">LimenBridge</span>
-        <span class="footer-note">© 2026 LimenBridge · limenbridge.cc</span>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    function ml_webform_success_42383336() {
-      var $ = ml_jQuery || jQuery;
-      $('.ml-subscribe-form-42383336 .row-success').show();
-      $('.ml-subscribe-form-42383336 .row-form').hide();
+        <button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="obFinish()">Continue</button>
+      `;
     }
-  </script>
-  <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519" type="text/javascript"></script>
-  <script>fetch("https://assets.mailerlite.com/jsonp/2419426/forms/189792827471824024/takel")</script>
+  ];
 
-  <script>
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    reveals.forEach(el => observer.observe(el));
-  </script>
+  steps[obStep]();
+}
+
+function obSelect(key, val, btn) {
+  obAnswers[key] = val;
+  // update UI
+  btn.closest('.onboard-card').querySelectorAll(`.option-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const nextBtn = document.getElementById(`ob-next-${obStep}`);
+  if (nextBtn) nextBtn.removeAttribute('disabled');
+}
+
+function obNext() {
+  obStep++;
+  renderObStep();
+  document.querySelector('.onboard-card').classList.remove('fade-in');
+  void document.querySelector('.onboard-card').offsetWidth;
+  document.querySelector('.onboard-card').classList.add('fade-in');
+}
+
+function obFinish() {
+  const morningTime = document.getElementById('ob-morning-time').value || '07:00';
+  const eveningTime = document.getElementById('ob-evening-time').value || '22:30';
+  const source = document.getElementById('ob-source')?.value || '';
+
+  let firstTrack = obAnswers.q3;
+  if (firstTrack === 'auto') firstTrack = currentTrackKind();
+
+  const u = loadUser();
+  u.onboardingComplete = true;
+  u.firstTrack = firstTrack;
+  u.morningTime = morningTime;
+  u.eveningTime = eveningTime;
+  if (source) u.source = source;
+  saveUser(u);
+
+  // Show recommendation screen
+  showRecommendation(u);
+}
+
+function showRecommendation(u) {
+  const el = document.getElementById('ob-content');
+  document.getElementById('ob-steps').innerHTML = '';
+  const isMorning = u.firstTrack === 'morning';
+  const hour = new Date().getHours();
+  const morningTimeLabel = u.morningTime || '07:00';
+  const eveningTimeLabel = u.eveningTime || '22:00';
+  const userEveningHour = parseInt(eveningTimeLabel.split(':')[0], 10);
+
+  // Morning track but it's afternoon/evening — next opportunity is tomorrow
+  const morningComingTomorrow = isMorning && hour >= 14;
+  // Evening track but too early — more than 1hr before evening time
+  const eveningComingLater = !isMorning && hour < userEveningHour - 1;
+  const trackComingLater = morningComingTomorrow || eveningComingLater;
+
+  if (trackComingLater) {
+    const kindLabel = isMorning ? 'morning' : 'evening';
+    const timeLabel = isMorning ? morningTimeLabel : eveningTimeLabel;
+    const whenLabel = isMorning
+      ? 'tomorrow morning at ' + morningTimeLabel
+      : 'this evening at ' + eveningTimeLabel;
+    const desc = isMorning
+      ? 'The morning track works with your body\'s natural rise — designed for the first 30 minutes after waking, not for the evening.'
+      : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
+
+    el.innerHTML =
+      '<div class="fade-in">' +
+      '<p class="eyebrow" style="color:var(--accent);margin-bottom:1rem">You\'re all set</p>' +
+      '<h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Your first ' + kindLabel + ' track will be ready ' + whenLabel + '.</h2>' +
+      '<p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p>' +
+      '<div class="card" style="margin-bottom:1.5rem">' +
+      '<p style="font-weight:500;margin-bottom:.5rem">Set a calendar reminder</p>' +
+      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Click the button below — a file will download. Open it and your calendar app will add a recurring daily reminder automatically.</p>' +
+      '<a href="' + generateICS(u) + '" download="limenbridge-' + kindLabel + '.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Download calendar reminder (.ics)</a>' +
+      '</div>' +
+      '<button class="btn btn-ghost btn-full" onclick="route()">Go to dashboard</button>' +
+      '</div>';
+  } else {
+    const kindLabel = isMorning ? 'morning' : 'evening';
+    const desc = isMorning
+      ? 'Your body is already in its natural rising phase in the mornings. The morning track works with that moment.'
+      : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
+    el.innerHTML =
+      '<div class="fade-in">' +
+      '<p class="eyebrow" style="color:var(--accent);margin-bottom:1rem">Based on your answers</p>' +
+      '<h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Let\'s start with the ' + kindLabel + ' program.</h2>' +
+      '<p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p>' +
+      '<button class="btn btn-primary btn-full" onclick="route()">Start now</button>' +
+      '</div>';
+  }
+}
+
+function generateICS(u) {
+  const kind = u.firstTrack || 'evening';
+  const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'BEGIN:VEVENT',
+    `SUMMARY:LimenBridge — ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
+    `DTSTART:${dateStr}T${timeStr}00`,
+    `DTEND:${dateStr}T${timeStr}00`,
+    'RRULE:FREQ=DAILY',
+    `DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.`,
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+  return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+}
+
+// ═══════════════════════════════════════════
+// APP / PLAYER
+// ═══════════════════════════════════════════
+let audioEl = document.getElementById('audio-player');
+let isPlaying = false;
+let listenedPct = 0;
+
+function renderApp(u) {
+  const el = document.getElementById('app-content');
+  const kind = currentTrackKind();
+  const idx = String(trackIndex(u)).padStart(2,'0');
+  const trackUrl = `https://audio.limenbridge.cc/${kind}_${idx}.mp3`;
+  const listened = hasListenedToday(u, kind);
+  const pDay = programDay(u);
+  const streak = streakDays(u);
+  const planLabel = u.plan === 'free' ? 'FREE TRIAL' : u.plan.toUpperCase();
+  document.getElementById('plan-badge').textContent = planLabel;
+
+  el.innerHTML = `
+    <p style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem">${greeting(u.name)}</p>
+
+    <!-- Player card -->
+    <div class="player-card fade-in">
+      <div class="track-label">${kind === 'morning' ? 'Morning' : 'Evening'} track · Day ${pDay}</div>
+      <div class="waveform-player" id="player-wave" style="margin:1rem 0"><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span></div>
+      <button class="play-btn" id="play-btn" onclick="togglePlay('${trackUrl}','${kind}')" title="Play / Pause">
+        <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="#0F0E0D">
+          <path id="play-path" d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:-.5rem">tap to play · tap again to pause</p>
+      <div class="progress-wrap" style="margin:0 auto;max-width:320px">
+        <div class="progress-fill" id="track-progress" style="width:0%"></div>
+      </div>
+      <div class="track-status" id="track-status">${listened ? '✓ Listened today' : ''}</div>
+    </div>
+
+    <!-- Day progress -->
+    <div class="day-prog">
+      <div class="day-prog-label"><span>Program progress</span><span>Day ${pDay} of 14</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/14*100).toFixed(1)}%"></div></div>
+    </div>
+
+    ${streak >= 2 ? `<div style="margin-top:1.25rem"><span class="streak-badge">🔥 ${streak} days in a row</span></div>` : ''}
+
+    <!-- Mood graph -->
+    <div style="margin-top:2.5rem">
+      <h3 class="display" style="font-size:1.2rem;margin-bottom:.25rem">Your progress</h3>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem">Morning & evening mood · 14 days</p>
+      <div class="graph-wrap">
+        <canvas id="mood-graph" width="640" height="180" style="width:100%;height:180px;display:block;border-radius:var(--radius)"></canvas>
+        ${u.plan === 'free' ? `
+        <div class="graph-locked">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F2EDE6" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <p style="color:var(--muted);font-size:.9rem">Your graph starts on day 4. Keep going.</p>
+        </div>` : ''}
+      </div>
+    </div>
+
+    <!-- Mood journal (shown after listening) -->
+    <div id="mood-section" style="display:${listened ? 'none' : 'none'}"></div>
+  `;
+
+  if (u.plan !== 'free') drawGraph(u);
+  setupAudio(trackUrl, kind, u);
+}
+
+function setupAudio(url, kind, u) {
+  audioEl.src = url;
+  audioEl.load();
+  audioEl.ontimeupdate = () => {
+    if (!audioEl.duration) return;
+    const pct = audioEl.currentTime / audioEl.duration * 100;
+    document.getElementById('track-progress').style.width = pct.toFixed(1) + '%';
+    if (pct >= 80 && !hasListenedToday(u, kind)) {
+      markListened(u, kind);
+      document.getElementById('track-status').textContent = '✓ Listened today';
+      showMoodSection(kind, u);
+    }
+  };
+  audioEl.onended = () => { setPlayIcon(false); document.getElementById('player-wave')?.classList.remove('playing'); };
+}
+
+function togglePlay(url, kind) {
+  if (isPlaying) {
+    audioEl.pause();
+    setPlayIcon(false);
+    document.getElementById('player-wave')?.classList.remove('playing');
+  } else {
+    if (!audioEl.src || audioEl.src !== url) audioEl.src = url;
+    audioEl.play().catch(() => {});
+    setPlayIcon(true);
+    document.getElementById('player-wave')?.classList.add('playing');
+  }
+  isPlaying = !isPlaying;
+}
+
+function setPlayIcon(playing) {
+  const icon = document.getElementById('play-icon');
+  if (!icon) return;
+  icon.setAttribute('d', playing
+    ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z'
+    : 'M8 5v14l11-7z'
+  );
+}
+
+function showMoodSection(kind, u) {
+  const el = document.getElementById('mood-section');
+  if (!el) return;
+  const q1 = kind === 'morning' ? 'How are you feeling right now?' : 'How did the day go, anxiety-wise?';
+  const q2 = kind === 'morning' ? 'What\'s on your mind most today?' : 'What helped today?';
+  el.style.display = 'block';
+  el.innerHTML = `
+    <div class="card fade-in" style="margin-top:2rem">
+      <h3 class="display" style="font-size:1.2rem;margin-bottom:1.25rem">Quick check-in</h3>
+      <p style="margin-bottom:.75rem">${q1}</p>
+      <div class="mood-scale" id="mood-score-btns">
+        ${[1,2,3,4,5].map(n => `<button class="mood-btn" onclick="selectMood(${n},this)">${n}</button>`).join('')}
+      </div>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:.35rem;display:flex;justify-content:space-between"><span>Heavy</span><span>Light</span></p>
+      <div class="field" style="margin-top:1.25rem">
+        <label class="eyebrow" for="mood-note">${q2} <span style="color:var(--muted)">(optional)</span></label>
+        <input type="text" id="mood-note" class="input" style="margin-top:.35rem" maxlength="100" placeholder="…"/>
+      </div>
+      <button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="saveMood('${kind}')">Save</button>
+    </div>
+  `;
+}
+
+let selectedMoodScore = null;
+function selectMood(n, btn) {
+  selectedMoodScore = n;
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function saveMood(kind) {
+  const u = loadUser();
+  const note = document.getElementById('mood-note')?.value || '';
+  if (selectedMoodScore) {
+    u.moodLog.push({ date: todayISO(), time: kind, score: selectedMoodScore, note: note || undefined });
+    saveUser(u);
+  }
+  const el = document.getElementById('mood-section');
+  el.innerHTML = `<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Saved ✓</p>`;
+  selectedMoodScore = null;
+}
+
+// ═══════════════════════════════════════════
+// GRAPH
+// ═══════════════════════════════════════════
+function drawGraph(u) {
+  const canvas = document.getElementById('mood-graph');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const pad = { top: 16, right: 16, bottom: 28, left: 28 };
+  const iW = W - pad.left - pad.right;
+  const iH = H - pad.top - pad.bottom;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#1A1917';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = '#2E2B27';
+  ctx.lineWidth = 1;
+  for (let i = 1; i <= 4; i++) {
+    const y = pad.top + (iH / 4) * i;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + iW, y); ctx.stroke();
+  }
+
+  // Build data per day (last 14)
+  const days = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    days.push(d.toISOString().slice(0,10));
+  }
+
+  function avg(entries) {
+    if (!entries.length) return null;
+    return entries.reduce((s, e) => s + e.score, 0) / entries.length;
+  }
+
+  const morning = days.map(d => avg(u.moodLog.filter(m => m.date === d && m.time === 'morning')));
+  const evening = days.map(d => avg(u.moodLog.filter(m => m.date === d && m.time === 'evening')));
+
+  function drawLine(data, color) {
+    const points = data.map((v, i) => ({
+      x: pad.left + (i / 13) * iW,
+      y: v === null ? null : pad.top + iH - ((v - 1) / 4) * iH
+    }));
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.lineJoin = 'round';
+    let started = false;
+    points.forEach(p => {
+      if (p.y === null) return;
+      if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+      else ctx.lineTo(p.x, p.y);
+    });
+    ctx.stroke();
+    // Dots
+    points.forEach(p => {
+      if (p.y === null) return;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    });
+  }
+
+  drawLine(morning, '#C4703F');
+  drawLine(evening, '#7A9E7E');
+
+  // X-axis labels (every 7 days)
+  ctx.fillStyle = '#8A8278';
+  ctx.font = '11px Jost, sans-serif';
+  ctx.textAlign = 'center';
+  [0, 6, 13].forEach(i => {
+    const x = pad.left + (i / 13) * iW;
+    const label = 'Day ' + (i + 1);
+    ctx.fillText(label, x, H - 6);
+  });
+
+  // Legend
+  ctx.fillStyle = '#C4703F'; ctx.fillRect(pad.left, 6, 10, 3);
+  ctx.fillStyle = '#8A8278'; ctx.font = '10px Jost, sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('Morning', pad.left + 14, 11);
+  ctx.fillStyle = '#7A9E7E'; ctx.fillRect(pad.left + 70, 6, 10, 3);
+  ctx.fillText('Evening', pad.left + 84, 11);
+}
+
+// ═══════════════════════════════════════════
+// TRIAL ENDED
+// ═══════════════════════════════════════════
+function renderTrialEnded(u) {
+  const count = u.moodLog.length + (u.lastListened ? Object.keys(u.lastListened).filter(k => k !== 'date' && u.lastListened[k]).length : 0);
+  document.getElementById('trial-ended-msg').textContent =
+    `You showed up ${count} time${count !== 1 ? 's' : ''}. That's not nothing. Your account stays open — your notes are still here. Ready to continue?`;
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+route();
+</script>
 </body>
 </html>
