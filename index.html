@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://js.stripe.com/v3/"></script>
 <style>
 /* ── Reset & base ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -80,7 +81,6 @@ a{color:inherit;text-decoration:none}
 .waveform-svg{display:block;width:100%;max-width:520px;margin:0 auto;overflow:visible}
 .waveform-svg .bar{transform-origin:center;animation:barPulse 2.4s ease-in-out infinite}
 @keyframes barPulse{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.25);opacity:.9}}
-/* staggered delays for organic feel */
 .waveform-svg .bar:nth-child(1){animation-delay:0s}
 .waveform-svg .bar:nth-child(2){animation-delay:.08s}
 .waveform-svg .bar:nth-child(3){animation-delay:.16s}
@@ -106,7 +106,6 @@ a{color:inherit;text-decoration:none}
 .waveform-svg .bar:nth-child(23){animation-delay:.16s}
 .waveform-svg .bar:nth-child(24){animation-delay:.24s}
 .waveform-svg .bar:nth-child(25){animation-delay:.32s}
-/* player waveform — active when playing */
 .waveform-player{display:flex;align-items:center;justify-content:center;gap:3px;height:40px}
 .waveform-player span{display:inline-block;width:3px;background:var(--accent);border-radius:2px;opacity:.6;transform-origin:center}
 .waveform-player.playing span{animation:barPulse 1.4s ease-in-out infinite}
@@ -189,6 +188,9 @@ input[type=time]:focus{border-color:var(--accent)}
 /* ── Trial ended ── */
 .trial-ended{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem;text-align:center}
 
+/* ── Stripe loading state ── */
+.btn-loading{opacity:.6;cursor:default;pointer-events:none}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
@@ -216,7 +218,6 @@ input[type=time]:focus{border-color:var(--accent)}
     <button class="btn btn-primary" onclick="openModal()">Try free — 3 days, no card</button>
     <p class="trust" style="text-align:left;margin-top:.75rem">No credit card required · Cancel anytime</p>
 
-    <!-- Waveform SVG animated -->
     <div style="margin-top:3rem;margin-bottom:1rem;padding:1rem 0" aria-hidden="true">
       <svg class="waveform-svg" viewBox="0 0 440 64" xmlns="http://www.w3.org/2000/svg">
         <rect class="bar" x="0"   y="28" width="4" height="8"  rx="2" fill="#C4703F"/>
@@ -316,7 +317,7 @@ input[type=time]:focus{border-color:var(--accent)}
   <!-- Founder -->
   <section class="section wrap">
     <div class="founder-row">
-      <div class="founder-photo" role="img" aria-label="FOUNDER_NAME"></div>
+      <div class="founder-photo" role="img" aria-label="Founder photo"></div>
       <div style="flex:1;min-width:220px">
         <p style="line-height:1.8">LimenBridge was created by a physician with many years of working with people who carry their stress in their bodies.<br><br>The same moment kept repeating: a person walks out of a session and is left alone with what surfaced in it. The next appointment is still far away. No structure. No support.<br><br>LimenBridge is the answer to that gap. Not a replacement for psychotherapy — what happens between.</p>
       </div>
@@ -330,7 +331,8 @@ input[type=time]:focus{border-color:var(--accent)}
       <div class="card">
         <div class="eyebrow" style="margin-bottom:.5rem">Monthly</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.9rem;margin:.4rem 0">$19 / month</div>
-        <p style="color:var(--muted)">Full access. Cancel anytime.</p>
+        <p style="color:var(--muted);margin-bottom:1.25rem">Full access. Cancel anytime.</p>
+        <button class="btn btn-ghost btn-full" id="landing-monthly-btn" onclick="startCheckout('monthly',this)">Get started</button>
       </div>
       <div class="card card-accent">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
@@ -338,7 +340,8 @@ input[type=time]:focus{border-color:var(--accent)}
           <span style="font-size:.72rem;background:var(--accent);color:#0F0E0D;padding:.2rem .6rem;border-radius:20px;font-weight:500">Two months free</span>
         </div>
         <div style="font-family:'Playfair Display',serif;font-size:1.9rem;margin:.4rem 0">$163 / year</div>
-        <p style="color:var(--muted)">For those in it for the long run.</p>
+        <p style="color:var(--muted);margin-bottom:1.25rem">For those in it for the long run.</p>
+        <button class="btn btn-primary btn-full" id="landing-annual-btn" onclick="startCheckout('annual',this)">Get started</button>
       </div>
     </div>
     <p style="color:var(--muted);margin-top:1rem;font-size:.9rem">Both plans include: morning and evening tracks, mood journal, 14-day progress tracking.</p>
@@ -421,8 +424,8 @@ input[type=time]:focus{border-color:var(--accent)}
       <h2 class="display" style="font-size:2rem;margin-bottom:1.25rem">Your 3 days are complete.</h2>
       <p id="trial-ended-msg" style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem"></p>
       <div style="display:flex;flex-direction:column;gap:.75rem">
-        <a href="MEMBERSPACE_MONTHLY_URL" class="btn btn-primary" style="text-decoration:none;justify-content:center">Continue — $19 / month</a>
-        <a href="MEMBERSPACE_ANNUAL_URL" class="btn btn-ghost" style="text-decoration:none;justify-content:center">Continue — $163 / year · Two months free</a>
+        <button class="btn btn-primary btn-full" id="trial-monthly-btn" onclick="startCheckout('monthly',this)">Continue — $19 / month</button>
+        <button class="btn btn-ghost btn-full" id="trial-annual-btn" onclick="startCheckout('annual',this)">Continue — $163 / year · Two months free</button>
       </div>
       <p style="color:var(--muted);font-size:.85rem;margin-top:1.25rem">Your data won't be deleted if you wait.</p>
     </div>
@@ -465,7 +468,56 @@ input[type=time]:focus{border-color:var(--accent)}
 
 <script>
 // ═══════════════════════════════════════════
-// STATE MANAGEMENT (from limen-state.ts)
+// STRIPE CONFIG
+// ═══════════════════════════════════════════
+const STRIPE_KEY = 'pk_live_51TUlctF5LLi6LixPBafRgNuQP0OEZUkDvqQVMvGWH6E7aDLVFtqpYoBUUhvLBVwxROHJvnaWk97bKYfVm0WXyMxA00h2KDCY10';
+const PRICE_MONTHLY = 'price_1Tgne8F5LLi6LixPqHFzot7I';
+const PRICE_ANNUAL  = 'price_1TgnIsF5LLi6LixPW62xgHtt';
+
+const stripeInstance = Stripe(STRIPE_KEY);
+
+async function startCheckout(plan, btn) {
+  if (btn) {
+    btn.classList.add('btn-loading');
+    btn.textContent = 'Loading…';
+  }
+  const priceId = plan === 'annual' ? PRICE_ANNUAL : PRICE_MONTHLY;
+  const u = loadUser();
+
+  try {
+    await stripeInstance.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'subscription',
+      successUrl: window.location.origin + '/?payment=success',
+      cancelUrl:  window.location.origin + '/?payment=cancelled',
+      customerEmail: u ? u.email : undefined,
+    });
+  } catch (err) {
+    console.error('Stripe error:', err);
+    if (btn) {
+      btn.classList.remove('btn-loading');
+      btn.textContent = plan === 'annual' ? 'Continue — $163 / year · Two months free' : (btn.dataset.label || 'Continue — $19 / month');
+    }
+    alert('Something went wrong. Please try again.');
+  }
+}
+
+// Handle return from Stripe
+function handleStripeReturn() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'success') {
+    const u = loadUser();
+    if (u) {
+      u.plan = 'monthly'; // will be corrected by webhook in future; good enough for MVP
+      saveUser(u);
+    }
+    // Clean URL
+    window.history.replaceState({}, '', '/');
+  }
+}
+
+// ═══════════════════════════════════════════
+// STATE MANAGEMENT
 // ═══════════════════════════════════════════
 const KEY = 'limenbridge_user';
 
@@ -541,6 +593,7 @@ function showScreen(id) {
 }
 
 function route() {
+  handleStripeReturn();
   const u = loadUser();
   const state = deriveState(u);
   if (state === 'LANDING') { showScreen('screen-landing'); return; }
@@ -555,29 +608,12 @@ function goHome() {
   showScreen('screen-landing');
 }
 
-function openHelp() {
-  document.getElementById('modal-help').classList.add('open');
-}
+function openHelp() { document.getElementById('modal-help').classList.add('open'); }
 function closeHelp(e) {
   if (!e || e.target === document.getElementById('modal-help')) {
     document.getElementById('modal-help').classList.remove('open');
   }
 }
-
-// ═══════════════════════════════════════════
-// WAVEFORM
-// ═══════════════════════════════════════════
-function buildWaveform(el, count) {
-  el.innerHTML = '';
-  const heights = [18,28,40,32,48,38,44,30,48,36,42,28,48,34,40,26,44,32,48,30,38,24,42,36,48,28,40,34,44,30];
-  for (let i = 0; i < count; i++) {
-    const s = document.createElement('span');
-    s.style.height = (heights[i % heights.length]) + 'px';
-    el.appendChild(s);
-  }
-}
-
-// Build hero waveform on landing
 
 // ═══════════════════════════════════════════
 // MODAL
@@ -605,9 +641,8 @@ async function submitRegistration() {
   const btn = document.getElementById('reg-submit');
   btn.disabled = true; btn.textContent = 'Creating…';
 
-  // MailerLite — replace placeholders before going live
-  const MAILERLITE_API_KEY = 'YOUR_MAILERLITE_API_KEY';
-  const MAILERLITE_GROUP_ID = 'YOUR_MAILERLITE_GROUP_ID';
+  const MAILERLITE_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiOGM0ODY4MmI1NjY2YjM4Y2NmZjRkMTFjNjk2ZDI2OGQ3N2I2YzNkMDM3NGNhZDI4YTdmNDUwYWU3NTczZDI3Yzk4MGI2YWRlNmJhZWFjZWQiLCJpYXQiOjE3ODEwODE3NjguOTYyMjA3LCJuYmYiOjE3ODEwODE3NjguOTYyMjA5LCJleHAiOjQ5MzY3NTUzNjguOTU4MTgzLCJzdWIiOiIyNDM3NDM3Iiwic2NvcGVzIjpbXX0.lSN4HRHBE9D2ZoQjUGiC9XI2jVRA31W79VZgoXOX0GgmdiP2T78eNfJP1tzBnbGw62FoJJZOaCK24vlB6LGLYLoIid-lBL4hMPudOVMsFL0pi1J6cIOw2f3aMQR9s_RIrAgdLVRPYI6RSi6Yxq32oGE96oDtH_k1XgPg8-uVOUGraTwvaSbA0MdijpXgH205uxmmO8PhRGzWXUwY5j7OyRyfoyg0v4dsg22eHB_f0-XH4Tcf8A_V6oCerSxlUU953-4ysMe4X-kD3rRz1slSCQz77XICZzuN_B2BXvB5aD6VDo1dqjq06sEMo-TwbRJlYI8kC34UjHuMfAbQJE74ELdQ8otOAPHC1onGkskKMR4GMdKQwD6FiWhUSFKjhf_XyDXUls2AZScy8dWtTA6Tw85FSx-rwaTy1cQQABJy48Yk5-3WQ6nkyJWHKTC2p40uK9_B-ScN2CO7-Fzvk74Dgxj7IM3w5Cqn_hw4UWnYA6yhkufOHSWiAJyVQAWvfiWOGuK1LoAN8J3FhhAadWsRS8GBKUtpx8Sf8w_1QouoL5ibrwwXBygYsF2oyPUfReRL_A47jeWRZ-b07Ut2aneHDNdsaeItNRJXh_JbiBGcsEvErICfpfKhqCUS0bGgAeHgF4vMidnHk82O5O2H2yrii93Ip5PZmq8i4ZNjayiFN0o';
+  const MAILERLITE_GROUP_ID = '189792851698124588';
   try {
     await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
@@ -638,10 +673,7 @@ const OB_STEPS = 5;
 let obStep = 0;
 let obAnswers = {};
 
-function renderOnboarding(u) {
-  obStep = 0; obAnswers = {};
-  renderObStep();
-}
+function renderOnboarding(u) { obStep = 0; obAnswers = {}; renderObStep(); }
 
 function renderObStepDots() {
   const el = document.getElementById('ob-steps');
@@ -659,7 +691,6 @@ function renderObStep() {
   el.innerHTML = '';
 
   const steps = [
-    // Step 0 — welcome
     () => {
       el.innerHTML = `
         <h2 class="display" style="font-size:1.75rem;margin-bottom:.75rem">Welcome to LimenBridge</h2>
@@ -667,7 +698,6 @@ function renderObStep() {
         <button class="btn btn-primary btn-full" onclick="obNext()">Let's go</button>
       `;
     },
-    // Step 1 — working with therapist
     () => {
       el.innerHTML = `
         <p class="eyebrow" style="margin-bottom:1.25rem">Question 1 of 4</p>
@@ -678,7 +708,6 @@ function renderObStep() {
         <button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q1?'disabled':''} id="ob-next-1">Continue</button>
       `;
     },
-    // Step 2 — anxiety frequency
     () => {
       el.innerHTML = `
         <p class="eyebrow" style="margin-bottom:1.25rem">Question 2 of 4</p>
@@ -689,7 +718,6 @@ function renderObStep() {
         <button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q2?'disabled':''} id="ob-next-2">Continue</button>
       `;
     },
-    // Step 3 — what bothers most (determines first track)
     () => {
       el.innerHTML = `
         <p class="eyebrow" style="margin-bottom:1.25rem">Question 3 of 4</p>
@@ -705,7 +733,6 @@ function renderObStep() {
         <button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q3?'disabled':''} id="ob-next-3">Continue</button>
       `;
     },
-    // Step 4 — times
     () => {
       el.innerHTML = `
         <p class="eyebrow" style="margin-bottom:1.25rem">Question 4 of 4</p>
@@ -734,8 +761,7 @@ function renderObStep() {
 
 function obSelect(key, val, btn) {
   obAnswers[key] = val;
-  // update UI
-  btn.closest('.onboard-card').querySelectorAll(`.option-btn`).forEach(b => b.classList.remove('selected'));
+  btn.closest('.onboard-card').querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   const nextBtn = document.getElementById(`ob-next-${obStep}`);
   if (nextBtn) nextBtn.removeAttribute('disabled');
@@ -753,10 +779,8 @@ function obFinish() {
   const morningTime = document.getElementById('ob-morning-time').value || '07:00';
   const eveningTime = document.getElementById('ob-evening-time').value || '22:30';
   const source = document.getElementById('ob-source')?.value || '';
-
   let firstTrack = obAnswers.q3;
   if (firstTrack === 'auto') firstTrack = currentTrackKind();
-
   const u = loadUser();
   u.onboardingComplete = true;
   u.firstTrack = firstTrack;
@@ -764,8 +788,6 @@ function obFinish() {
   u.eveningTime = eveningTime;
   if (source) u.source = source;
   saveUser(u);
-
-  // Show recommendation screen
   showRecommendation(u);
 }
 
@@ -777,12 +799,9 @@ function showRecommendation(u) {
   const morningTimeLabel = u.morningTime || '07:00';
   const eveningTimeLabel = u.eveningTime || '22:00';
   const userEveningHour = parseInt(eveningTimeLabel.split(':')[0], 10);
-
   const userMorningHour = parseInt((u.morningTime || '07:00').split(':')[0], 10);
-  // Morning: "Start now" only within 2hr window after wake time. Outside that window — tomorrow.
   const morningWindow = hour >= userMorningHour && hour < userMorningHour + 2;
   const morningComingTomorrow = isMorning && !morningWindow;
-  // Evening: "Start now" from 3hrs before sleep time onward.
   const eveningWindow = hour >= userEveningHour - 3;
   const eveningComingLater = !isMorning && !eveningWindow;
   const trackComingLater = morningComingTomorrow || eveningComingLater;
@@ -790,13 +809,10 @@ function showRecommendation(u) {
   if (trackComingLater) {
     const kindLabel = isMorning ? 'morning' : 'evening';
     const timeLabel = isMorning ? morningTimeLabel : eveningTimeLabel;
-    const whenLabel = isMorning
-      ? 'tomorrow morning at ' + morningTimeLabel
-      : 'this evening at ' + eveningTimeLabel;
+    const whenLabel = isMorning ? 'tomorrow morning at ' + morningTimeLabel : 'this evening at ' + eveningTimeLabel;
     const desc = isMorning
-      ? 'The morning track works with your body\'s natural rise — designed for the first 30 minutes after waking, not for the evening.'
+      ? "The morning track works with your body's natural rise — designed for the first 30 minutes after waking, not for the evening."
       : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
-
     el.innerHTML =
       '<div class="fade-in">' +
       '<p class="eyebrow" style="color:var(--accent);margin-bottom:1rem">You\'re all set</p>' +
@@ -812,7 +828,7 @@ function showRecommendation(u) {
   } else {
     const kindLabel = isMorning ? 'morning' : 'evening';
     const desc = isMorning
-      ? 'Your body is already in its natural rising phase in the mornings. The morning track works with that moment.'
+      ? "Your body is already in its natural rising phase in the mornings. The morning track works with that moment."
       : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
     el.innerHTML =
       '<div class="fade-in">' +
@@ -830,16 +846,12 @@ function generateICS(u) {
   const now = new Date();
   const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
   const ics = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'BEGIN:VEVENT',
+    'BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',
     `SUMMARY:LimenBridge — ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
-    `DTSTART:${dateStr}T${timeStr}00`,
-    `DTEND:${dateStr}T${timeStr}00`,
+    `DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,
     'RRULE:FREQ=DAILY',
-    `DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.`,
-    'END:VEVENT',
-    'END:VCALENDAR'
+    'DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.',
+    'END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
   return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
 }
@@ -849,7 +861,6 @@ function generateICS(u) {
 // ═══════════════════════════════════════════
 let audioEl = document.getElementById('audio-player');
 let isPlaying = false;
-let listenedPct = 0;
 
 function renderApp(u) {
   const el = document.getElementById('app-content');
@@ -864,11 +875,11 @@ function renderApp(u) {
 
   el.innerHTML = `
     <p style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem">${greeting(u.name)}</p>
-
-    <!-- Player card -->
     <div class="player-card fade-in">
       <div class="track-label">${kind === 'morning' ? 'Morning' : 'Evening'} track · Day ${pDay}</div>
-      <div class="waveform-player" id="player-wave" style="margin:1rem 0"><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span><span style="height:20px"></span></div>
+      <div class="waveform-player" id="player-wave" style="margin:1rem 0">
+        ${'<span style="height:20px"></span>'.repeat(18)}
+      </div>
       <button class="play-btn" id="play-btn" onclick="togglePlay('${trackUrl}','${kind}')" title="Play / Pause">
         <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="#0F0E0D">
           <path id="play-path" d="M8 5v14l11-7z"/>
@@ -881,7 +892,6 @@ function renderApp(u) {
       <div class="track-status" id="track-status">${listened ? '✓ Listened today' : ''}</div>
     </div>
 
-    <!-- Day progress -->
     <div class="day-prog">
       <div class="day-prog-label"><span>Program progress</span><span>Day ${pDay} of 14</span></div>
       <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/14*100).toFixed(1)}%"></div></div>
@@ -889,7 +899,6 @@ function renderApp(u) {
 
     ${streak >= 2 ? `<div style="margin-top:1.25rem"><span class="streak-badge">🔥 ${streak} days in a row</span></div>` : ''}
 
-    <!-- Mood graph -->
     <div style="margin-top:2.5rem">
       <h3 class="display" style="font-size:1.2rem;margin-bottom:.25rem">Your progress</h3>
       <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem">Morning & evening mood · 14 days</p>
@@ -898,13 +907,13 @@ function renderApp(u) {
         ${u.plan === 'free' ? `
         <div class="graph-locked">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F2EDE6" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <p style="color:var(--muted);font-size:.9rem">Your graph starts on day 4. Keep going.</p>
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Your graph starts on day 4. Keep going.</p>
+          <button class="btn btn-primary" onclick="startCheckout('monthly',this)" style="font-size:.85rem;padding:10px 20px">Unlock full access — $19/mo</button>
         </div>` : ''}
       </div>
     </div>
 
-    <!-- Mood journal (shown after listening) -->
-    <div id="mood-section" style="display:${listened ? 'none' : 'none'}"></div>
+    <div id="mood-section" style="display:none"></div>
   `;
 
   if (u.plan !== 'free') drawGraph(u);
@@ -944,17 +953,14 @@ function togglePlay(url, kind) {
 function setPlayIcon(playing) {
   const icon = document.getElementById('play-icon');
   if (!icon) return;
-  icon.setAttribute('d', playing
-    ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z'
-    : 'M8 5v14l11-7z'
-  );
+  icon.setAttribute('d', playing ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z' : 'M8 5v14l11-7z');
 }
 
 function showMoodSection(kind, u) {
   const el = document.getElementById('mood-section');
   if (!el) return;
   const q1 = kind === 'morning' ? 'How are you feeling right now?' : 'How did the day go, anxiety-wise?';
-  const q2 = kind === 'morning' ? 'What\'s on your mind most today?' : 'What helped today?';
+  const q2 = kind === 'morning' ? "What's on your mind most today?" : 'What helped today?';
   el.style.display = 'block';
   el.innerHTML = `
     <div class="card fade-in" style="margin-top:2rem">
@@ -987,8 +993,7 @@ function saveMood(kind) {
     u.moodLog.push({ date: todayISO(), time: kind, score: selectedMoodScore, note: note || undefined });
     saveUser(u);
   }
-  const el = document.getElementById('mood-section');
-  el.innerHTML = `<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Saved ✓</p>`;
+  document.getElementById('mood-section').innerHTML = `<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Saved ✓</p>`;
   selectedMoodScore = null;
 }
 
@@ -1003,74 +1008,48 @@ function drawGraph(u) {
   const pad = { top: 16, right: 16, bottom: 28, left: 28 };
   const iW = W - pad.left - pad.right;
   const iH = H - pad.top - pad.bottom;
-
   ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#1A1917';
-  ctx.fillRect(0, 0, W, H);
-
-  // Grid lines
-  ctx.strokeStyle = '#2E2B27';
-  ctx.lineWidth = 1;
+  ctx.fillStyle = '#1A1917'; ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = '#2E2B27'; ctx.lineWidth = 1;
   for (let i = 1; i <= 4; i++) {
     const y = pad.top + (iH / 4) * i;
     ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + iW, y); ctx.stroke();
   }
-
-  // Build data per day (last 14)
   const days = [];
   for (let i = 13; i >= 0; i--) {
     const d = new Date(); d.setDate(d.getDate() - i);
     days.push(d.toISOString().slice(0,10));
   }
-
   function avg(entries) {
     if (!entries.length) return null;
     return entries.reduce((s, e) => s + e.score, 0) / entries.length;
   }
-
   const morning = days.map(d => avg(u.moodLog.filter(m => m.date === d && m.time === 'morning')));
   const evening = days.map(d => avg(u.moodLog.filter(m => m.date === d && m.time === 'evening')));
-
   function drawLine(data, color) {
     const points = data.map((v, i) => ({
       x: pad.left + (i / 13) * iW,
       y: v === null ? null : pad.top + iH - ((v - 1) / 4) * iH
     }));
-    ctx.beginPath();
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = 'round';
     let started = false;
     points.forEach(p => {
       if (p.y === null) return;
-      if (!started) { ctx.moveTo(p.x, p.y); started = true; }
-      else ctx.lineTo(p.x, p.y);
+      if (!started) { ctx.moveTo(p.x, p.y); started = true; } else ctx.lineTo(p.x, p.y);
     });
     ctx.stroke();
-    // Dots
     points.forEach(p => {
       if (p.y === null) return;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = color; ctx.fill();
     });
   }
-
   drawLine(morning, '#C4703F');
   drawLine(evening, '#7A9E7E');
-
-  // X-axis labels (every 7 days)
-  ctx.fillStyle = '#8A8278';
-  ctx.font = '11px Jost, sans-serif';
-  ctx.textAlign = 'center';
+  ctx.fillStyle = '#8A8278'; ctx.font = '11px Jost, sans-serif'; ctx.textAlign = 'center';
   [0, 6, 13].forEach(i => {
-    const x = pad.left + (i / 13) * iW;
-    const label = 'Day ' + (i + 1);
-    ctx.fillText(label, x, H - 6);
+    ctx.fillText('Day ' + (i + 1), pad.left + (i / 13) * iW, H - 6);
   });
-
-  // Legend
   ctx.fillStyle = '#C4703F'; ctx.fillRect(pad.left, 6, 10, 3);
   ctx.fillStyle = '#8A8278'; ctx.font = '10px Jost, sans-serif'; ctx.textAlign = 'left';
   ctx.fillText('Morning', pad.left + 14, 11);
