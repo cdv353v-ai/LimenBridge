@@ -401,8 +401,9 @@ input[type=time]:focus{border-color:var(--accent)}
   <div class="wrap">
     <nav><div class="nav-inner">
       <span class="logo">LimenBridge</span>
-      <div style="display:flex;align-items:center;gap:1rem">
+      <div style="display:flex;align-items:center;gap:.75rem">
         <span id="plan-badge" style="font-size:.78rem;color:var(--muted)"></span>
+        <button onclick="openHelp()" style="width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 200ms,color 200ms" onmouseover="this.style.borderColor='var(--accent-soft)';this.style.color='var(--fg)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" title="How it works">?</button>
         <button onclick="goHome()" style="background:var(--surface);border:1px solid var(--border);color:var(--fg);font-size:.9rem;cursor:pointer;padding:.5rem 1rem;border-radius:4px;transition:border-color 200ms;font-family:'Jost',sans-serif" onmouseover="this.style.borderColor='var(--accent-soft)'" onmouseout="this.style.borderColor='var(--border)'">← Back to site</button>
       </div>
     </div></nav>
@@ -430,6 +431,37 @@ input[type=time]:focus{border-color:var(--accent)}
 
 <!-- Hidden audio element -->
 <audio id="audio-player" preload="none"></audio>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: HELP
+═══════════════════════════════════════════ -->
+<div id="modal-help" class="modal-overlay" onclick="closeHelp(event)">
+  <div class="modal-box fade-in" onclick="event.stopPropagation()" style="max-width:480px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+      <h3 class="display" style="font-size:1.3rem">How your program works</h3>
+      <button onclick="closeHelp()" style="background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:.25rem">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1.25rem">
+      <div>
+        <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Morning track</p>
+        <p style="color:var(--muted);font-size:.95rem">Available within 2 hours of your wake time. If you miss it, the next one is tomorrow morning.</p>
+      </div>
+      <div>
+        <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Evening track</p>
+        <p style="color:var(--muted);font-size:.95rem">Available from 3 hours before your bedtime. Come back then and it will be ready.</p>
+      </div>
+      <div>
+        <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Calendar reminder</p>
+        <p style="color:var(--muted);font-size:.95rem">No reminders yet? Go back to the welcome screen and download the calendar file — it adds a daily reminder to your Google or Apple Calendar automatically.</p>
+      </div>
+      <div>
+        <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Missed a day?</p>
+        <p style="color:var(--muted);font-size:.95rem">That's fine. LimenBridge remembers where you are. Come back whenever you're ready — your program continues from where you left off.</p>
+      </div>
+    </div>
+    <button class="btn btn-ghost btn-full" style="margin-top:1.75rem" onclick="closeHelp()">Got it</button>
+  </div>
+</div>
 
 <script>
 // ═══════════════════════════════════════════
@@ -519,9 +551,17 @@ function route() {
 }
 
 function goHome() {
-  // Stop audio if playing
   if (isPlaying) { audioEl.pause(); isPlaying = false; }
   showScreen('screen-landing');
+}
+
+function openHelp() {
+  document.getElementById('modal-help').classList.add('open');
+}
+function closeHelp(e) {
+  if (!e || e.target === document.getElementById('modal-help')) {
+    document.getElementById('modal-help').classList.remove('open');
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -739,10 +779,12 @@ function showRecommendation(u) {
   const userEveningHour = parseInt(eveningTimeLabel.split(':')[0], 10);
 
   const userMorningHour = parseInt((u.morningTime || '07:00').split(':')[0], 10);
-  // Morning track: show "coming tomorrow" if current time is more than 2hrs past wake time
-  const morningComingTomorrow = isMorning && hour >= userMorningHour + 2;
-  // Evening track: show "coming later" if more than 1hr before evening time
-  const eveningComingLater = !isMorning && hour < userEveningHour - 1;
+  // Morning: "Start now" only within 2hr window after wake time. Outside that window — tomorrow.
+  const morningWindow = hour >= userMorningHour && hour < userMorningHour + 2;
+  const morningComingTomorrow = isMorning && !morningWindow;
+  // Evening: "Start now" from 3hrs before sleep time onward.
+  const eveningWindow = hour >= userEveningHour - 3;
+  const eveningComingLater = !isMorning && !eveningWindow;
   const trackComingLater = morningComingTomorrow || eveningComingLater;
 
   if (trackComingLater) {
