@@ -476,30 +476,17 @@ const PRICE_ANNUAL  = 'price_1TgnIsF5LLi6LixPW62xgHtt';
 
 const stripeInstance = Stripe(STRIPE_KEY);
 
-async function startCheckout(plan, btn) {
+function startCheckout(plan, btn) {
   if (btn) {
     btn.classList.add('btn-loading');
     btn.textContent = 'Loading…';
   }
-  const priceId = plan === 'annual' ? PRICE_ANNUAL : PRICE_MONTHLY;
+  const monthlyLink = 'https://buy.stripe.com/eVq6oH2wpgxRdT8d6X6sw02';
+  const annualLink  = 'https://buy.stripe.com/6oU14ngnf6Xh16m2sj6sw03';
+  const base = plan === 'annual' ? annualLink : monthlyLink;
   const u = loadUser();
-
-  try {
-    await stripeInstance.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription',
-      successUrl: window.location.origin + '/?payment=success',
-      cancelUrl:  window.location.origin + '/?payment=cancelled',
-      customerEmail: u ? u.email : undefined,
-    });
-  } catch (err) {
-    console.error('Stripe error:', err);
-    if (btn) {
-      btn.classList.remove('btn-loading');
-      btn.textContent = plan === 'annual' ? 'Continue — $163 / year · Two months free' : (btn.dataset.label || 'Continue — $19 / month');
-    }
-    alert('Something went wrong. Please try again.');
-  }
+  const email = u ? encodeURIComponent(u.email) : '';
+  window.location.href = email ? base + '?prefilled_email=' + email : base;
 }
 
 // Handle return from Stripe
