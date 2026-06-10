@@ -16,6 +16,8 @@
 <meta name="apple-mobile-web-app-title" content="LimenBridge"/>
 <link rel="apple-touch-icon" href="/icon-192.png"/>
 <script src="https://js.stripe.com/v3/"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
 <style>
 /* ── Reset & base ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1069,38 +1071,73 @@ function renderTrialEnded(u) {
 }
 
 // ═══════════════════════════════════════════
-// PWA — SERVICE WORKER + PUSH
+// PWA — FIREBASE FCM PUSH
 // ═══════════════════════════════════════════
+const FB_CONFIG = {
+  apiKey: "AIzaSyBP1VOwZt1hOPqFd0HY96x6ipLWa1TGPeg",
+  authDomain: "limenbridge.firebaseapp.com",
+  projectId: "limenbridge",
+  storageBucket: "limenbridge.firebasestorage.app",
+  messagingSenderId: "795817059671",
+  appId: "1:795817059671:web:e40d740c68e984be608a12"
+};
+const VAPID_KEY = "BF6ZfqF0ubdGw77PluD3vk2gtsgMBly5xXUht6SKiaZqHvbs3crnSaZWA1Y1qB9SmZ2jsrUY67FG0Lq8PnlekOM";
+
+let fbMessaging = null;
+
 async function registerSW() {
   if (!('serviceWorker' in navigator)) return;
   try {
     const reg = await navigator.serviceWorker.register('/sw.js');
     console.log('SW registered');
     window._swReg = reg;
+
+    // Init Firebase Messaging
+    const app = firebase.initializeApp(FB_CONFIG);
+    fbMessaging = firebase.messaging();
+
+    // Foreground push handler
+    fbMessaging.onMessage(payload => {
+      const { title, body } = payload.data || {};
+      if (Notification.permission === 'granted') {
+        new Notification(title || 'LimenBridge', {
+          body: body || 'Your track is ready.',
+          icon: '/icon-192.png'
+        });
+      }
+    });
   } catch(e) {
-    console.log('SW registration failed:', e);
+    console.log('SW/FCM init failed:', e);
   }
 }
 
 async function requestPushPermission() {
-  if (!('Notification' in window)) return false;
-  if (Notification.permission === 'granted') return true;
-  if (Notification.permission === 'denied') return false;
-  const result = await Notification.requestPermission();
-  return result === 'granted';
+  if (!('Notification' in window) || !fbMessaging) return;
+  if (Notification.permission === 'denied') return;
+  try {
+    const token = await fbMessaging.getToken({ vapidKey: VAPID_KEY });
+    if (token) {
+      // Save token to user profile for future use
+      const u = loadUser();
+      if (u && u.fcmToken !== token) {
+        u.fcmToken = token;
+        saveUser(u);
+      }
+      console.log('FCM token saved');
+    }
+  } catch(e) {
+    console.log('Push permission failed:', e);
+  }
 }
 
-// Show iOS install prompt if not already installed
 function isInStandaloneMode() {
   return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 }
 
 function showInstallPrompt() {
-  if (isInStandaloneMode()) return; // already installed
+  if (isInStandaloneMode()) return;
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  if (!isIOS) return; // Android handles this automatically
-  
-  // Show after a short delay so it doesn't interrupt onboarding
+  if (!isIOS) return;
   setTimeout(() => {
     const existing = document.getElementById('ios-install-banner');
     if (existing) return;
@@ -1121,7 +1158,11 @@ function showInstallPrompt() {
 // ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
-registerSW();
+registerSW().then(() => {
+  // Request push permission after onboarding completes
+  const u = loadUser();
+  if (u && u.onboardingComplete) requestPushPermission();
+});
 route();
 showInstallPrompt();
 </script>
