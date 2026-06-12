@@ -644,17 +644,15 @@ async function submitRegistration() {
   const name = document.getElementById('reg-name').value;
   const btn = document.getElementById('reg-submit');
   btn.disabled = true; btn.textContent = 'Creating\u2026';
-
-  const MAILERLITE_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiOGM0ODY4MmI1NjY2YjM4Y2NmZjRkMTFjNjk2ZDI2OGQ3N2I2YzNkMDM3NGNhZDI4YTdmNDUwYWU3NTczZDI3Yzk4MGI2YWRlNmJhZWFjZWQiLCJpYXQiOjE3ODEwODE3NjguOTYyMjA3LCJuYmYiOjE3ODEwODE3NjguOTYyMjA5LCJleHAiOjQ5MzY3NTUzNjguOTU4MTgzLCJzdWIiOiIyNDM3NDM3Iiwic2NvcGVzIjpbXX0.lSN4HRHBE9D2ZoQjUGiC9XI2jVRA31W79VZgoXOX0GgmdiP2T78eNfJP1tzBnbGw62FoJJZOaCK24vlB6LGLYLoIid-lBL4hMPudOVMsFL0pi1J6cIOw2f3aMQR9s_RIrAgdLVRPYI6RSi6Yxq32oGE96oDtH_k1XgPg8-uVOUGraTwvaSbA0MdijpXgH205uxmmO8PhRGzWXUwY5j7OyRyfoyg0v4dsg22eHB_f0-XH4Tcf8A_V6oCerSxlUU953-4ysMe4X-kD3rRz1slSCQz77XICZzuN_B2BXvB5aD6VDo1dqjq06sEMo-TwbRJlYI8kC34UjHuMfAbQJE74ELdQ8otOAPHC1onGkskKMR4GMdKQwD6FiWhUSFKjhf_XyDXUls2AZScy8dWtTA6Tw85FSx-rwaTy1cQQABJy48Yk5-3WQ6nkyJWHKTC2p40uK9_B-ScN2CO7-Fzvk74Dgxj7IM3w5Cqn_hw4UWnYA6yhkufOHSWiAJyVQAWvfiWOGuK1LoAN8J3FhhAadWsRS8GBKUtpx8Sf8w_1QouoL5ibrwwXBygYsF2oyPUfReRL_A47jeWRZ-b07Ut2aneHDNdsaeItNRJXh_JbiBGcsEvErICfpfKhqCUS0bGgAeHgF4vMidnHk82O5O2H2yrii93Ip5PZmq8i4ZNjayiFN0o';
+  const WORKER_URL = 'https://limenbridge-mailerlite.cdv353v.workers.dev';
   const MAILERLITE_GROUP_ID = '189792851698124588';
   try {
-    await fetch('https://connect.mailerlite.com/api/subscribers', {
+    await fetch(WORKER_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${MAILERLITE_API_KEY}` },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, fields: { name }, groups: [MAILERLITE_GROUP_ID] })
     });
   } catch {}
-
   const user = {
     email, name: name || undefined,
     registeredAt: new Date().toISOString(),
@@ -664,7 +662,6 @@ async function submitRegistration() {
     lastListened: { date: todayISO() }
   };
   saveUser(user);
-
   document.getElementById('modal-form').style.display = 'none';
   document.getElementById('modal-done').style.display = 'block';
   setTimeout(() => { document.getElementById('modal').classList.remove('open'); route(); }, 1200);
