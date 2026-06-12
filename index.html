@@ -847,14 +847,17 @@ function generateICS(u) {
   const now = new Date();
   const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
   const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LimenBridge//EN','CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,
     `SUMMARY:LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
     `DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,
     'RRULE:FREQ=DAILY',
     'DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.',
     'END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
-  return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  return URL.createObjectURL(blob);
 }
 
 // ═══════════════════════════════════════════
