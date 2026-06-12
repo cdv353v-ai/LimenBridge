@@ -396,8 +396,8 @@ input[type=time]:focus{border-color:var(--accent)}
       <p class="trust">No credit card · 3 days free · Unsubscribe anytime · <a href="/privacy.html" target="_blank" style="color:var(--muted)">Privacy Policy</a></p>
     </div>
     <div id="modal-done" style="display:none;text-align:center;padding:1rem 0">
-      <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">Check your inbox</h3>
-      <p style="color:var(--muted)">We've sent everything you need to get started.</p>
+      <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">You're all set</h3>
+      <p style="color:var(--muted)">Let's get started.</p>
     </div>
   </div>
 </div>
@@ -472,7 +472,7 @@ input[type=time]:focus{border-color:var(--accent)}
       </div>
       <div>
         <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Calendar reminder</p>
-        <p style="color:var(--muted);font-size:.95rem">No reminders yet? Return to the setup screen and download the calendar file — it adds a daily reminder to your Google or Apple Calendar automatically.</p>
+        <p style="color:var(--muted);font-size:.95rem">No reminders yet? Return to the setup screen and add the calendar reminder \u2014 it adds a daily reminder to your calendar automatically.</p>
       </div>
       <div>
         <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Missed a day?</p>
@@ -542,10 +542,10 @@ function trialDay(u) { return daysSince(u.registeredAt) + 1; }
 
 function programDay(u) {
   const d = daysSince(u.registeredAt) + 1;
-  return ((d - 1) % 14) + 1;
+  return ((d - 1) % 28) + 1;
 }
 
-function trackIndex(u) { return ((programDay(u) - 1) % 7) + 1; }
+function trackIndex(u) { return ((programDay(u) - 1) % 14) + 1; }
 
 function deriveState(u) {
   if (!u) return 'LANDING';
@@ -703,7 +703,7 @@ function renderObStep() {
       el.innerHTML = `
         <p class="eyebrow" style="margin-bottom:1.25rem">Question 1 of 4</p>
         <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">Are you currently working with a psychotherapist or psychologist?</h3>
-        ${['Yes, regularly','Sometimes / on and off','No, but I\'m interested'].map(o => `
+        ${['Yes, regularly','Sometimes / on and off','No, but interested'].map(o => `
           <button class="option-btn${obAnswers.q1===o?' selected':''}" onclick="obSelect('q1','${o}',this)">${o}</button>
         `).join('')}
         <button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q1?'disabled':''} id="ob-next-1">Continue</button>
@@ -792,6 +792,46 @@ function obFinish() {
   showRecommendation(u);
 }
 
+function isAndroid() {
+  return /android/i.test(navigator.userAgent);
+}
+
+function googleCalendarLink(u) {
+  const kind = u.firstTrack || 'evening';
+  const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
+  const title = encodeURIComponent(`LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`);
+  const details = encodeURIComponent('Your daily LimenBridge track. Open limenbridge.cc to listen.');
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}T${timeStr}00/${dateStr}T${timeStr}00&recur=RRULE:FREQ=DAILY&details=${details}`;
+}
+
+function generateICS(u) {
+  const kind = u.firstTrack || 'evening';
+  const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LimenBridge//EN','CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,
+    `SUMMARY:LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
+    `DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,
+    'RRULE:FREQ=DAILY',
+    'DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.',
+    'END:VEVENT','END:VCALENDAR'
+  ].join('\r\n');
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  return URL.createObjectURL(blob);
+}
+
+function calendarButtonHTML(u, kindLabel) {
+  if (isAndroid()) {
+    return '<a href="' + googleCalendarLink(u) + '" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to Google Calendar</a>';
+  }
+  return '<a href="' + generateICS(u) + '" download="limenbridge-' + kindLabel + '.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar</a>';
+}
+
 function showRecommendation(u) {
   const el = document.getElementById('ob-content');
   document.getElementById('ob-steps').innerHTML = '';
@@ -821,10 +861,11 @@ function showRecommendation(u) {
       '<p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p>' +
       '<div class="card" style="margin-bottom:1.5rem">' +
       '<p style="font-weight:500;margin-bottom:.5rem">Set a calendar reminder</p>' +
-      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Click the button below \u2014 a file will download. Open it and your calendar app will add a recurring daily reminder automatically.</p>' +
-      '<a href="' + generateICS(u) + '" download="limenbridge-' + kindLabel + '.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Download calendar reminder (.ics)</a>' +
+      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Tap below to add a daily reminder to your calendar.</p>' +
+      calendarButtonHTML(u, kindLabel) +
       '</div>' +
       '<p style="margin-top:1.25rem;font-size:.9rem;color:var(--muted);text-align:center;line-height:1.6">Or simply come back at ' + timeLabel + ' without the calendar.<br>LimenBridge remembers you \u2014 your track will be waiting.</p>' +
+      '<button class="btn btn-ghost btn-full" style="margin-top:1.25rem" onclick="route()">Go to site</button>' +
       '</div>';
   } else {
     const kindLabel = isMorning ? 'morning' : 'evening';
@@ -839,25 +880,6 @@ function showRecommendation(u) {
       '<button class="btn btn-primary btn-full" onclick="route()">Start now</button>' +
       '</div>';
   }
-}
-
-function generateICS(u) {
-  const kind = u.firstTrack || 'evening';
-  const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
-  const now = new Date();
-  const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
-  const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LimenBridge//EN','CALSCALE:GREGORIAN',
-    'BEGIN:VEVENT',
-    `UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,
-    `SUMMARY:LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
-    `DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,
-    'RRULE:FREQ=DAILY',
-    'DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.',
-    'END:VEVENT','END:VCALENDAR'
-  ].join('\r\n');
-  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-  return URL.createObjectURL(blob);
 }
 
 // ═══════════════════════════════════════════
@@ -897,8 +919,8 @@ function renderApp(u) {
     </div>
 
     <div class="day-prog">
-      <div class="day-prog-label"><span>Program progress</span><span>Day ${pDay} of 14</span></div>
-      <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/14*100).toFixed(1)}%"></div></div>
+      <div class="day-prog-label"><span>Program progress</span><span>Day ${pDay} of 28</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/28*100).toFixed(1)}%"></div></div>
     </div>
 
     ${streak >= 2 ? `<div style="margin-top:1.25rem"><span class="streak-badge">\uD83D\uDD25 ${streak} days in a row</span></div>` : ''}
