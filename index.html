@@ -9,10 +9,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="manifest" href="/manifest.json"/>
-<meta name="theme-color" content="#0F0E0D"/>
+<meta name="theme-color" content="#F4F1EA"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="LimenBridge"/>
 <link rel="apple-touch-icon" href="/icon-192.png"/>
 <script src="https://js.stripe.com/v3/"></script>
@@ -21,24 +21,26 @@
 <style>
 /* ── Reset & base ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{min-height:100vh;background:#0F0E0D;color:#F2EDE6;font-family:'Jost',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4,.display{font-family:'Playfair Display',serif;font-weight:400;line-height:1.15;color:#F2EDE6}
+html,body{min-height:100vh;background:#F4F1EA;color:#2C2623;font-family:'Jost',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.display{font-family:'Playfair Display',serif;font-weight:400;line-height:1.15;color:#2C2623}
 p{margin:0}
 button{font-family:'Jost',sans-serif;cursor:pointer;border:none;background:none}
-input,textarea{font-family:'Jost',sans-serif;color:#F2EDE6}
+input,textarea{font-family:'Jost',sans-serif;color:#2C2623}
 a{color:inherit;text-decoration:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 /* ── Tokens ── */
 :root{
-  --bg:#0F0E0D;
-  --surface:#1A1917;
-  --accent:#C4703F;
-  --accent-soft:#D4956A;
-  --fg:#F2EDE6;
-  --muted:#8A8278;
-  --border:#2E2B27;
-  --success:#7A9E7E;
+  --bg:#F4F1EA;
+  --surface:#ECE6DC;
+  --accent:#C98A73;
+  --accent-soft:#B87963;
+  --fg:#2C2623;
+  --muted:#8C827A;
+  --border:#E3DDD3;
+  --success:#6E9072;
+  --card-morning:#E2DFEB;
+  --card-evening:#DFE3DB;
   --radius:6px;
   --narrow:680px;
 }
@@ -55,7 +57,7 @@ a{color:inherit;text-decoration:none}
 
 /* ── Buttons ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 28px;border-radius:var(--radius);font-size:1rem;font-weight:500;transition:background 200ms,opacity 200ms,border-color 200ms;cursor:pointer;border:none}
-.btn-primary{background:var(--accent);color:#0F0E0D}
+.btn-primary{background:var(--accent);color:var(--fg)}
 .btn-primary:hover{background:var(--accent-soft)}
 .btn-primary:disabled{opacity:.5;cursor:default}
 .btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--border)}
@@ -129,11 +131,11 @@ a{color:inherit;text-decoration:none}
 /* ── Mood scale ── */
 .mood-scale{display:flex;gap:.5rem;flex-wrap:wrap}
 .mood-btn{flex:1;min-width:44px;padding:.65rem .5rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:1rem;transition:border-color 200ms,color 200ms,background 200ms;cursor:pointer}
-.mood-btn:hover,.mood-btn.selected{border-color:var(--accent);color:var(--fg);background:rgba(196,112,63,.12)}
+.mood-btn:hover,.mood-btn.selected{border-color:var(--accent);color:var(--fg);background:rgba(201,138,115,.12)}
 
 /* ── Graph ── */
 .graph-wrap{position:relative;margin-top:1.25rem}
-.graph-locked{position:absolute;inset:0;background:rgba(15,14,13,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;border-radius:var(--radius);backdrop-filter:blur(3px)}
+.graph-locked{position:absolute;inset:0;background:rgba(244,241,234,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;border-radius:var(--radius);backdrop-filter:blur(3px)}
 .graph-locked svg{opacity:.5}
 
 /* ── Timeline ── */
@@ -142,7 +144,7 @@ a{color:inherit;text-decoration:none}
 .timeline li::before{content:'';position:absolute;left:-1.65rem;top:.45rem;width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
 
 /* ── Streak ── */
-.streak-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(196,112,63,.15);border:1px solid rgba(196,112,63,.3);border-radius:20px;padding:.35rem .9rem;font-size:.85rem;color:var(--accent-soft)}
+.streak-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(201,138,115,.15);border:1px solid rgba(201,138,115,.3);border-radius:20px;padding:.35rem .9rem;font-size:.85rem;color:var(--accent-soft)}
 
 /* ── Step indicator ── */
 .steps{display:flex;gap:.4rem;justify-content:center;margin-bottom:2rem}
@@ -188,7 +190,7 @@ nav{padding:1.5rem 0 1rem}
 .onboard-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem}
 .onboard-card{width:100%;max-width:520px}
 .option-btn{width:100%;text-align:left;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--fg);font-size:1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color 200ms,background 200ms}
-.option-btn:hover,.option-btn.selected{border-color:var(--accent);background:rgba(196,112,63,.08)}
+.option-btn:hover,.option-btn.selected{border-color:var(--accent);background:rgba(201,138,115,.08)}
 .time-row{display:flex;gap:1rem;flex-wrap:wrap}
 .time-row .field{flex:1;min-width:140px}
 input[type=time]{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;color:var(--fg);font-size:1rem;width:100%;outline:none}
@@ -229,44 +231,44 @@ input[type=time]:focus{border-color:var(--accent)}
 
     <div style="margin-top:3rem;margin-bottom:1rem;padding:1rem 0" aria-hidden="true">
       <svg class="waveform-svg" viewBox="0 0 440 64" xmlns="http://www.w3.org/2000/svg">
-        <rect class="bar" x="0"   y="28" width="4" height="8"  rx="2" fill="#C4703F"/>
-        <rect class="bar" x="10"  y="20" width="4" height="24" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="20"  y="12" width="4" height="40" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="30"  y="6"  width="4" height="52" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="40"  y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="50"  y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="60"  y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="70"  y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="80"  y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="90"  y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="100" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="110" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="120" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="130" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="140" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="150" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="160" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="170" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="180" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="190" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="200" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="210" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="220" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="230" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="240" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="250" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="260" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="270" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="280" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="290" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="300" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="310" y="0"  width="4" height="64" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="320" y="2"  width="4" height="60" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="330" y="4"  width="4" height="56" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="340" y="6"  width="4" height="52" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="350" y="12" width="4" height="40" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="360" y="20" width="4" height="24" rx="2" fill="#C4703F"/>
-        <rect class="bar" x="370" y="28" width="4" height="8"  rx="2" fill="#C4703F"/>
+        <rect class="bar" x="0"   y="28" width="4" height="8"  rx="2" fill="#C98A73"/>
+        <rect class="bar" x="10"  y="20" width="4" height="24" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="20"  y="12" width="4" height="40" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="30"  y="6"  width="4" height="52" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="40"  y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="50"  y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="60"  y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="70"  y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="80"  y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="90"  y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="100" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="110" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="120" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="130" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="140" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="150" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="160" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="170" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="180" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="190" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="200" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="210" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="220" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="230" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="240" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="250" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="260" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="270" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="280" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="290" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="300" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="310" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="320" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="330" y="4"  width="4" height="56" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="340" y="6"  width="4" height="52" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="350" y="12" width="4" height="40" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="360" y="20" width="4" height="24" rx="2" fill="#C98A73"/>
+        <rect class="bar" x="370" y="28" width="4" height="8"  rx="2" fill="#C98A73"/>
       </svg>
     </div>
   </section>
@@ -288,12 +290,12 @@ input[type=time]:focus{border-color:var(--accent)}
     <h2 class="section-h2">How it works</h2>
     <p style="color:var(--muted);margin-bottom:1.5rem">The way you feel throughout the day isn't random. It follows a biological logic. LimenBridge is built around it: the morning track and the evening track are different, because morning and evening are different states of your body.</p>
     <div class="how-grid">
-      <div class="card">
-        <div class="eyebrow" style="color:var(--accent);margin-bottom:.6rem">Morning</div>
+      <div class="card" style="background-color:var(--card-morning);border-color:var(--card-morning)">
+        <div class="eyebrow" style="color:var(--accent-soft);margin-bottom:.6rem">Morning</div>
         <p>About thirty minutes after waking, the body shifts out of sleep and into the day. This is a natural rise — not stress. The morning track is gentle, no sharp sounds. It works with that moment — so the day starts without anxiety already waiting.</p>
       </div>
-      <div class="card">
-        <div class="eyebrow" style="color:var(--accent);margin-bottom:.6rem">Evening</div>
+      <div class="card" style="background-color:var(--card-evening);border-color:var(--card-evening)">
+        <div class="eyebrow" style="color:var(--accent-soft);margin-bottom:.6rem">Evening</div>
         <p>By evening the body is ready to shift into recovery. But accumulated tension, screens, and news disrupt that transition. The evening track is slower, deeper. It helps the shift happen — so you fall asleep with less anxiety and wake a little lighter.</p>
       </div>
     </div>
@@ -349,7 +351,7 @@ input[type=time]:focus{border-color:var(--accent)}
       <div class="card card-accent">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
           <span class="eyebrow">Annual</span>
-          <span style="font-size:.72rem;background:var(--accent);color:#0F0E0D;padding:.2rem .6rem;border-radius:20px;font-weight:500">Two months free</span>
+          <span style="font-size:.72rem;background:var(--accent);color:var(--fg);padding:.2rem .6rem;border-radius:20px;font-weight:500">Two months free</span>
         </div>
         <div style="font-family:'Playfair Display',serif;font-size:1.9rem;margin:.4rem 0">$163 / year</div>
         <p style="color:var(--muted);margin-bottom:1.25rem">For those in it for the long run.</p>
@@ -366,7 +368,6 @@ input[type=time]:focus{border-color:var(--accent)}
       <input type="email" required placeholder="you@email.com" id="cta-email" class="input" style="flex:1;min-width:200px"/>
       <button type="submit" class="btn btn-primary">Start free</button>
     </form>
-    <p class="trust" style="text-align:left">Enter your email and we'll send everything you need to get started.</p>
   </section>
 
   <footer class="wrap">
@@ -398,6 +399,10 @@ input[type=time]:focus{border-color:var(--accent)}
     <div id="modal-done" style="display:none;text-align:center;padding:1rem 0">
       <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">You're all set</h3>
       <p style="color:var(--muted)">Let's get started.</p>
+    </div>
+    <div id="modal-welcome-back" style="display:none;text-align:center;padding:1rem 0">
+      <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">Welcome back</h3>
+      <p style="color:var(--muted)">We already have your account on file \u2014 picking up where you left off.</p>
     </div>
   </div>
 </div>
@@ -493,6 +498,23 @@ const PRICE_ANNUAL  = 'price_1TgnIsF5LLi6LixPW62xgHtt';
 
 const stripeInstance = Stripe(STRIPE_KEY);
 
+// ═══════════════════════════════════════════
+// LIMENBRIDGE API (Cloudflare Worker + KV)
+// ═══════════════════════════════════════════
+const API_URL = 'https://limenbridge-mailerlite.cdv353v.workers.dev';
+const MAILERLITE_GROUP_ID = '189792851698124588';
+
+// Fire-and-forget update of the server-side record. Failure is silent —
+// the local copy in localStorage remains the source of truth for this device.
+function syncUser(email, updates) {
+  if (!email) return;
+  fetch(API_URL + '/sync', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, updates })
+  }).catch(() => {});
+}
+
 function startCheckout(plan, btn) {
   if (btn) {
     btn.classList.add('btn-loading');
@@ -514,6 +536,7 @@ function handleStripeReturn() {
     if (u) {
       u.plan = 'monthly'; // will be corrected by webhook in future; good enough for MVP
       saveUser(u);
+      syncUser(u.email, { plan: 'monthly' });
     }
     // Clean URL
     window.history.replaceState({}, '', '/');
@@ -542,10 +565,10 @@ function trialDay(u) { return daysSince(u.registeredAt) + 1; }
 
 function programDay(u) {
   const d = daysSince(u.registeredAt) + 1;
-  return ((d - 1) % 28) + 1;
+  return ((d - 1) % 14) + 1;
 }
 
-function trackIndex(u) { return ((programDay(u) - 1) % 14) + 1; }
+function trackIndex(u) { return programDay(u); }
 
 function deriveState(u) {
   if (!u) return 'LANDING';
@@ -639,23 +662,46 @@ function handleCtaForm(e) {
 }
 
 async function submitRegistration() {
-  const email = document.getElementById('reg-email').value;
+  const email = document.getElementById('reg-email').value.trim().toLowerCase();
   if (!email) return;
   const name = document.getElementById('reg-name').value;
   const btn = document.getElementById('reg-submit');
   btn.disabled = true; btn.textContent = 'Creating\u2026';
-  const WORKER_URL = 'https://limenbridge-mailerlite.cdv353v.workers.dev';
-  const MAILERLITE_GROUP_ID = '189792851698124588';
+
+  let result = null;
   try {
-    await fetch(WORKER_URL, {
+    const resp = await fetch(API_URL + '/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, fields: { name }, groups: [MAILERLITE_GROUP_ID] })
+      body: JSON.stringify({ email, name, groupId: MAILERLITE_GROUP_ID })
     });
+    result = await resp.json();
   } catch {}
+
+  if (result && result.status === 'existing') {
+    const r = result.user;
+    const user = {
+      email: r.email,
+      name: r.name || undefined,
+      registeredAt: r.registeredAt,
+      plan: r.plan || 'free',
+      onboardingComplete: !!r.onboardingComplete,
+      firstTrack: r.firstTrack || undefined,
+      morningTime: r.morningTime || undefined,
+      eveningTime: r.eveningTime || undefined,
+      moodLog: [],
+      lastListened: { date: todayISO() }
+    };
+    saveUser(user);
+    document.getElementById('modal-form').style.display = 'none';
+    document.getElementById('modal-welcome-back').style.display = 'block';
+    setTimeout(() => { document.getElementById('modal').classList.remove('open'); route(); }, 1400);
+    return;
+  }
+
   const user = {
     email, name: name || undefined,
-    registeredAt: new Date().toISOString(),
+    registeredAt: (result && result.user && result.user.registeredAt) || new Date().toISOString(),
     plan: 'free',
     onboardingComplete: false,
     moodLog: [],
@@ -726,7 +772,6 @@ function renderObStep() {
         ${[
           ['Mornings \u2014 hard to start the day','morning'],
           ['Evenings and sleep \u2014 hard to wind down','evening'],
-          ['A general tension that runs through the day','auto'],
           ['Everything equally','auto']
         ].map(([label, val]) => `
           <button class="option-btn${obAnswers.q3===val?' selected':''}" onclick="obSelect('q3','${val}',this)">${label}</button>
@@ -789,6 +834,12 @@ function obFinish() {
   u.eveningTime = eveningTime;
   if (source) u.source = source;
   saveUser(u);
+  syncUser(u.email, {
+    onboardingComplete: true,
+    firstTrack: u.firstTrack,
+    morningTime: u.morningTime,
+    eveningTime: u.eveningTime
+  });
   showRecommendation(u);
 }
 
@@ -796,8 +847,7 @@ function isAndroid() {
   return /android/i.test(navigator.userAgent);
 }
 
-function googleCalendarLink(u) {
-  const kind = u.firstTrack || 'evening';
+function googleCalendarLink(u, kind) {
   const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
   const now = new Date();
   const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
@@ -806,30 +856,34 @@ function googleCalendarLink(u) {
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}T${timeStr}00/${dateStr}T${timeStr}00&recur=RRULE:FREQ=DAILY&details=${details}`;
 }
 
-function generateICS(u) {
-  const kind = u.firstTrack || 'evening';
-  const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
+function generateICS(u, kinds) {
   const now = new Date();
   const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
-  const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LimenBridge//EN','CALSCALE:GREGORIAN',
-    'BEGIN:VEVENT',
-    `UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,
-    `SUMMARY:LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
-    `DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,
-    'RRULE:FREQ=DAILY',
-    'DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.',
-    'END:VEVENT','END:VCALENDAR'
-  ].join('\r\n');
+  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LimenBridge//EN','CALSCALE:GREGORIAN'];
+  kinds.forEach(kind => {
+    const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
+    lines.push(
+      'BEGIN:VEVENT',
+      `UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,
+      `SUMMARY:LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
+      `DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,
+      'RRULE:FREQ=DAILY',
+      'DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.',
+      'END:VEVENT'
+    );
+  });
+  lines.push('END:VCALENDAR');
+  const ics = lines.join('\r\n');
   const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
   return URL.createObjectURL(blob);
 }
 
-function calendarButtonHTML(u, kindLabel) {
+function calendarButtonHTML(u) {
   if (isAndroid()) {
-    return '<a href="' + googleCalendarLink(u) + '" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to Google Calendar</a>';
+    return '<a href="' + googleCalendarLink(u,'morning') + '" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex;margin-bottom:.5rem">Add morning reminder</a>' +
+           '<a href="' + googleCalendarLink(u,'evening') + '" target="_blank" class="btn btn-ghost btn-full" style="text-decoration:none;justify-content:center;display:flex">Add evening reminder</a>';
   }
-  return '<a href="' + generateICS(u) + '" download="limenbridge-' + kindLabel + '.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar</a>';
+  return '<a href="' + generateICS(u,['morning','evening']) + '" download="limenbridge-reminders.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar \u2014 morning &amp; evening</a>';
 }
 
 function showRecommendation(u) {
@@ -856,13 +910,13 @@ function showRecommendation(u) {
       : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
     el.innerHTML =
       '<div class="fade-in">' +
-      '<p class="eyebrow" style="color:var(--accent);margin-bottom:1rem">You\'re all set</p>' +
+      '<p class="eyebrow" style="color:var(--accent-soft);margin-bottom:1rem">You\'re all set</p>' +
       '<h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Your first ' + kindLabel + ' track will be ready ' + whenLabel + '.</h2>' +
       '<p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p>' +
       '<div class="card" style="margin-bottom:1.5rem">' +
-      '<p style="font-weight:500;margin-bottom:.5rem">Set a calendar reminder</p>' +
-      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Tap below to add a daily reminder to your calendar.</p>' +
-      calendarButtonHTML(u, kindLabel) +
+      '<p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p>' +
+      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening \u2014 added to your calendar at once.</p>' +
+      calendarButtonHTML(u) +
       '</div>' +
       '<p style="margin-top:1.25rem;font-size:.9rem;color:var(--muted);text-align:center;line-height:1.6">Or simply come back at ' + timeLabel + ' without the calendar.<br>LimenBridge remembers you \u2014 your track will be waiting.</p>' +
       '<button class="btn btn-ghost btn-full" style="margin-top:1.25rem" onclick="route()">Go to site</button>' +
@@ -874,9 +928,14 @@ function showRecommendation(u) {
       : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
     el.innerHTML =
       '<div class="fade-in">' +
-      '<p class="eyebrow" style="color:var(--accent);margin-bottom:1rem">Based on your answers</p>' +
+      '<p class="eyebrow" style="color:var(--accent-soft);margin-bottom:1rem">Based on your answers</p>' +
       '<h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Let\'s start with the ' + kindLabel + ' program.</h2>' +
       '<p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p>' +
+      '<div class="card" style="margin-bottom:1.5rem">' +
+      '<p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p>' +
+      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening \u2014 added to your calendar at once.</p>' +
+      calendarButtonHTML(u) +
+      '</div>' +
       '<button class="btn btn-primary btn-full" onclick="route()">Start now</button>' +
       '</div>';
   }
@@ -907,7 +966,7 @@ function renderApp(u) {
         ${'<span style="height:20px"></span>'.repeat(18)}
       </div>
       <button class="play-btn" id="play-btn" onclick="togglePlay('${trackUrl}','${kind}')" title="Play / Pause">
-        <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="#0F0E0D">
+        <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="var(--fg)">
           <path id="play-path" d="M8 5v14l11-7z"/>
         </svg>
       </button>
@@ -919,8 +978,8 @@ function renderApp(u) {
     </div>
 
     <div class="day-prog">
-      <div class="day-prog-label"><span>Program progress</span><span>Day ${pDay} of 28</span></div>
-      <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/28*100).toFixed(1)}%"></div></div>
+      <div class="day-prog-label"><span>Program progress</span><span>Day ${pDay} of 14</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/14*100).toFixed(1)}%"></div></div>
     </div>
 
     ${streak >= 2 ? `<div style="margin-top:1.25rem"><span class="streak-badge">\uD83D\uDD25 ${streak} days in a row</span></div>` : ''}
@@ -932,7 +991,7 @@ function renderApp(u) {
         <canvas id="mood-graph" width="640" height="180" style="width:100%;height:180px;display:block;border-radius:var(--radius)"></canvas>
         ${u.plan === 'free' ? `
         <div class="graph-locked">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F2EDE6" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2C2623" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Your graph starts on day 4. Keep going.</p>
           <button class="btn btn-primary" onclick="startCheckout('monthly',this)" style="font-size:.85rem;padding:10px 20px">Unlock full access \u2014 $19/mo</button>
         </div>` : ''}
@@ -1035,8 +1094,8 @@ function drawGraph(u) {
   const iW = W - pad.left - pad.right;
   const iH = H - pad.top - pad.bottom;
   ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#1A1917'; ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = '#2E2B27'; ctx.lineWidth = 1;
+  ctx.fillStyle = '#ECE6DC'; ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = '#DCD4C7'; ctx.lineWidth = 1;
   for (let i = 1; i <= 4; i++) {
     const y = pad.top + (iH / 4) * i;
     ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + iW, y); ctx.stroke();
@@ -1070,16 +1129,16 @@ function drawGraph(u) {
       ctx.fillStyle = color; ctx.fill();
     });
   }
-  drawLine(morning, '#C4703F');
-  drawLine(evening, '#7A9E7E');
-  ctx.fillStyle = '#8A8278'; ctx.font = '11px Jost, sans-serif'; ctx.textAlign = 'center';
+  drawLine(morning, '#C98A73');
+  drawLine(evening, '#6E9072');
+  ctx.fillStyle = '#8C827A'; ctx.font = '11px Jost, sans-serif'; ctx.textAlign = 'center';
   [0, 6, 13].forEach(i => {
     ctx.fillText('Day ' + (i + 1), pad.left + (i / 13) * iW, H - 6);
   });
-  ctx.fillStyle = '#C4703F'; ctx.fillRect(pad.left, 6, 10, 3);
-  ctx.fillStyle = '#8A8278'; ctx.font = '10px Jost, sans-serif'; ctx.textAlign = 'left';
+  ctx.fillStyle = '#C98A73'; ctx.fillRect(pad.left, 6, 10, 3);
+  ctx.fillStyle = '#8C827A'; ctx.font = '10px Jost, sans-serif'; ctx.textAlign = 'left';
   ctx.fillText('Morning', pad.left + 14, 11);
-  ctx.fillStyle = '#7A9E7E'; ctx.fillRect(pad.left + 70, 6, 10, 3);
+  ctx.fillStyle = '#6E9072'; ctx.fillRect(pad.left + 70, 6, 10, 3);
   ctx.fillText('Evening', pad.left + 84, 11);
 }
 
@@ -1164,13 +1223,13 @@ function showInstallPrompt() {
     if (existing) return;
     const banner = document.createElement('div');
     banner.id = 'ios-install-banner';
-    banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1A1917;border-top:1px solid #2E2B27;padding:1rem 1.25rem;z-index:200;display:flex;align-items:flex-start;gap:.75rem';
+    banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#ECE6DC;border-top:1px solid #E3DDD3;padding:1rem 1.25rem;z-index:200;display:flex;align-items:flex-start;gap:.75rem';
     banner.innerHTML = `
       <div style="flex:1">
         <p style="font-size:.9rem;font-weight:500;margin-bottom:.25rem">Add to your home screen</p>
-        <p style="font-size:.8rem;color:#8A8278;line-height:1.5">Tap <strong style="color:#C4703F">Share</strong> \u2192 <strong style="color:#C4703F">Add to Home Screen</strong> to get daily reminders on your phone.</p>
+        <p style="font-size:.8rem;color:#8C827A;line-height:1.5">Tap <strong style="color:#B87963">Share</strong> \u2192 <strong style="color:#B87963">Add to Home Screen</strong> to get daily reminders on your phone.</p>
       </div>
-      <button onclick="document.getElementById('ios-install-banner').remove()" style="background:none;border:none;color:#8A8278;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">\u00d7</button>
+      <button onclick="document.getElementById('ios-install-banner').remove()" style="background:none;border:none;color:#8C827A;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">\u00d7</button>
     `;
     document.body.appendChild(banner);
   }, 3000);
