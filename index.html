@@ -7,7 +7,7 @@
 <meta name="description" content="A daily audio program for people who work with a psychotherapist. Morning and evening tracks, mood journal, 14-day progress graph."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="manifest" href="/manifest.json"/>
 <meta name="theme-color" content="#F4F1EA"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -22,6 +22,8 @@
 /* ── Reset & base ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100vh;background:#F4F1EA;color:#2C2623;font-family:'Jost',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
 h1,h2,h3,h4,.display{font-family:'Playfair Display',serif;font-weight:400;line-height:1.15;color:#2C2623}
 p{margin:0}
 button{font-family:'Jost',sans-serif;cursor:pointer;border:none;background:none}
@@ -43,6 +45,19 @@ a{color:inherit;text-decoration:none}
   --card-evening:#DFE3DB;
   --radius:6px;
   --narrow:680px;
+  /* ── New landing design tokens (LimenBridge v4) ── */
+  --cream:#F4F1EA;
+  --cream-2:#ECE6DA;
+  --paper:#FFFDFB;
+  --ink:#2C2620;
+  --ink-soft:#4A3F35;
+  --warm-grey:#8C827A;
+  --terra:#C98A73;
+  --terra-dk:#B87963;
+  --peach:#F2DCC0;
+  --peach-soft:#F8E8D5;
+  --clay:#B58068;
+  --clay-soft:#D4A992;
 }
 
 /* ── Layout ── */
@@ -205,7 +220,201 @@ input[type=time]:focus{border-color:var(--accent)}
 /* ── Scrollbar ── */
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ════════════════════════════════════════════════════════
+   LANDING REDESIGN v4 — new #screen-landing only
+   Typography: Cormorant Garamond (headings/serif accents) +
+   Manrope (body), scoped to #screen-landing. Rest of the app
+   keeps Jost / Playfair Display untouched.
+   ════════════════════════════════════════════════════════ */
+
+#screen-landing{font-family:'Manrope',sans-serif;font-weight:300}
+#screen-landing button{font-family:'Manrope',sans-serif}
+
+/* ── Brand mark (arch + dot) ── */
+.brand-mark{display:inline-block;width:22px;height:14px;color:var(--terra);vertical-align:-3px;flex-shrink:0}
+.brand-mark.lg{width:32px;height:20px}
+.brand-mark.sm{width:16px;height:10px}
+
+/* ── Landing nav (fixed, overrides in-flow app nav) ── */
+#screen-landing > nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+#screen-landing .logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;letter-spacing:.04em;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.nav-cta{font-size:12px;letter-spacing:.08em;color:var(--terra);text-decoration:none;border-bottom:1px solid var(--terra);padding-bottom:2px}
+
+/* ── Hero ── */
+.hero{padding-top:64px;background:var(--cream)}
+.hero-image{width:100%;height:58vh;min-height:360px;background-image:linear-gradient(160deg,rgba(242,220,192,.25) 0%,rgba(180,128,104,.15) 100%),url('images/hero.webp');background-size:cover;background-position:center;background-color:var(--peach-soft);position:relative}
+.hero-image::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,var(--cream) 100%)}
+.hero-content{max-width:640px;margin:-60px auto 0;padding:48px 28px 60px;position:relative;z-index:2}
+.tagline{display:inline-block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);font-weight:500;padding-top:14px;margin-bottom:24px;border-top:1px solid var(--terra)}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5.5vw,48px);font-weight:400;line-height:1.18;color:var(--ink);margin-bottom:28px;letter-spacing:-.005em}
+.hero-title em{font-style:italic;color:var(--terra)}
+.hero-body{font-size:16px;line-height:1.75;color:var(--ink-soft);max-width:540px;margin-bottom:36px}
+.hero-note{display:block;margin-top:14px;font-size:13px;color:var(--warm-grey)}
+
+#screen-landing .btn-primary{display:inline-block;padding:16px 36px;background:var(--terra);color:var(--paper);font-family:'Manrope',sans-serif;font-size:14px;font-weight:500;letter-spacing:.02em;text-decoration:none;border-radius:32px;box-shadow:0 4px 16px rgba(191,126,103,.18);transition:all .25s ease}
+#screen-landing .btn-primary:hover{background:var(--terra-dk);transform:translateY(-1px);box-shadow:0 6px 20px rgba(191,126,103,.28)}
+
+/* ── Section common ── */
+section{padding:96px 28px}
+.container{max-width:640px;margin:0 auto}
+.section-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:18px}
+#screen-landing h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4.5vw,40px);font-weight:400;line-height:1.22;color:var(--ink);margin-bottom:28px;letter-spacing:-.005em}
+#screen-landing h2 em{font-style:italic;color:var(--terra)}
+section p{font-size:16px;line-height:1.78;color:var(--ink-soft);margin-bottom:18px}
+section p:last-child{margin-bottom:0}
+
+/* ── Biology (morning/evening) ── */
+.biology{background:var(--cream-2)}
+.time-grid{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.time-card{padding:40px 30px;border-radius:6px;position:relative;overflow:hidden}
+.time-card.morning{background:linear-gradient(160deg,var(--peach-soft) 0%,var(--peach) 100%);color:var(--ink)}
+.time-card.evening{background:linear-gradient(160deg,var(--clay-soft) 0%,var(--clay) 100%);color:var(--paper)}
+.time-icon{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:38px;line-height:1;margin-bottom:16px;opacity:.55}
+.time-card.morning .time-icon{color:var(--clay)}
+.time-card.evening .time-icon{color:var(--paper)}
+.time-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;margin-bottom:14px}
+.time-card.morning .time-label{color:var(--clay)}
+.time-card.evening .time-label{color:var(--peach-soft);opacity:.9}
+.time-card h3{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:400;margin-bottom:14px;line-height:1.3}
+.time-card.morning h3{color:var(--ink)}
+.time-card.evening h3{color:var(--paper)}
+.time-card p{font-size:15px;line-height:1.7;margin-bottom:0}
+.time-card.morning p{color:var(--ink-soft)}
+.time-card.evening p{color:var(--peach-soft);opacity:.95}
+
+/* ── Image break with quote ── */
+.img-break{height:70vh;min-height:480px;background-image:url('images/door.webp');background-size:cover;background-position:center;background-color:var(--clay);position:relative}
+.floor-quote{position:absolute;top:50%;left:4%;transform:translateY(-50%);width:36%;max-width:300px;background:rgba(248,240,224,.92);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);padding:24px 24px 22px;border-left:2px solid var(--terra);box-shadow:0 8px 24px rgba(44,30,20,.18);text-align:left}
+.floor-quote-text{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.8vw,23px);font-style:italic;font-weight:500;color:#2B1810;line-height:1.4;margin-bottom:14px}
+.floor-quote-attr{font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--terra);font-weight:600}
+
+/* ── Product mockup (phone) ── */
+.product{background:var(--cream);border-top:1px solid var(--border)}
+.product-layout{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.phone-frame{width:100%;max-width:290px;margin:0 auto;background:#0E0D0C;border-radius:38px;padding:10px;box-shadow:0 24px 60px rgba(44,30,20,.28),0 6px 14px rgba(44,30,20,.1);position:relative}
+.phone-notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:76px;height:22px;background:#0E0D0C;border-radius:0 0 14px 14px;z-index:3}
+.phone-screen{background:var(--paper);border-radius:30px;padding:38px 16px 22px;min-height:540px;color:var(--ink);overflow:hidden}
+.app-topbar{display:flex;align-items:flex-start;justify-content:space-between;padding:0 4px 0;margin-bottom:18px}
+.app-logo-wrap{display:flex;align-items:center;gap:5px}
+.app-logo{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--ink);font-weight:500;line-height:1;letter-spacing:.01em}
+.app-trial{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);line-height:1.1;margin-left:2px;font-weight:600}
+.app-help{width:18px;height:18px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--warm-grey)}
+.app-greeting{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink-soft);font-weight:400;margin-bottom:14px;padding:0 4px}
+.app-track-card{background:linear-gradient(160deg,var(--peach-soft) 0%,var(--peach) 100%);border-radius:16px;padding:18px 14px 16px;text-align:center;margin-bottom:18px}
+.app-track-label{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--clay);font-weight:600;margin-bottom:12px}
+.app-wave{display:flex;justify-content:center;align-items:center;gap:2px;height:22px;margin-bottom:14px}
+.app-wave span{width:2px;background:var(--terra);border-radius:1px;display:block}
+.app-play{width:52px;height:52px;border-radius:50%;background:var(--terra);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--paper);font-size:14px;box-shadow:0 4px 14px rgba(191,126,103,.3)}
+.app-play-hint{font-size:9px;color:var(--warm-grey);margin-bottom:12px}
+.app-divider-thin{height:1px;background:rgba(191,126,103,.2);margin:0 12px 10px}
+.app-listened{font-size:9px;color:#7A8B6F;font-weight:600}
+.app-listened::before{content:"✓ "}
+.app-progress{padding:0 4px 18px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.app-progress-row{display:flex;justify-content:space-between;font-size:9px;color:var(--warm-grey);margin-bottom:6px;font-weight:500}
+.app-progress-bar{height:2px;background:var(--border);border-radius:2px;overflow:hidden}
+.app-progress-fill{height:100%;width:14%;background:var(--terra)}
+.app-your-progress{padding:0 4px}
+.app-your-progress h4{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ink);font-weight:500;margin-bottom:4px}
+.app-your-progress-sub{font-size:9px;color:var(--warm-grey);margin-bottom:12px}
+.app-lock{text-align:center;padding:12px 0 8px}
+.app-lock-icon{width:24px;height:24px;margin:0 auto 8px;border:1.2px solid var(--warm-grey);border-radius:4px;position:relative}
+.app-lock-icon::before{content:"";position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:12px;height:8px;border:1.2px solid var(--warm-grey);border-bottom:none;border-radius:6px 6px 0 0;margin-bottom:-1px}
+.app-lock-text{font-size:9px;color:var(--warm-grey);line-height:1.4;max-width:200px;margin:0 auto}
+
+#screen-landing .product-copy h2{margin-bottom:20px}
+.day-flow{margin-top:32px;display:flex;flex-direction:column;gap:0}
+.day-flow-item{padding:20px 0;border-top:1px solid var(--border)}
+.day-flow-item:first-child{border-top:none;padding-top:4px}
+.day-flow-label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:10px}
+.day-flow-item p:last-child{font-size:15.5px;line-height:1.75;color:var(--ink-soft);margin-bottom:0}
+.day-flow-item p em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink);font-size:1.05em}
+.day-flow-item.highlight{background:var(--cream-2);padding:22px 22px 24px;margin-top:8px;border-top:none;border-left:3px solid var(--terra);border-radius:0 4px 4px 0}
+.day-flow-item.highlight .day-flow-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;letter-spacing:.02em;text-transform:none;color:var(--ink);font-weight:400}
+
+/* ── Mark's story ── */
+.mark-story{background:var(--cream-2)}
+.mark-inner{max-width:620px;margin:0 auto}
+.mark-story p{font-size:16.5px;line-height:1.85;margin-bottom:20px}
+.mark-story p.opening{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:400;color:var(--ink);line-height:1.5;margin-bottom:28px}
+.mark-signature{margin-top:36px;padding-top:24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:16px}
+.mark-sig-line{flex:1}
+.mark-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--ink);margin-bottom:2px}
+.mark-role{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);font-weight:500}
+
+/* ── Testimonial ── */
+.testimonial{background:var(--cream);border-top:1px solid var(--border)}
+.testimonial-card{margin-top:36px;padding:40px 36px;background:var(--paper);border-radius:6px;border:1px solid var(--border);position:relative}
+.quote-mark{position:absolute;top:18px;left:24px;font-family:'Cormorant Garamond',serif;font-size:64px;line-height:1;color:var(--terra);opacity:.35;font-weight:400}
+.testimonial-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:400;line-height:1.55;color:var(--ink);margin:16px 0 22px;padding-left:8px}
+.testimonial-attr{padding-left:8px;font-size:13px;color:var(--warm-grey);letter-spacing:.04em}
+.testimonial-attr strong{color:var(--ink);font-weight:500}
+
+/* ── Before you start (for / not for + FAQ) ── */
+.before-start{background:var(--cream);border-top:1px solid var(--border)}
+.filter-grid{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:56px}
+.filter-card{padding:30px 26px;border-radius:6px;background:var(--paper);border:1px solid var(--border)}
+.filter-card.for{border-left:3px solid var(--terra)}
+.filter-card.notfor{border-left:3px solid var(--warm-grey)}
+.filter-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+.filter-card.for .filter-label{color:var(--terra)}
+.filter-card.notfor .filter-label{color:var(--warm-grey)}
+.filter-card p{font-size:15px;line-height:1.7;color:var(--ink-soft);margin-bottom:0}
+
+.faq-list{margin-top:12px;border-top:1px solid var(--border)}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item summary{list-style:none;cursor:pointer;padding:22px 0;font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:16px;transition:color .2s}
+.faq-item summary:hover{color:var(--terra)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"+";font-size:22px;color:var(--terra);font-weight:300;line-height:1;flex-shrink:0;transition:transform .3s}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-body{padding:0 0 22px;font-size:15px;line-height:1.75;color:var(--ink-soft)}
+.faq-body p{margin-bottom:12px;font-size:15px}
+.faq-body p:last-child{margin-bottom:0}
+
+/* ── Pricing ── */
+.pricing{background:var(--cream-2)}
+.price-grid{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.price-card{background:var(--paper);padding:40px 28px;border-radius:6px;border:1px solid var(--border);position:relative;text-align:center}
+.price-card.featured{border-color:var(--terra);box-shadow:0 8px 28px rgba(191,126,103,.12)}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--terra);color:var(--paper);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:5px 14px;border-radius:20px;white-space:nowrap}
+.price-label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--warm-grey);margin-bottom:18px;font-weight:500}
+.price-amount{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:400;color:var(--ink);line-height:1;margin-bottom:8px}
+.price-amount span{font-size:18px;color:var(--warm-grey)}
+.price-period{font-size:13px;color:var(--warm-grey);margin-bottom:28px}
+.btn-outline{display:inline-block;padding:12px 28px;border:1px solid var(--terra);color:var(--terra);background:transparent;border-radius:32px;font-size:13px;font-weight:500;text-decoration:none;transition:all .25s}
+.btn-outline:hover{background:var(--terra);color:var(--paper)}
+.price-card.featured .btn-outline{background:var(--terra);color:var(--paper)}
+.price-card.featured .btn-outline:hover{background:var(--terra-dk);border-color:var(--terra-dk)}
+.pricing-note{margin-top:32px;font-size:13px;color:var(--warm-grey);text-align:center}
+
+/* ── Footer CTA ── */
+.footer-cta{padding:0;background:var(--cream)}
+.footer-cta-image{height:50vh;min-height:320px;background-image:url('images/sunset.webp');background-size:cover;background-position:center;background-color:var(--clay);position:relative}
+.footer-cta-image::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,var(--cream) 100%)}
+.footer-cta-content{max-width:560px;margin:-60px auto 0;padding:48px 28px 96px;text-align:center;position:relative;z-index:2}
+#screen-landing .footer-cta-content h2{margin-bottom:20px}
+.footer-cta-content p{max-width:420px;margin:0 auto 32px}
+
+/* ── Footer (additive: padding/background/border on top of existing footer rule) ── */
+footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border-top:1px solid var(--border)}
+.footer-line{font-size:13px;color:var(--warm-grey);margin-bottom:16px}
+.footer-notice{max-width:600px;margin:16px auto 0;font-size:11px;line-height:1.65;color:#A8A099;text-align:left}
+
+/* ── Mobile ── */
+@media (max-width:700px){
+  #screen-landing section{padding:72px 24px}
+  .hero-image{height:50vh;min-height:320px}
+  .hero-content{padding:40px 24px 56px}
+  .time-grid{grid-template-columns:1fr;gap:16px}
+  .price-grid{grid-template-columns:1fr;gap:28px}
+  .footer-cta-content{padding:40px 24px 72px}
+  .img-break{min-height:420px;height:60vh}
+  .product-layout{grid-template-columns:1fr;gap:40px}
+  .product-copy{text-align:left}
+  .mark-story p.opening{font-size:19px}
+  .testimonial-card{padding:32px 24px 28px}
+}
 </style>
 </head>
 <body>
@@ -215,167 +424,433 @@ input[type=time]:focus{border-color:var(--accent)}
 ═══════════════════════════════════════════ -->
 <div id="screen-landing" class="screen">
 
-  <div class="wrap">
-    <nav><div class="nav-inner">
-      <span class="logo">LimenBridge</span>
-    </div></nav>
-  </div>
+<nav>
+  <a href="#" class="logo" onclick="return false;">
+    <svg class="brand-mark" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <circle cx="12" cy="11" r="1.6" fill="currentColor"/>
+    </svg>
+    LimenBridge
+  </a>
+  <a href="#" class="nav-cta" onclick="openModal();return false;">Try free</a>
+</nav>
 
-  <!-- Hero -->
-  <section class="wrap fade-in" style="padding-top:2rem">
-    <p class="eyebrow" style="margin-bottom:1.25rem">For those who work with a psychotherapist and need support between sessions</p>
-    <h1 class="hero-h1">One hour a week with a therapist is serious work. But the week doesn't end in that room. LimenBridge is built for the other 167 hours.</h1>
-    <p style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem">Every morning and every evening — a short audio track, a mood check, and a 14-day graph of how you've been feeling. Connects to your calendar at registration.</p>
-    <button class="btn btn-primary" onclick="openModal()">Try free — 3 days, no card</button>
-    <p class="trust" style="text-align:left;margin-top:.75rem">No credit card required · Cancel anytime</p>
-
-    <div style="margin-top:3rem;margin-bottom:1rem;padding:1rem 0" aria-hidden="true">
-      <svg class="waveform-svg" viewBox="0 0 440 64" xmlns="http://www.w3.org/2000/svg">
-        <rect class="bar" x="0"   y="28" width="4" height="8"  rx="2" fill="#C98A73"/>
-        <rect class="bar" x="10"  y="20" width="4" height="24" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="20"  y="12" width="4" height="40" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="30"  y="6"  width="4" height="52" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="40"  y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="50"  y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="60"  y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="70"  y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="80"  y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="90"  y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="100" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="110" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="120" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="130" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="140" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="150" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="160" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="170" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="180" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="190" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="200" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="210" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="220" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="230" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="240" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="250" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="260" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="270" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="280" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="290" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="300" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="310" y="0"  width="4" height="64" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="320" y="2"  width="4" height="60" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="330" y="4"  width="4" height="56" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="340" y="6"  width="4" height="52" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="350" y="12" width="4" height="40" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="360" y="20" width="4" height="24" rx="2" fill="#C98A73"/>
-        <rect class="bar" x="370" y="28" width="4" height="8"  rx="2" fill="#C98A73"/>
-      </svg>
-    </div>
-  </section>
-
-  <!-- Problem -->
-  <section class="section wrap">
-    <p style="font-size:1.1rem;color:var(--fg);line-height:1.8">
-      You go to your psychotherapist once a week. The session ends.<br>
-      You walk out — and the next one is six days away.<br><br>
-      Between sessions, there's no structure. No support. The anxiety comes back and there's nothing to do with it.<br><br>
-      Sometimes it's the exhaustion after a heavy session that doesn't lift the next day. Sometimes it's the anxiety that returns by Wednesday, when what you talked about is already hard to hold. Sometimes it's just the feeling of managing alone — and not knowing if that's normal.<br><br>
-      We won't tell you to "just breathe" or "think positive." That doesn't work when you're anxious.<br><br>
-      LimenBridge does one thing: helps your body settle — without effort on your part. No magic. Just sound — matched to where your nervous system actually is, right now.
+<!-- HERO -->
+<section class="hero">
+  <!-- images/hero.webp — terrace, pool, sea view -->
+  <div class="hero-image"></div>
+  <div class="hero-content">
+    <span class="tagline">A safe space</span>
+    <h1 class="hero-title">
+      One hour a week<br>
+      with a therapist.<br>
+      <em>The other 167 are yours.</em>
+    </h1>
+    <p class="hero-body">
+      A morning and evening audio program for the days between sessions —
+      when what you worked on in that room is still settling in your body.
     </p>
-  </section>
+    <a href="#" class="btn-primary" onclick="openModal();return false;">Try free for 3 days</a>
+    <span class="hero-note">No credit card · Cancel anytime</span>
+  </div>
+</section>
 
-  <!-- How it works -->
-  <section class="section wrap">
-    <h2 class="section-h2">How it works</h2>
-    <p style="color:var(--muted);margin-bottom:1.5rem">The way you feel throughout the day isn't random. It follows a biological logic. LimenBridge is built around it: the morning track and the evening track are different, because morning and evening are different states of your body.</p>
-    <div class="how-grid">
-      <div class="card" style="background-color:var(--card-morning);border-color:var(--card-morning)">
-        <div class="eyebrow" style="color:var(--accent-soft);margin-bottom:.6rem">Morning</div>
-        <p>About thirty minutes after waking, the body shifts out of sleep and into the day. This is a natural rise — not stress. The morning track is gentle, no sharp sounds. It works with that moment — so the day starts without anxiety already waiting.</p>
+<!-- HOW IT WORKS -->
+<section class="biology">
+  <div class="container">
+    <p class="section-label">How it works</p>
+    <h2>Two states.<br><em>Two tracks.</em></h2>
+    <p>
+      The way you feel throughout the day isn't random. It follows a biological
+      logic. LimenBridge is built around it: the morning track and the evening
+      track are different, because morning and evening are different states of
+      your body.
+    </p>
+    <div class="time-grid">
+      <div class="time-card morning">
+        <div class="time-icon">☼</div>
+        <p class="time-label">Morning</p>
+        <h3>So the day doesn't start with anxiety already waiting</h3>
+        <p>
+          About thirty minutes after waking, the body shifts out of sleep and
+          into the day. This is a natural rise — not stress. The morning track
+          is gentle, no sharp sounds. It works with that moment.
+        </p>
       </div>
-      <div class="card" style="background-color:var(--card-evening);border-color:var(--card-evening)">
-        <div class="eyebrow" style="color:var(--accent-soft);margin-bottom:.6rem">Evening</div>
-        <p>By evening the body is ready to shift into recovery. But accumulated tension, screens, and news disrupt that transition. The evening track is slower, deeper. It helps the shift happen — so you fall asleep with less anxiety and wake a little lighter.</p>
+      <div class="time-card evening">
+        <div class="time-icon">☾</div>
+        <p class="time-label">Evening</p>
+        <h3>So you fall asleep lighter</h3>
+        <p>
+          By evening the body is ready to shift into recovery. But accumulated
+          tension, screens, and news disrupt that. The evening track is slower,
+          deeper. It helps the shift happen.
+        </p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- One day -->
-  <section class="section wrap">
-    <h2 class="section-h2">One day with LimenBridge</h2>
-    <p style="color:var(--muted);margin-bottom:2rem">When you're anxious or tired, choosing what to listen to is one more effort. LimenBridge removes that choice: the right thing arrives at the right time.</p>
-    <ul class="timeline">
-      <li>
-        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem">Your morning</div>
-        <p style="color:var(--muted)">Your calendar reminds you — at the time you chose during setup. Open the track. A few minutes. Afterwards, one simple question: How are you right now? Not a journal entry, not an analysis — just a note to yourself.</p>
-      </li>
-      <li>
-        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem">During the day</div>
-        <p style="color:var(--muted)">The whole day is yours. Work, people you care about — everything that makes up an ordinary life.</p>
-      </li>
-      <li>
-        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem">Your evening</div>
-        <p style="color:var(--muted)">Your calendar reminds you again. A track and one short question: How did the day go? Two minutes, no more.</p>
-      </li>
-      <li>
-        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem">14 days</div>
-        <p style="color:var(--muted)">LimenBridge remembers your answers. Not to judge or analyze. To show you, two weeks in, a simple graph: how your state shifted morning and evening, day by day.</p>
-      </li>
-    </ul>
-  </section>
+<!-- IMAGE BREAK -->
+<!-- images/door.webp — open door onto the sea (threshold) -->
+<div class="img-break">
+  <div class="floor-quote">
+    <p class="floor-quote-text">
+      "What you worked on in that room is still in your body."
+    </p>
+    <p class="floor-quote-attr">Mark Vdovskikh</p>
+  </div>
+</div>
 
-  <!-- Founder -->
-  <section class="section wrap">
-    <div class="founder-row">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:.5rem;flex-shrink:0">
-          <div class="founder-photo" role="img" aria-label="Mark Vdovskikh"></div>
-          <p style="font-size:.88rem;color:var(--muted);text-align:center">Mark Vdovskikh</p>
+<!-- PRODUCT MOCKUP -->
+<section class="product">
+  <div class="container" style="max-width: 920px;">
+    <div class="product-layout">
+
+      <!-- phone -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+
+            <div class="app-topbar">
+              <div class="app-logo-wrap">
+                <svg class="brand-mark sm" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                  <circle cx="12" cy="11" r="1.8" fill="currentColor"/>
+                </svg>
+                <span class="app-logo">LimenBridge</span>
+                <span class="app-trial">Free<br>Trial</span>
+              </div>
+              <div class="app-help">?</div>
+            </div>
+
+            <p class="app-greeting">Good morning</p>
+
+            <div class="app-track-card">
+              <p class="app-track-label">Morning Track · Day 2</p>
+              <div class="app-wave">
+                <span style="height: 6px"></span>
+                <span style="height: 11px"></span>
+                <span style="height: 18px"></span>
+                <span style="height: 14px"></span>
+                <span style="height: 20px"></span>
+                <span style="height: 16px"></span>
+                <span style="height: 22px"></span>
+                <span style="height: 18px"></span>
+                <span style="height: 14px"></span>
+                <span style="height: 20px"></span>
+                <span style="height: 12px"></span>
+                <span style="height: 18px"></span>
+                <span style="height: 22px"></span>
+                <span style="height: 16px"></span>
+                <span style="height: 12px"></span>
+                <span style="height: 18px"></span>
+                <span style="height: 14px"></span>
+                <span style="height: 8px"></span>
+              </div>
+              <div class="app-play">▶</div>
+              <p class="app-play-hint">Tap to play · tap again to pause</p>
+              <div class="app-divider-thin"></div>
+              <p class="app-listened">Listened today</p>
+            </div>
+
+            <div class="app-progress">
+              <div class="app-progress-row">
+                <span>Program progress</span>
+                <span>Day 2 of 14</span>
+              </div>
+              <div class="app-progress-bar">
+                <div class="app-progress-fill"></div>
+              </div>
+            </div>
+
+            <div class="app-your-progress">
+              <h4>Your progress</h4>
+              <p class="app-your-progress-sub">Morning &amp; evening mood · 14 days</p>
+              <div class="app-lock">
+                <div class="app-lock-icon"></div>
+                <p class="app-lock-text">Your graph starts on day 4. Keep going.</p>
+              </div>
+            </div>
+
+          </div>
         </div>
-      <div style="flex:1;min-width:220px">
-        <p style="line-height:1.8">LimenBridge was created by a physician with many years of experience working with people who carry their stress in their bodies.<br><br>The same moment kept repeating: a person walks out of a session and is left alone with what came up in the session. The next appointment is still far away. No structure. No support.<br><br>LimenBridge is the answer to that gap. Not a replacement for psychotherapy — what happens between.</p>
       </div>
-    </div>
-  </section>
 
-  <!-- Pricing -->
-  <section class="section wrap">
-    <h2 class="section-h2">Three days free. Then your choice.</h2>
-    <div class="pricing-grid">
-      <div class="card">
-        <div class="eyebrow" style="margin-bottom:.5rem">Monthly</div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.9rem;margin:.4rem 0">$19 / month</div>
-        <p style="color:var(--muted);margin-bottom:1.25rem">Full access. Cancel anytime.</p>
-        <button class="btn btn-ghost btn-full" id="landing-monthly-btn" onclick="startCheckout('monthly',this)">Get started</button>
-      </div>
-      <div class="card card-accent">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
-          <span class="eyebrow">Annual</span>
-          <span style="font-size:.72rem;background:var(--accent);color:var(--fg);padding:.2rem .6rem;border-radius:20px;font-weight:500">Two months free</span>
+      <!-- copy -->
+      <div class="product-copy">
+        <p class="section-label">One day with LimenBridge</p>
+        <h2>The right thing<br><em>at the right time.</em></h2>
+        <p>
+          When you're anxious or tired, choosing what to listen to is one more
+          effort. LimenBridge removes that choice: the right thing arrives at
+          the right time.
+        </p>
+
+        <div class="day-flow">
+          <div class="day-flow-item">
+            <p class="day-flow-label">Your morning</p>
+            <p>
+              Your calendar reminds you — at the time you chose during setup.
+              Open the track. A few minutes. Afterwards, one simple question:
+              <em>How are you right now?</em> Not a journal entry, not an
+              analysis — just a note to yourself.
+            </p>
+          </div>
+          <div class="day-flow-item">
+            <p class="day-flow-label">During the day</p>
+            <p>
+              The whole day is yours. Work, people you care about — everything
+              that makes up an ordinary life.
+            </p>
+          </div>
+          <div class="day-flow-item">
+            <p class="day-flow-label">Your evening</p>
+            <p>
+              Your calendar reminds you again. A track and one short question:
+              <em>How did the day go?</em> Two minutes, no more.
+            </p>
+          </div>
+          <div class="day-flow-item highlight">
+            <p class="day-flow-label">14 days</p>
+            <p>
+              LimenBridge remembers your answers. Not to judge or analyze.
+              To show you, two weeks in, a simple graph: how your state shifted
+              morning and evening, day by day.
+            </p>
+          </div>
         </div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.9rem;margin:.4rem 0">$163 / year</div>
-        <p style="color:var(--muted);margin-bottom:1.25rem">For those in it for the long run.</p>
-        <button class="btn btn-primary btn-full" id="landing-annual-btn" onclick="startCheckout('annual',this)">Get started</button>
+
+        <p style="margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 14px; color: var(--warm-grey); display: flex; align-items: center; gap: 10px;">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+            <rect x="1" y="3" width="14" height="10" rx="1.5"/>
+            <line x1="1" y1="6" x2="15" y2="6"/>
+            <circle cx="3" cy="4.5" r="0.5" fill="currentColor"/>
+          </svg>
+          Works in your browser. Nothing to install.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MARK'S STORY -->
+<section class="mark-story">
+  <div class="mark-inner">
+    <p class="section-label">From Mark</p>
+    <h2>Why this exists</h2>
+
+    <p class="opening">
+      A few years ago, I couldn't sleep properly. I'd lie there staring at the
+      ceiling, replaying the day over and over. Strange, considering I help
+      people with anxiety every day. But I couldn't fix my own.
+    </p>
+
+    <p>
+      One evening my wife said, <em>"Listen, I found something — breathing
+      exercises with specific music, guided by a voice."</em> I was skeptical.
+      But within a week, sleep started coming back.
+    </p>
+
+    <p>
+      And here's what really struck me. I work with people who are in therapy.
+      An hour a week — real work, real breakthroughs. Then the session ends,
+      and they're on their own. We did the math — that's roughly 167 hours
+      until the next one.
+    </p>
+
+    <p>
+      And in those hours, the same thing happens that happened to me. Anxiety
+      creeps back in the evening. Mornings feel heavy. Thoughts won't let go.
+    </p>
+
+    <p>
+      Therapy isn't meant to fill all that time — that's not its job. But
+      between sessions, people need something to hold onto. The thing that
+      helped me.
+    </p>
+
+    <p style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--ink); margin-top: 28px;">
+      That's how LimenBridge came to be.
+    </p>
+
+    <div class="mark-signature">
+      <div class="mark-sig-line">
+        <p class="mark-name">Mark Vdovskikh</p>
+        <p class="mark-role">Creator</p>
       </div>
     </div>
-    <p style="color:var(--muted);margin-top:1rem;font-size:.9rem">Both plans include: morning and evening tracks, mood journal, 14-day progress tracking.</p>
-  </section>
+  </div>
+</section>
 
-  <!-- Final CTA -->
-  <section class="section wrap">
-    <p style="font-size:1.05rem;line-height:1.8;margin-bottom:1.75rem">One hour a week with a therapist is serious work. But the week doesn't end in that room.<br><br>LimenBridge is built for the other 167 hours. Every morning and every evening — a steady moment of support on the days when the next session still feels far away.<br><br>Try three days free. No card. No commitment.</p>
-    <form onsubmit="handleCtaForm(event)" style="display:flex;flex-wrap:wrap;gap:.6rem">
-      <input type="email" required placeholder="you@email.com" id="cta-email" class="input" style="flex:1;min-width:200px"/>
-      <button type="submit" class="btn btn-primary">Start free</button>
-    </form>
-  </section>
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+  <div class="container">
+    <p class="section-label">From an early user</p>
+    <h2>What people say<br><em>after a few days.</em></h2>
 
-  <footer class="wrap">
-  <p style="margin-bottom:1.25rem">© LimenBridge · limenbridge.cc · <a href="/privacy.html" style="color:var(--muted);text-decoration:none;transition:color 200ms" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--muted)'">Privacy Policy</a> · <a href="/refund.html" style="color:var(--muted);text-decoration:none;transition:color 200ms" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--muted)'">Refund Policy</a></p>
-  <p style="font-size:.75rem;color:var(--muted);line-height:1.7;border-top:1px solid var(--border);padding-top:1.25rem">
-    <strong style="color:var(--muted)">Important notice.</strong> LimenBridge is a wellness audio program intended for general informational and self-care purposes only. It is not a medical device and has not been evaluated by the FDA or any other regulatory authority. LimenBridge is not intended to diagnose, treat, cure, or prevent any medical or psychological condition. It is not a substitute for professional medical advice, diagnosis, or treatment from a licensed physician, psychotherapist, psychologist, or other qualified mental health provider. Always seek the advice of your qualified health provider with any questions you may have regarding a medical or mental health condition. Never disregard professional medical advice or delay seeking it because of something you have read or heard through LimenBridge. If you are experiencing a mental health crisis or having thoughts of harming yourself or others, contact emergency services or a crisis helpline immediately. In the US: call or text 988 (Suicide &amp; Crisis Lifeline). In the UK: call 116 123 (Samaritans). In Canada: call 1-833-456-4566. Use of LimenBridge does not create a therapeutic relationship of any kind.
-  </p>
+    <div class="testimonial-card">
+      <span class="quote-mark">"</span>
+      <p class="testimonial-text">
+        I really loved it. It feels like it was built around how my body
+        actually works — not just another relaxation app. I don't even
+        consider myself anxious, but the effect is real.
+      </p>
+      <p class="testimonial-attr">
+        <strong>Early user</strong> · After three days
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE YOU START -->
+<section class="before-start">
+  <div class="container">
+    <h2>Before you start</h2>
+    <p>
+      LimenBridge is built for a specific moment. It works best when you know
+      who it's for — and who it isn't.
+    </p>
+
+    <div class="filter-grid">
+      <div class="filter-card for">
+        <p class="filter-label">For</p>
+        <p>
+          People in psychotherapy who want gentle structure between sessions —
+          a way to hold the work in the body when the room is no longer there.
+        </p>
+      </div>
+      <div class="filter-card notfor">
+        <p class="filter-label">Not for</p>
+        <p>
+          Acute crisis or active suicidal ideation. If you are in distress,
+          please reach out to your therapist or your local emergency services.
+        </p>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 16px;">Questions before you decide</h2>
+
+    <div class="faq-list">
+
+      <details class="faq-item">
+        <summary>Should I tell my therapist I'm using this?</summary>
+        <div class="faq-body">
+          <p>
+            Yes — and we'd encourage it. Your therapist knows your rhythm and
+            can give you the most useful feedback on whether LimenBridge is
+            helping, or whether your time between sessions might be better
+            spent another way.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>How is this different from Calm or Headspace?</summary>
+        <div class="faq-body">
+          <p>
+            Calm and Headspace are general meditation apps — meditation, sleep
+            stories, gratitude practices, breath work, focus music. They're
+            built for anyone, for any moment.
+          </p>
+          <p>
+            LimenBridge does one thing: it supports your nervous system on the
+            days between psychotherapy sessions, with a structured morning and
+            evening track that follows the body's biological rhythm. No menus,
+            no choices to make — the right track arrives at the right time.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What's actually inside the program?</summary>
+        <div class="faq-body">
+          <p>
+            A 14-day cycle of morning and evening audio sessions, each built on
+            guided breathing and specific musical structures. You also get a
+            simple progress graph that begins on day four — so the first three
+            days have no measurement, only listening.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Where is my data stored?</summary>
+        <div class="faq-body">
+          <p>
+            Your listening history and mood check-ins are stored locally, on
+            your device. We don't keep a database of them, sell data, or run
+            ads. If you switch devices or clear your browser, that history
+            won't carry over — a synced version is on our roadmap.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What if it doesn't help me?</summary>
+        <div class="faq-body">
+          <p>
+            The first three days are free, with no card required — that's
+            specifically so you can find out without committing. After that,
+            you can cancel at any time directly from your account.
+          </p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="start">
+  <div class="container">
+    <p class="section-label">Your choice</p>
+    <h2>Three days free.<br><em>Then you decide.</em></h2>
+    <div class="price-grid">
+      <div class="price-card">
+        <p class="price-label">Monthly</p>
+        <p class="price-amount">$19<span>/mo</span></p>
+        <p class="price-period">cancel anytime</p>
+        <button class="btn-outline btn-full" id="landing-monthly-btn" onclick="startCheckout('monthly',this)">Get started</button>
+      </div>
+      <div class="price-card featured">
+        <span class="price-badge">2 months free</span>
+        <p class="price-label">Annual</p>
+        <p class="price-amount">$163<span>/yr</span></p>
+        <p class="price-period">for the long run</p>
+        <button class="btn-outline btn-full" id="landing-annual-btn" onclick="startCheckout('annual',this)">Get started</button>
+      </div>
+    </div>
+    <p class="pricing-note">
+      Morning &amp; evening tracks · mood journal · 14-day progress graph
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<section class="footer-cta">
+  <!-- images/sunset.webp — sunset over water -->
+  <div class="footer-cta-image"></div>
+  <div class="footer-cta-content">
+    <h2>The next session<br><em>is still six days away.</em></h2>
+    <p>Start your free three days. No card. No commitment.</p>
+    <a href="#" class="btn-primary" onclick="openModal();return false;">Start free</a>
+  </div>
+</section>
+
+<footer>
+  <svg class="brand-mark lg" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom: 16px; opacity: 0.7;">
+    <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    <circle cx="12" cy="11" r="1.6" fill="currentColor"/>
+  </svg>
+  <div class="footer-line">© 2026 LimenBridge · limenbridge.cc · <a href="/privacy.html" style="color:var(--warm-grey);text-decoration:none;border-bottom:1px solid var(--border)">Privacy Policy</a> · <a href="/refund.html" style="color:var(--warm-grey);text-decoration:none;border-bottom:1px solid var(--border)">Refund Policy</a></div>
+  <div class="footer-notice">
+    <strong>Important notice.</strong> LimenBridge is a wellness audio program intended for general informational and self-care purposes only. It is not a medical device and has not been evaluated by the FDA or any other regulatory authority. LimenBridge is not intended to diagnose, treat, cure, or prevent any medical or psychological condition. It is not a substitute for professional medical advice, diagnosis, or treatment from a licensed physician, psychotherapist, psychologist, or other qualified mental health provider. Always seek the advice of your qualified health provider with any questions you may have regarding a medical or mental health condition. Never disregard professional medical advice or delay seeking it because of something you have read or heard through LimenBridge. If you are experiencing a mental health crisis or having thoughts of harming yourself or others, contact emergency services or a crisis helpline immediately. In the US: call or text 988 (Suicide &amp; Crisis Lifeline). In the UK: call 116 123 (Samaritans). In Canada: call 1-833-456-4566. Use of LimenBridge does not create a therapeutic relationship of any kind.
+  </div>
 </footer>
+
 </div>
 
 <!-- ═══════════════════════════════════════════
