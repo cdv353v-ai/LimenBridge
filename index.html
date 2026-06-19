@@ -695,13 +695,24 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 
     <div class="testimonial-card">
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">
-        I really loved it. It feels like it was built around how my body
-        actually works — not just another relaxation app. I don't even
-        consider myself anxious, but the effect is real.
+      <p class="testimonial-text" style="font-size:18px;line-height:1.7">
+        Four days ago, I didn't know I'd miss music. I'm not in therapy. But
+        something has changed in four days. The first evening, while I was
+        figuring out the settings, I missed the track's time. But when I
+        turned it on, my eyes closed on their own. I can't remember the last
+        time I fell asleep so quickly. The morning of the second day started
+        with music. The whole day passed in a state of awakening. In the
+        evening, I no longer waited for a reminder — I turned it on myself.
+        On the morning of the fourth day, there was no track. There was a
+        message instead — an offer to continue. And I really missed this
+        morning and evening music. I'm not in therapy. I'm just someone who
+        likes to greet and see out the day with the right music. Everything
+        is already selected — you just turn it on and listen. And one more
+        thing: each day you note your mood at the bottom. The graph records
+        your state. I want to see my graph.
       </p>
       <p class="testimonial-attr">
-        <strong>Early user</strong> · After three days
+        <strong>Olga</strong> · After four days
       </p>
     </div>
   </div>
@@ -847,6 +858,14 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
     <circle cx="12" cy="11" r="1.6" fill="currentColor"/>
   </svg>
+  <div class="footer-social" style="display:flex;justify-content:center;gap:18px;margin-bottom:16px">
+    <a href="https://www.tiktok.com/@limenbridge" target="_blank" rel="noopener" aria-label="LimenBridge on TikTok" style="color:var(--warm-grey);display:inline-flex">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.83-.9-1.29-2.07-1.29-3.32h-3.07v13.66a3.07 3.07 0 1 1-2.62-3.04V9.97a6.13 6.13 0 1 0 5.69 6.11V9.4a8.16 8.16 0 0 0 4.55 1.39V7.72a4.85 4.85 0 0 1-3.26-1.9z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/limenbridge" target="_blank" rel="noopener" aria-label="LimenBridge on Instagram" style="color:var(--warm-grey);display:inline-flex">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+  </div>
   <div class="footer-line">© 2026 LimenBridge · limenbridge.cc · <a href="/privacy.html" style="color:var(--warm-grey);text-decoration:none;border-bottom:1px solid var(--border)">Privacy Policy</a> · <a href="/refund.html" style="color:var(--warm-grey);text-decoration:none;border-bottom:1px solid var(--border)">Refund Policy</a></div>
   <div class="footer-notice">
     <strong>Important notice.</strong> LimenBridge is a wellness audio program intended for general informational and self-care purposes only. It is not a medical device and has not been evaluated by the FDA or any other regulatory authority. LimenBridge is not intended to diagnose, treat, cure, or prevent any medical or psychological condition. It is not a substitute for professional medical advice, diagnosis, or treatment from a licensed physician, psychotherapist, psychologist, or other qualified mental health provider. Always seek the advice of your qualified health provider with any questions you may have regarding a medical or mental health condition. Never disregard professional medical advice or delay seeking it because of something you have read or heard through LimenBridge. If you are experiencing a mental health crisis or having thoughts of harming yourself or others, contact emergency services or a crisis helpline immediately. In the US: call or text 988 (Suicide &amp; Crisis Lifeline). In the UK: call 116 123 (Samaritans). In Canada: call 1-833-456-4566. Use of LimenBridge does not create a therapeutic relationship of any kind.
@@ -926,7 +945,12 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
         <button class="btn btn-primary btn-full" id="trial-monthly-btn" onclick="startCheckout('monthly',this)">Continue — $19 / month</button>
         <button class="btn btn-ghost btn-full" id="trial-annual-btn" onclick="startCheckout('annual',this)">Continue — $163 / year · Two months free</button>
       </div>
-      <p style="color:var(--muted);font-size:.85rem;margin-top:1.25rem">Your data won't be deleted if you wait.</p>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:1.25rem">Your data won't be deleted if you wait. Try it — full refund within 7 days.</p>
+      <div class="card" style="margin-top:1.75rem;text-align:left;padding:1.25rem 1.5rem">
+        <p style="font-size:.92rem;line-height:1.6;font-style:italic;color:var(--fg);margin-bottom:.5rem">"I really missed this morning and evening music all day. Everything is already selected — you just turn it on and listen."</p>
+        <p style="font-size:.8rem;color:var(--muted)">— Olga, after four days</p>
+      </div>
+      <p style="margin-top:1.5rem"><a href="#" onclick="goHome();return false;" style="color:var(--muted);font-size:.85rem;text-decoration:underline;text-underline-offset:2px">Learn more about LimenBridge</a></p>
     </div>
   </div>
 </div>
@@ -1320,19 +1344,6 @@ function obFinish() {
   showRecommendation(u);
 }
 
-function isAndroid() {
-  return /android/i.test(navigator.userAgent);
-}
-
-function googleCalendarLink(u, kind) {
-  const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
-  const now = new Date();
-  const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
-  const title = encodeURIComponent(`LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`);
-  const details = encodeURIComponent('Your daily LimenBridge track. Open limenbridge.cc to listen.');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}T${timeStr}00/${dateStr}T${timeStr}00&recur=RRULE:FREQ=DAILY&details=${details}`;
-}
-
 function generateICS(u, kinds) {
   const now = new Date();
   const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
@@ -1356,10 +1367,6 @@ function generateICS(u, kinds) {
 }
 
 function calendarButtonHTML(u) {
-  if (isAndroid()) {
-    return '<a href="' + googleCalendarLink(u,'morning') + '" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex;margin-bottom:.5rem">Add morning reminder</a>' +
-           '<a href="' + googleCalendarLink(u,'evening') + '" target="_blank" class="btn btn-ghost btn-full" style="text-decoration:none;justify-content:center;display:flex">Add evening reminder</a>';
-  }
   return '<a href="' + generateICS(u,['morning','evening']) + '" download="limenbridge-reminders.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar \u2014 morning &amp; evening</a>' +
          '<p style="color:var(--muted);font-size:.8rem;margin-top:.6rem;text-align:center">A file will download \u2014 open it to add both reminders to your calendar.</p>';
 }
@@ -1535,7 +1542,8 @@ function showMoodSection(kind, u) {
       <p style="font-size:.8rem;color:var(--muted);margin-top:.35rem;display:flex;justify-content:space-between"><span>Heavy</span><span>Light</span></p>
       <div class="field" style="margin-top:1.25rem">
         <label class="eyebrow" for="mood-note">${q2} <span style="color:var(--muted)">(optional)</span></label>
-        <input type="text" id="mood-note" class="input" style="margin-top:.35rem" maxlength="100" placeholder="\u2026"/>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:.35rem;margin-bottom:.5rem">Your notes stay on this device. We can't read them.</p>
+        <input type="text" id="mood-note" class="input" maxlength="100" placeholder="\u2026"/>
       </div>
       <button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="saveMood('${kind}')">Save</button>
     </div>
