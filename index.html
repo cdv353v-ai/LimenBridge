@@ -433,7 +433,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     </svg>
     LimenBridge
   </a>
-  <a href="#" class="nav-cta" onclick="openModal();return false;">Try free</a>
+  <a href="#" class="nav-cta" onclick="startFree();return false;">Try free</a>
 </nav>
 
 <!-- HERO -->
@@ -451,7 +451,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       A morning and evening audio program for the days between sessions —
       when what you worked on in that room is still settling in your body.
     </p>
-    <a href="#" class="btn-primary" onclick="openModal();return false;">Try free for 3 days</a>
+    <a href="#" class="btn-primary" onclick="startFree();return false;">Try free for 3 days</a>
     <span class="hero-note">No credit card · Cancel anytime</span>
   </div>
 </section>
@@ -849,7 +849,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
   <div class="footer-cta-content">
     <h2>The next session<br><em>is still six days away.</em></h2>
     <p>Start your free three days. No card. No commitment.</p>
-    <a href="#" class="btn-primary" onclick="openModal();return false;">Start free</a>
+    <a href="#" class="btn-primary" onclick="startFree();return false;">Start free</a>
   </div>
 </section>
 
@@ -880,7 +880,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 <div id="modal" class="modal-overlay" onclick="closeModal(event)">
   <div class="modal-box fade-in" onclick="event.stopPropagation()">
     <div id="modal-form">
-      <h3 class="display" style="font-size:1.5rem;margin-bottom:1.25rem">Start your free 3 days</h3>
+      <h3 class="display" style="font-size:1.5rem;margin-bottom:1.25rem">Get a reminder before your trial ends</h3>
       <div class="field">
         <label class="eyebrow" for="reg-email">Email</label>
         <input type="email" id="reg-email" class="input" placeholder="you@email.com" required/>
@@ -889,12 +889,12 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
         <label class="eyebrow" for="reg-name">Name</label>
         <input type="text" id="reg-name" class="input" placeholder="Your name (optional)"/>
       </div>
-      <button class="btn btn-primary btn-full" id="reg-submit" onclick="submitRegistration()">Create free account</button>
-      <p class="trust">No credit card · 3 days free · Unsubscribe anytime · <a href="/privacy.html" target="_blank" style="color:var(--muted)">Privacy Policy</a></p>
+      <button class="btn btn-primary btn-full" id="reg-submit" onclick="submitRegistration()">Save email</button>
+      <p class="trust">Used only to remind you before day 4 · Unsubscribe anytime · <a href="/privacy.html" target="_blank" style="color:var(--muted)">Privacy Policy</a></p>
     </div>
     <div id="modal-done" style="display:none;text-align:center;padding:1rem 0">
-      <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">You're all set</h3>
-      <p style="color:var(--muted)">Let's get started.</p>
+      <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">Saved</h3>
+      <p style="color:var(--muted)">We'll email you before your free days end.</p>
     </div>
     <div id="modal-welcome-back" style="display:none;text-align:center;padding:1rem 0">
       <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">Welcome back</h3>
@@ -1025,7 +1025,7 @@ function startCheckout(plan, btn) {
   const annualLink  = 'https://buy.stripe.com/6oU14ngnf6Xh16m2sj6sw03';
   const base = plan === 'annual' ? annualLink : monthlyLink;
   const u = loadUser();
-  const email = u ? encodeURIComponent(u.email) : '';
+  const email = (u && u.email) ? encodeURIComponent(u.email) : '';
   window.location.href = email ? base + '?prefilled_email=' + email : base;
 }
 
@@ -1148,6 +1148,11 @@ function closeHelp(e) {
 // ═══════════════════════════════════════════
 function openModal(prefillEmail) {
   const m = document.getElementById('modal');
+  document.getElementById('modal-form').style.display = 'block';
+  document.getElementById('modal-done').style.display = 'none';
+  document.getElementById('modal-welcome-back').style.display = 'none';
+  const submitBtn = document.getElementById('reg-submit');
+  submitBtn.disabled = false; submitBtn.textContent = 'Save email';
   if (prefillEmail) document.getElementById('reg-email').value = prefillEmail;
   m.classList.add('open');
 }
@@ -1162,12 +1167,40 @@ function handleCtaForm(e) {
   openModal(email);
 }
 
+// Entry point from every "Start free" / "Try free" CTA.
+// No email required to start \u2014 the trial begins immediately on this device.
+// Email is asked for later, mid-trial, framed as a reminder \u2014 not as account creation.
+function startFree() {
+  let u = loadUser();
+  if (!u) {
+    u = {
+      registeredAt: new Date().toISOString(),
+      plan: 'free',
+      onboardingComplete: false,
+      moodLog: [],
+      lastListened: { date: todayISO() }
+    };
+    saveUser(u);
+  }
+  route();
+}
+
+function dismissEmailPrompt() {
+  const u = loadUser();
+  if (!u) return;
+  u.emailPromptDismissed = true;
+  saveUser(u);
+  renderApp(u);
+}
+
 async function submitRegistration() {
   const email = document.getElementById('reg-email').value.trim().toLowerCase();
   if (!email) return;
   const name = document.getElementById('reg-name').value;
   const btn = document.getElementById('reg-submit');
-  btn.disabled = true; btn.textContent = 'Creating\u2026';
+  btn.disabled = true; btn.textContent = 'Saving\u2026';
+
+  const local = loadUser(); // trial already in progress on this device (or null, edge case)
 
   let result = null;
   try {
@@ -1179,7 +1212,9 @@ async function submitRegistration() {
     result = await resp.json();
   } catch {}
 
-  if (result && result.status === 'existing') {
+  // Genuine cross-device case: this email already has a server record AND this
+  // device has no local progress of its own yet. Adopt the server record.
+  if (result && result.status === 'existing' && (!local || !local.onboardingComplete)) {
     const r = result.user;
     const user = {
       email: r.email,
@@ -1200,15 +1235,27 @@ async function submitRegistration() {
     return;
   }
 
-  const user = {
-    email, name: name || undefined,
-    registeredAt: (result && result.user && result.user.registeredAt) || new Date().toISOString(),
+  // Normal case: this device already has trial progress (onboarding answers,
+  // mood log, plan, registeredAt). We only attach the email \u2014 nothing local
+  // gets overwritten or reset.
+  const user = local || {
+    registeredAt: new Date().toISOString(),
     plan: 'free',
     onboardingComplete: false,
     moodLog: [],
     lastListened: { date: todayISO() }
   };
+  user.email = email;
+  if (name) user.name = name;
   saveUser(user);
+  syncUser(email, {
+    registeredAt: user.registeredAt,
+    plan: user.plan,
+    onboardingComplete: user.onboardingComplete,
+    firstTrack: user.firstTrack,
+    morningTime: user.morningTime,
+    eveningTime: user.eveningTime
+  });
   document.getElementById('modal-form').style.display = 'none';
   document.getElementById('modal-done').style.display = 'block';
   setTimeout(() => { document.getElementById('modal').classList.remove('open'); route(); }, 1200);
@@ -1460,7 +1507,18 @@ function renderApp(u) {
   const planLabel = u.plan === 'free' ? 'FREE TRIAL' : u.plan.toUpperCase();
   document.getElementById('plan-badge').textContent = planLabel;
 
+  const emailBanner = (u.plan === 'free' && !u.email && trialDay(u) >= 2 && trialDay(u) <= 3 && !u.emailPromptDismissed)
+    ? `<div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;padding:.85rem 1.1rem">
+         <p style="font-size:.88rem;color:var(--muted);margin:0">Want a reminder before your free days end?</p>
+         <div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0">
+           <button class="btn btn-ghost" style="padding:.4rem .9rem;font-size:.82rem" onclick="openModal()">Add email</button>
+           <button onclick="dismissEmailPrompt()" title="Dismiss" style="background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1;padding:.25rem">\u00d7</button>
+         </div>
+       </div>`
+    : '';
+
   el.innerHTML = `
+    ${emailBanner}
     <p style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem">${greeting(u.name)}</p>
     <div class="player-card fade-in">
       <div class="track-label">${kind === 'morning' ? 'Morning' : 'Evening'} track \u00b7 Day ${pDay}</div>
