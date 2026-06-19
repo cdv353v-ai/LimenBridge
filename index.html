@@ -1381,9 +1381,8 @@ function googleCalendarLink(u, kind) {
 
 function calendarButtonHTML(u) {
   if (isAndroid()) {
-    return '<a href="' + googleCalendarLink(u,'morning') + '" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex;margin-bottom:.5rem">Add morning reminder \u2014 Google Calendar</a>' +
-           '<a href="' + googleCalendarLink(u,'evening') + '" target="_blank" class="btn btn-ghost btn-full" style="text-decoration:none;justify-content:center;display:flex;margin-bottom:.5rem">Add evening reminder \u2014 Google Calendar</a>' +
-           '<a href="' + generateICS(u,['morning','evening']) + '" download="limenbridge-reminders.ics" style="display:block;text-align:center;font-size:.82rem;color:var(--muted);text-decoration:underline;text-underline-offset:2px;margin-top:.5rem">Use a different calendar app</a>';
+    return '<a href="' + googleCalendarLink(u,'morning') + '" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex;margin-bottom:.5rem">Add morning reminder</a>' +
+           '<a href="' + googleCalendarLink(u,'evening') + '" target="_blank" class="btn btn-ghost btn-full" style="text-decoration:none;justify-content:center;display:flex">Add evening reminder</a>';
   }
   return '<a href="' + generateICS(u,['morning','evening']) + '" download="limenbridge-reminders.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar \u2014 morning &amp; evening</a>' +
          '<p style="color:var(--muted);font-size:.8rem;margin-top:.6rem;text-align:center">A file will download \u2014 open it to add both reminders to your calendar.</p>';
