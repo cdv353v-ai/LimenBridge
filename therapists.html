@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LimenBridge for Therapists — Free Access for Mental Health Professionals</title>
+<meta name="description" content="A daily audio program for therapy clients between sessions. Free access for therapists and psychologists who want to explore it for their practice."/>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F4F1EA;
+  --cream-2:#ECE6DA;
+  --paper:#FFFDFB;
+  --ink:#2C2620;
+  --ink-soft:#4A3F35;
+  --warm-grey:#8C827A;
+  --terra:#C98A73;
+  --terra-dk:#B87963;
+  --border:#E3DDD3;
+  --peach-soft:#F8E8D5;
+}
+html,body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;font-weight:300;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;letter-spacing:.04em;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+.brand-mark{display:inline-block;width:22px;height:14px;color:var(--terra);vertical-align:-3px;flex-shrink:0}
+
+.wrap{max-width:680px;margin:0 auto;padding:120px 28px 96px}
+
+/* Header */
+.page-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:18px}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,42px);font-weight:400;line-height:1.2;color:var(--ink);margin-bottom:24px}
+h1 em{font-style:italic;color:var(--terra)}
+.intro{font-size:17px;line-height:1.85;color:var(--ink-soft);margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+
+/* Sections */
+h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--ink);margin:48px 0 16px;line-height:1.3}
+p{font-size:16px;line-height:1.85;color:var(--ink-soft);margin-bottom:18px}
+p:last-child{margin-bottom:0}
+
+/* Problem block */
+.problem-block{background:var(--cream-2);border-left:3px solid var(--terra);padding:28px 28px 24px;margin:32px 0;border-radius:0 4px 4px 0}
+.problem-block p{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--ink);line-height:1.55;margin-bottom:0}
+
+/* How it works */
+.how-grid{margin:28px 0 40px;display:flex;flex-direction:column;gap:0}
+.how-item{padding:24px 0;border-top:1px solid var(--border)}
+.how-item:first-child{border-top:none;padding-top:0}
+.how-label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:8px}
+.how-item p{font-size:15.5px;margin-bottom:0}
+
+/* Science block */
+.science-list{margin:20px 0 32px;display:flex;flex-direction:column;gap:12px}
+.science-item{padding:20px 24px;background:var(--paper);border:1px solid var(--border);border-radius:4px}
+.science-item strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.science-item span{font-size:14px;color:var(--ink-soft);line-height:1.6}
+
+/* Safety */
+.safety-block{background:var(--peach-soft);border:1px solid var(--border);border-radius:6px;padding:28px 28px 24px;margin:32px 0}
+.safety-block p{font-size:15px;margin-bottom:10px}
+.safety-block p:last-child{margin-bottom:0}
+
+/* Partner block */
+.partner-block{background:var(--cream-2);border-radius:6px;padding:36px 32px;margin-top:40px;border:1px solid var(--border)}
+.partner-block h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--ink);margin-bottom:12px}
+.partner-block p{font-size:15px;margin-bottom:16px}
+
+/* CTA */
+.cta-block{margin-top:56px;padding:40px 36px;background:var(--ink);border-radius:6px;text-align:center}
+.cta-block h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--paper);margin-bottom:12px}
+.cta-block p{font-size:15px;color:rgba(255,255,255,.65);margin-bottom:28px}
+.btn-primary{display:inline-block;padding:14px 32px;background:var(--terra);color:var(--paper);font-family:'Manrope',sans-serif;font-size:14px;font-weight:500;letter-spacing:.02em;border-radius:32px;box-shadow:0 4px 16px rgba(191,126,103,.3);transition:all .25s ease}
+.btn-primary:hover{background:var(--terra-dk);transform:translateY(-1px)}
+.cta-note{font-size:12px;color:rgba(255,255,255,.45);margin-top:12px;margin-bottom:0}
+
+/* Author */
+.author-block{margin-top:56px;padding-top:32px;border-top:1px solid var(--border);display:flex;align-items:center;gap:16px}
+.author-photo{width:64px;height:64px;border-radius:50%;flex-shrink:0;background-color:#D4A992;background-image:url('images/mark.webp');background-size:cover;background-position:center;border:1px solid var(--border)}
+.author-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--ink);margin-bottom:2px}
+.author-role{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);font-weight:500}
+
+footer{padding:40px 28px;text-align:center;background:var(--cream-2);border-top:1px solid var(--border)}
+.footer-line{font-size:13px;color:var(--warm-grey)}
+.footer-notice{max-width:600px;margin:16px auto 0;font-size:11px;line-height:1.65;color:#A8A099;text-align:left}
+
+@media(max-width:640px){
+  .wrap{padding:100px 20px 72px}
+  nav{padding:16px 20px}
+  .cta-block{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">
+    <svg class="brand-mark" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <circle cx="12" cy="11" r="1.6" fill="currentColor"/>
+    </svg>
+    LimenBridge
+  </a>
+</nav>
+
+<div class="wrap">
+
+  <p class="page-label">For therapists &amp; psychologists</p>
+  <h1>The gap between sessions<br><em>is where clients lose ground.</em></h1>
+
+  <p class="intro">Every therapist knows this pattern: a client does solid work in session — and comes back three days later having lost most of it. Not because the therapy isn't working. Because nothing holds the ground between sessions. LimenBridge is built for that gap.</p>
+
+  <!-- THE PROBLEM -->
+  <h2>The problem it solves</h2>
+
+  <p>168 hours in a week. One hour in the therapy room. That leaves 167 hours during which the nervous system defaults to its habitual baseline — often a baseline of chronic low-level alert.</p>
+
+  <div class="problem-block">
+    <p>"Between sessions, there is no structure. No predictable cue that tells the nervous system: you are safe now, the work continues. The body, left without that signal, reverts."</p>
+  </div>
+
+  <p>This between-session deterioration is well-documented in clinical literature. Clients return having partially or fully reset. Sessions begin with rebuilding rather than advancing. Progress slows.</p>
+
+  <p>LimenBridge addresses this directly — not by replacing therapy, but by providing daily nervous system support on the days you are not there.</p>
+
+  <!-- WHAT IT IS -->
+  <h2>What LimenBridge is</h2>
+
+  <p>A short daily audio program — morning and evening — built around the chronobiology of the autonomic nervous system.</p>
+
+  <div class="how-grid">
+    <div class="how-item">
+      <p class="how-label">Morning track</p>
+      <p>Works with the Cortisol Awakening Response — the natural hormonal shift 30–45 minutes after waking. Gentle, grounding, designed to give the activation a safe shape rather than suppress it.</p>
+    </div>
+    <div class="how-item">
+      <p class="how-label">Evening track</p>
+      <p>Supports the shift toward parasympathetic dominance. Slower, deeper. Helps the body complete the transition that accumulated tension and screen exposure tend to interrupt.</p>
+    </div>
+    <div class="how-item">
+      <p class="how-label">28-day structure</p>
+      <p>Grounded in UCL habit formation research (Lally et al.). The same 14 tracks repeated intentionally across 28 days — not for lack of material, but because the second listen happens with a nervous system that has already begun to change. Days 29–30 are a structured reflection pause, not a gap.</p>
+    </div>
+    <div class="how-item">
+      <p class="how-label">Mood tracking</p>
+      <p>A brief morning and evening check-in — a single score, an optional note. After day 4, a 28-day graph becomes visible. Clients can bring this to sessions as a simple record of their week.</p>
+    </div>
+  </div>
+
+  <!-- SCIENTIFIC BASIS -->
+  <h2>Scientific basis</h2>
+
+  <div class="science-list">
+    <div class="science-item">
+      <strong>Habit formation — Lally et al., UCL (2010)</strong>
+      <span>Automaticity in health behaviors develops over 18–254 days, with the steepest gains in the first weeks of consistent practice. The 28-day structure is built around this curve.</span>
+    </div>
+    <div class="science-item">
+      <strong>HRV and audio intervention</strong>
+      <span>Research supports the use of structured auditory stimuli in modulating autonomic tone and improving heart rate variability — a key marker of nervous system regulation.</span>
+    </div>
+    <div class="science-item">
+      <strong>Cortisol Awakening Response</strong>
+      <span>The CAR is a reproducible biological phenomenon. Morning interventions timed to this window have documented effects on perceived stress and daytime cortisol levels.</span>
+    </div>
+    <div class="science-item">
+      <strong>Between-session deterioration</strong>
+      <span>Clinically observed and documented across multiple modalities of psychotherapy. Structured between-session support has been shown to improve treatment outcomes and reduce regression.</span>
+    </div>
+  </div>
+
+  <!-- SAFETY -->
+  <h2>Safety and scope</h2>
+
+  <div class="safety-block">
+    <p><strong>LimenBridge is not a clinical tool.</strong> It does not diagnose, treat, or substitute for professional care.</p>
+    <p>It is a wellness audio program designed as structural support between sessions — analogous to a sleep hygiene practice or a breathing exercise, not to a therapeutic intervention.</p>
+    <p>It is not appropriate for clients in acute crisis, active suicidal ideation, or those requiring clinical stabilisation. For all other clients in ongoing therapy, it presents no contraindications we are aware of — but we encourage therapists to make that assessment themselves, which is precisely why we offer free access.</p>
+  </div>
+
+  <!-- FREE ACCESS -->
+  <div class="cta-block">
+    <h3>Try it yourself — free access for therapists.</h3>
+    <p>The tool only makes sense if the therapist understands it first. Full access, no time limit, no commitment. Honest feedback is all we ask for in return.</p>
+    <a href="/" class="btn-primary">Start free access</a>
+    <p class="cta-note">No credit card required · Full program access</p>
+  </div>
+
+  <!-- PARTNER PROGRAM -->
+  <div class="partner-block">
+    <h3>Partner program</h3>
+    <p>Therapists and psychologists who recommend LimenBridge to clients are eligible for a 30% recurring commission on every subscription that originates from their referral.</p>
+    <p>If free access leads to a conversation about recommending LimenBridge to clients, we can discuss the details then. No obligation at this stage.</p>
+    <p style="font-size:14px;color:var(--warm-grey)">To discuss the partner program, reply to the message you received — or write directly to <a href="mailto:mark@limenbridge.cc" style="color:var(--terra)">mark@limenbridge.cc</a></p>
+  </div>
+
+  <!-- AUTHOR -->
+  <div class="author-block">
+    <div class="author-photo" role="img" aria-label="Mark Vdovskikh"></div>
+    <div>
+      <p class="author-name">Mark Vdovskikh</p>
+      <p class="author-role">Founder, LimenBridge · Physician, 30 years in clinical practice</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-line">© 2026 LimenBridge · <a href="/" style="color:var(--warm-grey)">limenbridge.cc</a> · <a href="/privacy.html" style="color:var(--warm-grey)">Privacy Policy</a></div>
+  <div class="footer-notice">LimenBridge is a wellness audio program. It is not a medical device and has not been evaluated by the FDA or any regulatory authority. It is not intended to diagnose, treat, cure, or prevent any medical or psychological condition, and does not constitute a clinical tool or therapeutic intervention.</div>
+</footer>
+
+</body>
+</html>
