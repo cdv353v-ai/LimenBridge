@@ -433,7 +433,10 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     </svg>
     LimenBridge
   </a>
-  <a href="#" class="nav-cta" onclick="startFree();return false;">Try free</a>
+  <div style="display:flex;align-items:center;gap:20px">
+    <a href="/blog/" class="nav-cta">Blog</a>
+    <a href="#" class="nav-cta" onclick="startFree();return false;">Try free</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -918,7 +921,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     </div>
     <div id="modal-welcome-back" style="display:none;text-align:center;padding:1rem 0">
       <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">Welcome back</h3>
-      <p style="color:var(--muted)">We already have your account on file \u2014 picking up where you left off.</p>
+      <p style="color:var(--muted)">We already have your account on file — picking up where you left off.</p>
     </div>
   </div>
 </div>
@@ -998,7 +1001,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       </div>
       <div>
         <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Calendar reminder</p>
-        <p style="color:var(--muted);font-size:.95rem">No reminders yet? Return to the setup screen and add the calendar reminder \u2014 it adds a daily reminder to your calendar automatically.</p>
+        <p style="color:var(--muted);font-size:.95rem">No reminders yet? Return to the setup screen and add the calendar reminder — it adds a daily reminder to your calendar automatically.</p>
       </div>
       <div>
         <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Missed a day?</p>
@@ -1025,8 +1028,6 @@ const stripeInstance = Stripe(STRIPE_KEY);
 const API_URL = 'https://limenbridge-mailerlite.cdv353v.workers.dev';
 const MAILERLITE_GROUP_ID = '189792851698124588';
 
-// Fire-and-forget update of the server-side record. Failure is silent —
-// the local copy in localStorage remains the source of truth for this device.
 function syncUser(email, updates) {
   if (!email) return;
   fetch(API_URL + '/sync', {
@@ -1049,17 +1050,15 @@ function startCheckout(plan, btn) {
   window.location.href = email ? base + '?prefilled_email=' + email : base;
 }
 
-// Handle return from Stripe
 function handleStripeReturn() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('payment') === 'success') {
     const u = loadUser();
     if (u) {
-      u.plan = 'monthly'; // will be corrected by webhook in future; good enough for MVP
+      u.plan = 'monthly';
       saveUser(u);
       syncUser(u.email, { plan: 'monthly' });
     }
-    // Clean URL
     window.history.replaceState({}, '', '/');
   }
 }
@@ -1086,7 +1085,7 @@ function trialDay(u) { return daysSince(u.registeredAt) + 1; }
 
 function cyclePosition(u) {
   const d = daysSince(u.registeredAt) + 1;
-  return ((d - 1) % 30) + 1; // 1–30 within each 30-day cycle (28 active + 2 pause)
+  return ((d - 1) % 30) + 1;
 }
 
 function currentCycle(u) {
@@ -1095,11 +1094,11 @@ function currentCycle(u) {
 }
 
 function programDay(u) {
-  return Math.min(cyclePosition(u), 28); // 1–28
+  return Math.min(cyclePosition(u), 28);
 }
 
 function trackIndex(u) {
-  return ((programDay(u) - 1) % 14) + 1; // days 1–14 → tracks 1–14, days 15–28 → tracks 1–14
+  return ((programDay(u) - 1) % 14) + 1;
 }
 
 function deriveState(u) {
@@ -1111,7 +1110,7 @@ function deriveState(u) {
     if (u.annualOfferDismissed || u.plan === 'annual') return 'ACTIVE';
     if (pos === 29 || (pos === 30 && !u.reflectionQ2)) return 'REFLECTION_PAUSE';
     if (pos === 30 && u.reflectionQ2) return 'ANNUAL_OFFER';
-    return 'ACTIVE'; // day 31+ safety net
+    return 'ACTIVE';
   }
   if (trialDay(u) > 3) return 'TRIAL_ENDED';
   return 'TRIAL';
@@ -1207,9 +1206,6 @@ function handleCtaForm(e) {
   openModal(email);
 }
 
-// Entry point from every "Start free" / "Try free" CTA.
-// No email required to start \u2014 the trial begins immediately on this device.
-// Email is asked for later, mid-trial, framed as a reminder \u2014 not as account creation.
 function startFree() {
   let u = loadUser();
   if (!u) {
@@ -1221,7 +1217,6 @@ function startFree() {
       lastListened: { date: todayISO() }
     };
     saveUser(u);
-    // Fire-and-forget: count trial starts in KV
     fetch(API_URL + '/track-start', { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' }).catch(() => {});
   }
   route();
@@ -1242,7 +1237,7 @@ async function submitRegistration() {
   const btn = document.getElementById('reg-submit');
   btn.disabled = true; btn.textContent = 'Saving\u2026';
 
-  const local = loadUser(); // trial already in progress on this device (or null, edge case)
+  const local = loadUser();
 
   let result = null;
   try {
@@ -1254,8 +1249,6 @@ async function submitRegistration() {
     result = await resp.json();
   } catch {}
 
-  // Genuine cross-device case: this email already has a server record AND this
-  // device has no local progress of its own yet. Adopt the server record.
   if (result && result.status === 'existing' && (!local || !local.onboardingComplete)) {
     const r = result.user;
     const user = {
@@ -1277,9 +1270,6 @@ async function submitRegistration() {
     return;
   }
 
-  // Normal case: this device already has trial progress (onboarding answers,
-  // mood log, plan, registeredAt). We only attach the email \u2014 nothing local
-  // gets overwritten or reset.
   const user = local || {
     registeredAt: new Date().toISOString(),
     plan: 'free',
@@ -1331,7 +1321,7 @@ function renderObStep() {
     () => {
       el.innerHTML = `
         <h2 class="display" style="font-size:1.75rem;margin-bottom:.75rem">Welcome to LimenBridge</h2>
-        <p style="color:var(--muted);margin-bottom:2rem">To match the program to you, please answer a few short questions. 5 questions \u2014 about a minute.</p>
+        <p style="color:var(--muted);margin-bottom:2rem">To match the program to you, please answer a few short questions. 5 questions — about a minute.</p>
         <button class="btn btn-primary btn-full" onclick="obNext()">Let's go</button>
       `;
     },
@@ -1360,8 +1350,8 @@ function renderObStep() {
         <p class="eyebrow" style="margin-bottom:1.25rem">Question 3 of 4</p>
         <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">What bothers you most right now?</h3>
         ${[
-          ['Mornings \u2014 hard to start the day','morning'],
-          ['Evenings and sleep \u2014 hard to wind down','evening'],
+          ['Mornings — hard to start the day','morning'],
+          ['Evenings and sleep — hard to wind down','evening'],
           ['Everything equally','auto']
         ].map(([label, val]) => `
           <button class="option-btn${obAnswers.q3===val?' selected':''}" onclick="obSelect('q3','${val}',this)">${label}</button>
@@ -1442,7 +1432,7 @@ function generateICS(u, kinds) {
     lines.push(
       'BEGIN:VEVENT',
       `UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,
-      `SUMMARY:LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
+      `SUMMARY:LimenBridge — ${kind === 'morning' ? 'Morning' : 'Evening'} track`,
       `DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,
       'RRULE:FREQ=DAILY',
       'DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.',
@@ -1463,7 +1453,7 @@ function googleCalendarLink(u, kind) {
   const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
   const now = new Date();
   const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
-  const title = encodeURIComponent(`LimenBridge \u2014 ${kind === 'morning' ? 'Morning' : 'Evening'} track`);
+  const title = encodeURIComponent(`LimenBridge — ${kind === 'morning' ? 'Morning' : 'Evening'} track`);
   const details = encodeURIComponent('Your daily LimenBridge track. Open limenbridge.cc to listen.');
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}T${timeStr}00/${dateStr}T${timeStr}00&recur=RRULE:FREQ=DAILY&details=${details}`;
 }
@@ -1473,8 +1463,8 @@ function calendarButtonHTML(u) {
     return '<a href="' + googleCalendarLink(u,'morning') + '" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex;margin-bottom:.5rem">Add morning reminder</a>' +
            '<a href="' + googleCalendarLink(u,'evening') + '" target="_blank" class="btn btn-ghost btn-full" style="text-decoration:none;justify-content:center;display:flex">Add evening reminder</a>';
   }
-  return '<a href="' + generateICS(u,['morning','evening']) + '" download="limenbridge-reminders.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar \u2014 morning &amp; evening</a>' +
-         '<p style="color:var(--muted);font-size:.8rem;margin-top:.6rem;text-align:center">A file will download \u2014 open it to add both reminders to your calendar.</p>';
+  return '<a href="' + generateICS(u,['morning','evening']) + '" download="limenbridge-reminders.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar — morning &amp; evening</a>' +
+         '<p style="color:var(--muted);font-size:.8rem;margin-top:.6rem;text-align:center">A file will download — open it to add both reminders to your calendar.</p>';
 }
 
 function showRecommendation(u) {
@@ -1497,7 +1487,7 @@ function showRecommendation(u) {
     const timeLabel = isMorning ? morningTimeLabel : eveningTimeLabel;
     const whenLabel = isMorning ? 'tomorrow morning at ' + morningTimeLabel : 'this evening at ' + eveningTimeLabel;
     const desc = isMorning
-      ? "The morning track works with your body\u2019s natural rhythm \u2014 designed for the first 30 minutes after waking, not for the evening."
+      ? "The morning track works with your body's natural rhythm — designed for the first 30 minutes after waking, not for the evening."
       : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
     el.innerHTML =
       '<div class="fade-in">' +
@@ -1506,10 +1496,10 @@ function showRecommendation(u) {
       '<p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p>' +
       '<div class="card" style="margin-bottom:1.5rem">' +
       '<p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p>' +
-      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening \u2014 added to your calendar at once.</p>' +
+      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening — added to your calendar at once.</p>' +
       calendarButtonHTML(u) +
       '</div>' +
-      '<p style="margin-top:1.25rem;font-size:.9rem;color:var(--muted);text-align:center;line-height:1.6">Or simply come back at ' + timeLabel + ' without the calendar.<br>LimenBridge remembers you \u2014 your track will be waiting.</p>' +
+      '<p style="margin-top:1.25rem;font-size:.9rem;color:var(--muted);text-align:center;line-height:1.6">Or simply come back at ' + timeLabel + ' without the calendar.<br>LimenBridge remembers you — your track will be waiting.</p>' +
       '<button class="btn btn-ghost btn-full" style="margin-top:1.25rem" onclick="route()">Go to site</button>' +
       '</div>';
   } else {
@@ -1524,7 +1514,7 @@ function showRecommendation(u) {
       '<p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p>' +
       '<div class="card" style="margin-bottom:1.5rem">' +
       '<p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p>' +
-      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening \u2014 added to your calendar at once.</p>' +
+      '<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening — added to your calendar at once.</p>' +
       calendarButtonHTML(u) +
       '</div>' +
       '<button class="btn btn-primary btn-full" onclick="route()">Start now</button>' +
@@ -1554,7 +1544,7 @@ function renderApp(u) {
          <p style="font-size:.88rem;color:var(--muted);margin:0">Want a reminder before your free days end?</p>
          <div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0">
            <button class="btn btn-ghost" style="padding:.4rem .9rem;font-size:.82rem" onclick="openModal()">Add email</button>
-           <button onclick="dismissEmailPrompt()" title="Dismiss" style="background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1;padding:.25rem">\u00d7</button>
+           <button onclick="dismissEmailPrompt()" title="Dismiss" style="background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1;padding:.25rem">&times;</button>
          </div>
        </div>`
     : '';
@@ -1563,7 +1553,7 @@ function renderApp(u) {
     ${emailBanner}
     <p style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem">${greeting(u.name)}</p>
     <div class="player-card fade-in">
-      <div class="track-label">${kind === 'morning' ? 'Morning' : 'Evening'} track \u00b7 Day ${pDay}</div>
+      <div class="track-label">${kind === 'morning' ? 'Morning' : 'Evening'} track &middot; Day ${pDay}</div>
       <div class="waveform-player" id="player-wave" style="margin:1rem 0">
         ${'<span style="height:20px"></span>'.repeat(18)}
       </div>
@@ -1572,11 +1562,11 @@ function renderApp(u) {
           <path id="play-path" d="M8 5v14l11-7z"/>
         </svg>
       </button>
-      <p style="font-size:.78rem;color:var(--muted);margin-top:-.5rem">Tap to play \u00b7 tap again to pause</p>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:-.5rem">Tap to play &middot; tap again to pause</p>
       <div class="progress-wrap" style="margin:0 auto;max-width:320px">
         <div class="progress-fill" id="track-progress" style="width:0%"></div>
       </div>
-      <div class="track-status" id="track-status">${listened ? '\u2713 Listened today' : ''}</div>
+      <div class="track-status" id="track-status">${listened ? '&#10003; Listened today' : ''}</div>
     </div>
 
     <div class="day-prog">
@@ -1584,18 +1574,18 @@ function renderApp(u) {
       <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/28*100).toFixed(1)}%"></div></div>
     </div>
 
-    ${streak >= 2 ? `<div style="margin-top:1.25rem"><span class="streak-badge">\uD83D\uDD25 ${streak} days in a row</span></div>` : ''}
+    ${streak >= 2 ? `<div style="margin-top:1.25rem"><span class="streak-badge">&#128293; ${streak} days in a row</span></div>` : ''}
 
     <div style="margin-top:2.5rem">
       <h3 class="display" style="font-size:1.2rem;margin-bottom:.25rem">Your progress</h3>
-      <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem">Morning &amp; evening mood \u00b7 28 days</p>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem">Morning &amp; evening mood &middot; 28 days</p>
       <div class="graph-wrap">
         <canvas id="mood-graph" width="640" height="180" style="width:100%;height:180px;display:block;border-radius:var(--radius)"></canvas>
         ${u.plan === 'free' ? `
         <div class="graph-locked">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2C2623" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Your graph starts on day 4. Keep going.</p>
-          <button class="btn btn-primary" onclick="startCheckout('monthly',this)" style="font-size:.85rem;padding:10px 20px">Unlock full access \u2014 $19/mo</button>
+          <button class="btn btn-primary" onclick="startCheckout('monthly',this)" style="font-size:.85rem;padding:10px 20px">Unlock full access &mdash; $19/mo</button>
         </div>` : ''}
       </div>
     </div>
@@ -1616,7 +1606,7 @@ function setupAudio(url, kind, u) {
     document.getElementById('track-progress').style.width = pct.toFixed(1) + '%';
     if (pct >= 80 && !hasListenedToday(u, kind)) {
       markListened(u, kind);
-      document.getElementById('track-status').textContent = '\u2713 Listened today';
+      document.getElementById('track-status').textContent = '✓ Listened today';
       showMoodSection(kind, u);
     }
   };
@@ -1660,7 +1650,7 @@ function showMoodSection(kind, u) {
       <div class="field" style="margin-top:1.25rem">
         <label class="eyebrow" for="mood-note">${q2} <span style="color:var(--muted)">(optional)</span></label>
         <p style="font-size:.78rem;color:var(--muted);margin-top:.35rem;margin-bottom:.5rem">Your notes stay on this device. We can't read them.</p>
-        <input type="text" id="mood-note" class="input" maxlength="100" placeholder="\u2026"/>
+        <input type="text" id="mood-note" class="input" maxlength="100" placeholder="..."/>
       </div>
       <button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="saveMood('${kind}')">Save</button>
     </div>
@@ -1681,7 +1671,7 @@ function saveMood(kind) {
     u.moodLog.push({ date: todayISO(), time: kind, score: selectedMoodScore, note: note || undefined });
     saveUser(u);
   }
-  document.getElementById('mood-section').innerHTML = `<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Saved \u2713</p>`;
+  document.getElementById('mood-section').innerHTML = `<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Saved ✓</p>`;
   selectedMoodScore = null;
 }
 
@@ -1750,7 +1740,7 @@ function drawGraph(u) {
 function renderReflectionPause(u) {
   const el = document.getElementById('app-content');
   const pos = cyclePosition(u);
-  const pauseDay = pos - 28; // 1 or 2
+  const pauseDay = pos - 28;
   const cycle = currentCycle(u);
   const isDay1 = pauseDay === 1;
   const question = isDay1
@@ -1818,12 +1808,10 @@ function dismissAnnualOffer() {
   route();
 }
 
-// TRIAL ENDED
-// ═══════════════════════════════════════════
 function renderTrialEnded(u) {
   const count = u.moodLog.length + (u.lastListened ? Object.keys(u.lastListened).filter(k => k !== 'date' && u.lastListened[k]).length : 0);
   document.getElementById('trial-ended-msg').textContent =
-    `You showed up ${count} time${count !== 1 ? 's' : ''}. That\u2019s not nothing. Your account stays open \u2014 your notes are still here. Ready to continue?`;
+    `You showed up ${count} time${count !== 1 ? 's' : ''}. That's not nothing. Your account stays open — your notes are still here. Ready to continue?`;
 }
 
 // ═══════════════════════════════════════════
@@ -1847,12 +1835,8 @@ async function registerSW() {
     const reg = await navigator.serviceWorker.register('/sw.js');
     console.log('SW registered');
     window._swReg = reg;
-
-    // Init Firebase Messaging
     const app = firebase.initializeApp(FB_CONFIG);
     fbMessaging = firebase.messaging();
-
-    // Foreground push handler
     fbMessaging.onMessage(payload => {
       const { title, body } = payload.data || {};
       if (Notification.permission === 'granted') {
@@ -1902,9 +1886,9 @@ function showInstallPrompt() {
     banner.innerHTML = `
       <div style="flex:1">
         <p style="font-size:.9rem;font-weight:500;margin-bottom:.25rem">Add to your home screen</p>
-        <p style="font-size:.8rem;color:#8C827A;line-height:1.5">Tap <strong style="color:#B87963">Share</strong> \u2192 <strong style="color:#B87963">Add to Home Screen</strong> to get daily reminders on your phone.</p>
+        <p style="font-size:.8rem;color:#8C827A;line-height:1.5">Tap <strong style="color:#B87963">Share</strong> &rarr; <strong style="color:#B87963">Add to Home Screen</strong> to get daily reminders on your phone.</p>
       </div>
-      <button onclick="document.getElementById('ios-install-banner').remove()" style="background:none;border:none;color:#8C827A;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">\u00d7</button>
+      <button onclick="document.getElementById('ios-install-banner').remove()" style="background:none;border:none;color:#8C827A;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">&times;</button>
     `;
     document.body.appendChild(banner);
   }, 3000);
