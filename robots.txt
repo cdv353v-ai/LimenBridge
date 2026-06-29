@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /therapists.html
+
+Sitemap: https://limenbridge.cc/sitemap.xml
