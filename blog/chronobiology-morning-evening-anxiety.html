@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Why Morning Meditation Doesn't Work at Night: The Chronobiology of Anxiety — LimenBridge</title>
-<meta name="description" content="Sound reaches the nervous system faster than thought. Why timing matters more than content — and why the same track at 7am and 10pm produces opposite effects."/>
-<meta property="og:title" content="Why Morning Meditation Doesn't Work at Night: The Chronobiology of Anxiety"/>
-<meta property="og:description" content="Sound reaches the nervous system faster than thought. Why timing matters more than content when regulating anxiety."/>
+<title>The 167 Hours Problem: Why Therapy Progress Disappears Between Sessions — LimenBridge</title>
+<meta name="description" content="One hour a week with a therapist. What happens to the nervous system during the other 167? A physician's reflection on the gap between sessions."/>
+<meta property="og:title" content="The 167 Hours Problem: Why Therapy Progress Disappears Between Sessions"/>
+<meta property="og:description" content="One hour a week with a therapist. What happens to the nervous system during the other 167?"/>
 <meta property="og:type" content="article"/>
-<meta property="og:url" content="https://limenbridge.cc/blog/chronobiology-morning-evening-anxiety.html"/>
-<link rel="canonical" href="https://limenbridge.cc/blog/chronobiology-morning-evening-anxiety.html"/>
+<meta property="og:url" content="https://limenbridge.cc/blog/167-hours-therapy-gap.html"/>
+<link rel="canonical" href="https://limenbridge.cc/blog/167-hours-therapy-gap.html"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -29,28 +29,34 @@
 html,body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;font-weight:300;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
+/* Nav */
 nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
 .logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;letter-spacing:.04em;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
 .brand-mark{display:inline-block;width:22px;height:14px;color:var(--terra);vertical-align:-3px;flex-shrink:0}
 .nav-cta{font-size:12px;letter-spacing:.08em;color:var(--terra);border-bottom:1px solid var(--terra);padding-bottom:2px}
 
+/* Article layout */
 .article-wrap{max-width:680px;margin:0 auto;padding:120px 28px 96px}
+
+/* Header */
 .article-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:18px}
 h1{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,44px);font-weight:400;line-height:1.18;color:var(--ink);margin-bottom:24px;letter-spacing:-.005em}
 h1 em{font-style:italic;color:var(--terra)}
 .article-meta{font-size:13px;color:var(--warm-grey);margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid var(--border)}
 
+/* Body */
 .article-body p{font-size:17px;line-height:1.85;color:var(--ink-soft);margin-bottom:24px}
 .article-body p.opening{font-family:'Cormorant Garamond',serif;font-size:23px;font-style:italic;font-weight:400;color:var(--ink);line-height:1.5;margin-bottom:32px}
 .article-body blockquote{border-left:2px solid var(--terra);padding:20px 24px;margin:32px 0;background:var(--cream-2);border-radius:0 4px 4px 0}
 .article-body blockquote p{font-family:'Cormorant Garamond',serif;font-size:21px;font-style:italic;color:var(--ink);margin-bottom:0;line-height:1.5}
-.article-body h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--ink);margin:40px 0 16px;line-height:1.3}
 
+/* Author */
 .author-block{margin-top:56px;padding-top:32px;border-top:1px solid var(--border);display:flex;align-items:center;gap:16px}
 .author-photo{width:64px;height:64px;border-radius:50%;flex-shrink:0;background-color:#D4A992;background-image:url('../images/mark.webp');background-size:cover;background-position:center;border:1px solid var(--border)}
 .author-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--ink);margin-bottom:2px}
 .author-role{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);font-weight:500}
 
+/* CTA block */
 .article-cta{margin-top:56px;padding:40px 36px;background:var(--cream-2);border-radius:6px;border:1px solid var(--border);text-align:center}
 .article-cta h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--ink);margin-bottom:12px}
 .article-cta p{font-size:15px;color:var(--ink-soft);margin-bottom:24px}
@@ -58,9 +64,11 @@ h1 em{font-style:italic;color:var(--terra)}
 .btn-primary:hover{background:var(--terra-dk);transform:translateY(-1px)}
 .cta-note{font-size:12px;color:var(--warm-grey);margin-top:10px;margin-bottom:0}
 
+/* Back link */
 .back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--warm-grey);margin-bottom:32px;transition:color .2s}
 .back-link:hover{color:var(--terra)}
 
+/* Footer */
 footer{padding:40px 28px;text-align:center;background:var(--cream-2);border-top:1px solid var(--border)}
 .footer-line{font-size:13px;color:var(--warm-grey)}
 
@@ -80,7 +88,10 @@ footer{padding:40px 28px;text-align:center;background:var(--cream-2);border-top:
     </svg>
     LimenBridge
   </a>
-  <a href="/" class="nav-cta">Try free</a>
+  <div style="display:flex;align-items:center;gap:20px">
+    <a href="/science.html" class="nav-cta">Science</a>
+    <a href="/" class="nav-cta">Try free</a>
+  </div>
 </nav>
 
 <article class="article-wrap">
@@ -89,45 +100,35 @@ footer{padding:40px 28px;text-align:center;background:var(--cream-2);border-top:
     ← All articles
   </a>
 
-  <p class="article-label">Science · Chronobiology</p>
-  <h1>Why Morning Meditation<br><em>Doesn't Work at Night</em></h1>
+  <p class="article-label">From the founder</p>
+  <h1>The 167 Hours Problem:<br><em>Why Therapy Progress Disappears Between Sessions</em></h1>
   <p class="article-meta">By Mark Vdovskikh · Founder, LimenBridge · Physician, 30 years in clinical practice</p>
 
   <div class="article-body">
 
-    <p class="opening">Sound reaches the nervous system faster than thought. Before the brain even processes meaning, the auditory system has already begun shifting the body's state.</p>
+    <p class="opening">A patient came in for a session. Chronic back pain, three months of working together, and real, visible progress. At the very end, as she was buttoning her coat, she turned to me and said: "The hardest part isn't the pain anymore. It's Sunday evening before the next appointment. I just don't know what to do with myself."</p>
 
-    <p>Heart rate, muscle tension, breath patterns — these change in response to frequency and rhythm before any conscious decision is made. This is not a matter of psychological preference. It is pure biology.</p>
+    <p>In that moment, I felt the limitations of our medical system acutely. What could I do right there in the office? Suggest standard self-regulation techniques? Write a prescription? Schedule an extra appointment? These were all partial answers. The real problem lay deeper — in the autopilot of the autonomic nervous system, which, outside the clinic walls, immediately drags the body back into its habitual survival mode.</p>
 
-    <h2>Two different nervous systems</h2>
-
-    <p>As a physician, I spent thirty years observing how the body handles stress. One thing became clear early on: the morning nervous system and the evening nervous system are two completely different physiological states.</p>
-
-    <p>Cortisol naturally peaks 30–45 minutes after waking. This is the Cortisol Awakening Response — a biological mechanism that prepares the body for action, sharpens attention, and mobilises energy. It is not stress. It is the body shifting into the day.</p>
+    <p>She left, and I was left thinking about that Sunday evening. About the 167 hours between one weekly session and the next. About what actually happens to the physiology in that large, empty space.</p>
 
     <blockquote>
-      <p>"By evening, the parasympathetic system is supposed to take over — if the day's overload hasn't completely hijacked it."</p>
+      <p>"The clinic is a safe island. But how do you survive the open sea between those islands?"</p>
     </blockquote>
 
-    <p>By evening, the body is ready to shift into recovery. The parasympathetic nervous system — the branch responsible for rest, digestion, and repair — begins to assert itself. But accumulated tension, screens, and the residue of the day's demands disrupt that transition. The body stays in a state of low-level alert when it should be winding down.</p>
+    <p>The answer isn't willpower. You can understand everything intellectually during therapy — the patterns, the triggers, the history. But the nervous system is deeply habitual. If the body is still firing old stress responses on a biological level during the week, you experience a setback. The insights don't disappear, but the felt sense of them does. That's not failure. That's physiology.</p>
 
-    <h2>Why generic audio tools often fail</h2>
+    <p>I spent years trying to understand what the gap actually does to the nervous system. Why some people cross it intact and others don't. Why the same anxiety that was manageable on Tuesday is unbearable by Sunday.</p>
 
-    <p>Most audio wellness tools are built for a generic moment. A single meditation, a breathing exercise, a sleep story — effective in the right context, counterproductive in the wrong one.</p>
+    <p>The answer is simpler than I expected. Between sessions, there is no structure. No predictable cue that tells the nervous system: you are safe now, the work continues. The body, left without that signal, defaults to its baseline — which for most people in therapy is a baseline of chronic low-level alert.</p>
 
-    <p>A track designed to activate and energise at 7am can interfere with the parasympathetic transition at 10pm. The nervous system requires different biological cues at different times of the day. Giving it the same input regardless of context is the equivalent of drinking coffee to help you sleep.</p>
+    <p>I realized there were hundreds of meditation apps and journaling tools available. But nothing was built specifically around the actual chronobiology of the nervous system — nothing that understood where the body is at 7am versus 10pm, and responded to that difference with precision.</p>
 
-    <p>This is why timing matters more than content. The same information — the same frequency, the same rhythm — lands differently depending on where the nervous system is when it arrives.</p>
+    <p>Nothing acted as a structural support system between sessions.</p>
 
-    <h2>What chronobiology-based support looks like</h2>
+    <p>So I decided to build it. That is how LimenBridge came to exist — not as a health-tech startup, but as the engineering solution I needed for that patient on that Sunday evening.</p>
 
-    <p>LimenBridge is built around this principle. Two specific audio tracks a day, engineered to match where your nervous system actually is — not where you wish it were.</p>
-
-    <p>The morning track works with the natural rise of the Cortisol Awakening Response: gentle, grounding, no sharp transitions. Not fighting the activation, but giving it a safe shape.</p>
-
-    <p>The evening track supports the shift toward parasympathetic dominance: slower, deeper, designed to help the body complete the transition the day tried to interrupt.</p>
-
-    <p>It is not a philosophy. It is not a distraction. It is a predictable, daily bridge that helps the body move from survival mode back to safety — twice a day, at the moments that matter most.</p>
+    <p>It is not a replacement for therapy. It is a bridge between sessions — designed to help the body hold its ground so the mind can actually heal.</p>
 
   </div>
 
@@ -140,8 +141,8 @@ footer{padding:40px 28px;text-align:center;background:var(--cream-2);border-top:
   </div>
 
   <div class="article-cta">
-    <h3>Morning and evening, matched to your biology.</h3>
-    <p>A short daily audio program built around the chronobiology of the nervous system. Try it free for three days.</p>
+    <h3>The next session is still six days away.</h3>
+    <p>Start your free three days. A short morning and evening audio program built for the hours between sessions.</p>
     <a href="/" class="btn-primary">Try free for 3 days</a>
     <p class="cta-note">No credit card · Cancel anytime</p>
   </div>
