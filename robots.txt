@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /therapists.html
-Disallow: /science.html
 
 Sitemap: https://limenbridge.cc/sitemap.xml
