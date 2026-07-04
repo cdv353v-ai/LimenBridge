@@ -352,6 +352,25 @@ section p:last-child{margin-bottom:0}
 .testimonial-attr{padding-left:8px;font-size:13px;color:var(--warm-grey);letter-spacing:.04em}
 .testimonial-attr strong{color:var(--ink);font-weight:500}
 
+/* ── Testimonial grid 2x2 (collapsible cards) ── */
+.testimonial-grid{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.t-card{background:var(--paper);border:1px solid var(--border);border-radius:6px;position:relative;overflow:hidden}
+.t-card > summary{list-style:none;cursor:pointer;display:block;padding:30px 28px 24px;position:relative}
+.t-card > summary::-webkit-details-marker{display:none}
+.t-quote{position:absolute;top:14px;left:20px;font-family:'Cormorant Garamond',serif;font-size:48px;line-height:1;color:var(--terra);opacity:.3;font-weight:400}
+.t-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;font-weight:400;line-height:1.55;color:var(--ink);margin:14px 0 0;position:relative;max-height:7.4em;overflow:hidden;transition:max-height .35s ease}
+.t-text::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.4em;background:linear-gradient(to bottom,rgba(255,253,251,0),var(--paper));transition:opacity .2s}
+.t-card[open] .t-text{max-height:60em}
+.t-card[open] .t-text::after{opacity:0}
+.t-more{margin-top:14px;font-size:12px;letter-spacing:.04em;color:var(--terra);font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.t-more::after{content:"+";font-size:16px;line-height:1;font-weight:300}
+.t-card[open] .t-more::after{content:"–"}
+.t-card[open] .t-more .more-label{display:none}
+.t-card[open] .t-more .less-label{display:inline}
+.t-more .less-label{display:none}
+.t-attr{padding:0 28px 26px;font-size:13px;color:var(--warm-grey);letter-spacing:.04em}
+.t-attr strong{color:var(--ink);font-weight:500}
+
 /* ── Before you start (for / not for + FAQ) ── */
 .before-start{background:var(--cream);border-top:1px solid var(--border)}
 .filter-grid{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:56px}
@@ -416,6 +435,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
   .product-copy{text-align:left}
   .mark-story p.opening{font-size:19px}
   .testimonial-card{padding:32px 24px 28px}
+  .testimonial-grid{grid-template-columns:1fr;gap:16px}
 }
 </style>
 </head>
@@ -691,28 +711,75 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 <!-- TESTIMONIAL -->
 <section class="testimonial">
   <div class="container">
-    <p class="section-label">From an early user</p>
+    <p class="section-label">From early users</p>
     <h2>What people say<br><em>after a few days.</em></h2>
 
-    <div class="testimonial-card">
-      <span class="quote-mark">"</span>
-      <p class="testimonial-text" style="font-size:18px;line-height:1.7">
-        Four days ago I didn't know I'd miss the music. I'm not in therapy.
-        But something has shifted. The first evening I missed the track —
-        got caught up with the settings. When I finally put it on, my eyes
-        closed by themselves. I can't remember the last time I fell asleep
-        that quickly. The second morning started with music. The whole day
-        felt easier. By the evening I didn't wait for the reminder — I just
-        turned it on. On the fourth morning there was no track — just an
-        offer to continue. And I genuinely missed it. I'm not in therapy.
-        I'm just someone who likes to begin and end the day with the right
-        music. Everything is already chosen for you. You just press play.
-        And one more thing — each day you rate your mood. The graph tracks
-        how you're feeling. I want to see mine.
-      </p>
-      <p class="testimonial-attr">
-        <strong>Olga</strong> · After four days
-      </p>
+    <div class="testimonial-grid">
+
+      <details class="t-card">
+        <summary>
+          <span class="t-quote">"</span>
+          <p class="t-text">
+            Four days ago I didn't know I'd miss the music. I'm not in therapy.
+            But something has shifted. The first evening I missed the track —
+            got caught up with the settings. When I finally put it on, my eyes
+            closed by themselves. I can't remember the last time I fell asleep
+            that quickly. The second morning started with music. The whole day
+            felt easier. By the evening I didn't wait for the reminder — I just
+            turned it on. On the fourth morning there was no track — just an
+            offer to continue. And I genuinely missed it. I'm not in therapy.
+            I'm just someone who likes to begin and end the day with the right
+            music. Everything is already chosen for you. You just press play.
+            And one more thing — each day you rate your mood. The graph tracks
+            how you're feeling. I want to see mine.
+          </p>
+          <span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span>
+        </summary>
+        <p class="t-attr"><strong>Olga</strong> · After four days</p>
+      </details>
+
+      <details class="t-card">
+        <summary>
+          <span class="t-quote">"</span>
+          <p class="t-text">
+            I'll keep this short. It's a tiny tool for a very specific problem.
+            Morning or evening, you know you'll drift off peacefully and wake
+            up ready for the day. Like a good friend who's always there when
+            you need a hand, never intruding.
+          </p>
+          <span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span>
+        </summary>
+        <p class="t-attr"><strong>Sophia</strong> · London</p>
+      </details>
+
+      <details class="t-card">
+        <summary>
+          <span class="t-quote">"</span>
+          <p class="t-text">
+            Every night, the noise of the day swirls around in my head. At two
+            in the morning, you're on edge, and the last thing you want to do
+            is choose a track. Here, it plays for a couple of minutes, and then
+            there's silence, and I finally fall asleep.
+          </p>
+          <span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span>
+        </summary>
+        <p class="t-attr"><strong>Nora</strong> · Birmingham</p>
+      </details>
+
+      <details class="t-card">
+        <summary>
+          <span class="t-quote">"</span>
+          <p class="t-text">
+            I paid for a month, and if I want to skip the next one, I can just
+            cancel it, no strings attached. I get a reminder on my calendar,
+            click a button in my browser, and zone out for five minutes. No
+            scrolling through playlists — that's exactly what my brain needed.
+          </p>
+          <span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span>
+        </summary>
+        <p class="t-attr"><strong>Anthony</strong> · Toronto</p>
+      </details>
+
     </div>
   </div>
 </section>
