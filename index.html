@@ -1304,8 +1304,8 @@ function renderObStep() {
     () => {
       el.innerHTML = `
         <p class="eyebrow" style="margin-bottom:1.25rem">Question 1 of 4</p>
-        <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">Are you currently working with a psychotherapist or psychologist?</h3>
-        ${['Yes, regularly','Sometimes / on and off','No, but interested'].map(o => `
+        <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">What made you look for something like this?</h3>
+        ${['Anxiety through the day','Hard to wind down at night','Mornings start tense','I just want daily structure'].map(o => `
           <button class="option-btn${obAnswers.q1===o?' selected':''}" onclick="obSelect('q1','${o}',this)">${o}</button>
         `).join('')}
         <button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q1?'disabled':''} id="ob-next-1">Continue</button>
