@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LimenBridge — Daily support between psychotherapy sessions</title>
-<meta name="description" content="A daily audio program for people who work with a psychotherapist. Morning and evening tracks, mood journal, 28-day progress graph."/>
+<title>LimenBridge — Daily nervous system support</title>
+<meta name="description" content="A morning and evening audio programme that trains your nervous system out of survival mode. 28 days. No account required."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -239,7 +239,7 @@ input[type=time]:focus{border-color:var(--accent)}
 /* ── Landing nav (fixed, overrides in-flow app nav) ── */
 #screen-landing > nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
 #screen-landing .logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;letter-spacing:.04em;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.nav-cta{font-size:12px;letter-spacing:.08em;color:var(--terra);text-decoration:none;border-bottom:1px solid var(--terra);padding-bottom:2px}
+.nav-cta{font-size:19px;letter-spacing:.01em;color:var(--ink);text-decoration:none;font-family:'Cormorant Garamond',serif;font-weight:400}
 
 /* ── Hero ── */
 .hero{padding-top:64px;background:var(--cream)}
@@ -328,7 +328,8 @@ section p:last-child{margin-bottom:0}
 .day-flow-item:first-child{border-top:none;padding-top:4px}
 .day-flow-label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:10px}
 .day-flow-item p:last-child{font-size:15.5px;line-height:1.75;color:var(--ink-soft);margin-bottom:0}
-.day-flow-item p em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink);font-size:1.05em}
+.day-flow-item p em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink);font-size:1.1em;vertical-align:baseline}
+.day-flow-item p{font-family:'Manrope',sans-serif}
 .day-flow-item.highlight{background:var(--cream-2);padding:22px 22px 24px;margin-top:8px;border-top:none;border-left:3px solid var(--terra);border-radius:0 4px 4px 0}
 .day-flow-item.highlight .day-flow-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;letter-spacing:.02em;text-transform:none;color:var(--ink);font-weight:400}
 
@@ -441,18 +442,18 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 
 <!-- HERO -->
 <section class="hero">
-  <!-- images/hero.webp — terrace, pool, sea view -->
   <div class="hero-image"></div>
   <div class="hero-content">
-    <span class="tagline">A safe space</span>
+    <span class="tagline">Daily nervous system support</span>
     <h1 class="hero-title">
-      One hour a week<br>
-      with a therapist.<br>
-      <em>The other 167 are yours.</em>
+      Your body reads threat<br>
+      before you've opened<br>
+      <em>your eyes.</em>
     </h1>
     <p class="hero-body">
-      A morning and evening audio program for the days between sessions —
-      when what you worked on in that room is still settling in your body.
+      LimenBridge is a daily audio programme that helps your nervous system
+      shift out of survival mode. A few minutes in the morning and evening —
+      over 28 days.
     </p>
     <a href="#" class="btn-primary" onclick="startFree();return false;">Try free for 3 days</a>
     <span class="hero-note">No credit card · Cancel anytime</span>
@@ -466,29 +467,30 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     <h2>Two states.<br><em>Two tracks.</em></h2>
     <p>
       The way you feel throughout the day isn't random. It follows a biological
-      logic. LimenBridge is built around it: the morning track and the evening
-      track are different, because morning and evening are different states of
-      your body.
+      pattern. LimenBridge is built around that pattern — morning and evening
+      tracks are different because your body is in a different state at each
+      end of the day.
     </p>
     <div class="time-grid">
       <div class="time-card morning">
         <div class="time-icon">☼</div>
         <p class="time-label">Morning</p>
-        <h3>So the day doesn't start with anxiety already waiting</h3>
+        <h3>So the day doesn't begin with anxiety already waiting</h3>
         <p>
-          About thirty minutes after waking, the body shifts out of sleep and
-          into the day. This is a natural rise — not stress. The morning track
-          is gentle, no sharp sounds. It works with that moment.
+          Around thirty minutes after waking, your body shifts from sleep into
+          the day. That's a natural transition — not a stress response. The
+          morning track is quiet and grounding. It works with that moment
+          rather than against it.
         </p>
       </div>
       <div class="time-card evening">
         <div class="time-icon">☾</div>
         <p class="time-label">Evening</p>
-        <h3>So you fall asleep lighter</h3>
+        <h3>So sleep comes more easily</h3>
         <p>
-          By evening the body is ready to shift into recovery. But accumulated
-          tension, screens, and news disrupt that. The evening track is slower,
-          deeper. It helps the shift happen.
+          By evening your body is ready to wind down. But tension, screens,
+          and the noise of the day often get in the way. The evening track
+          is slower and deeper. It helps the transition happen.
         </p>
       </div>
     </div>
@@ -496,11 +498,10 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 </section>
 
 <!-- IMAGE BREAK -->
-<!-- images/door.webp — open door onto the sea (threshold) -->
 <div class="img-break">
   <div class="floor-quote">
     <p class="floor-quote-text">
-      "What you worked on in that room is still in your body."
+      "Your body can learn safety. It just needs a consistent signal."
     </p>
     <p class="floor-quote-attr">Mark Vdovskikh</p>
   </div>
@@ -585,45 +586,45 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       <!-- copy -->
       <div class="product-copy">
         <p class="section-label">One day with LimenBridge</p>
-        <h2>The right thing<br><em>at the right time.</em></h2>
+        <h2>The right track<br><em>at the right moment.</em></h2>
         <p>
-          When you're anxious or tired, choosing what to listen to is one more
-          effort. LimenBridge removes that choice: the right thing arrives at
-          the right time.
+          When you're anxious or tired, even deciding what to listen to takes
+          effort. LimenBridge removes that decision — the right track is there
+          when you need it.
         </p>
 
         <div class="day-flow">
           <div class="day-flow-item">
             <p class="day-flow-label">Your morning</p>
             <p>
-              Your calendar reminds you — at the time you chose during setup.
+              Your calendar reminds you at the time you set during setup.
               Open the track. A few minutes. Afterwards, one simple question:
-              <em>How are you right now?</em> Not a journal entry, not an
-              analysis — just a note to yourself.
+              <em>How are you right now?</em> Not a journal entry — just a
+              brief note to yourself.
             </p>
           </div>
           <div class="day-flow-item">
             <p class="day-flow-label">During the day</p>
             <p>
-              The whole day is yours. Work, people you care about — everything
-              that makes up an ordinary life.
+              The rest of the day is yours. Work, the people who matter —
+              ordinary life.
             </p>
           </div>
           <div class="day-flow-item">
             <p class="day-flow-label">Your evening</p>
             <p>
-              Your calendar reminds you again. A track and one short question:
-              <em>How did the day go?</em> Two minutes, no more.
+              Your calendar reminds you again. A track, and one short question:
+              <em>How did the day go?</em> Two minutes, nothing more.
             </p>
           </div>
           <div class="day-flow-item highlight">
             <p class="day-flow-label">28 days</p>
             <p>
-              LimenBridge remembers your answers. Not to judge or analyze.
-              To show you, four weeks in, a simple graph: how your state shifted
-              morning and evening, day by day. On day 29, there's no track.
-              Your nervous system needs space to register what shifted.
-              That's not a gap — it's part of the program.
+              LimenBridge keeps your answers — not to judge, but to show you
+              something useful four weeks in: a simple graph of how your state
+              shifted morning and evening, day by day. On day 29 there's no
+              track. Your nervous system needs a pause to consolidate what's
+              changed. That pause is part of the programme.
             </p>
           </div>
         </div>
@@ -634,7 +635,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
             <line x1="1" y1="6" x2="15" y2="6"/>
             <circle cx="3" cy="4.5" r="0.5" fill="currentColor"/>
           </svg>
-          Works in your browser. Nothing to install.
+          Works in your browser. Nothing to download or install.
         </p>
       </div>
 
@@ -649,37 +650,32 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     <h2>Why this exists</h2>
 
     <p class="opening">
-      A few years ago, I couldn't sleep properly. I'd lie there staring at the
-      ceiling, replaying the day over and over. Strange, considering I help
-      people with anxiety every day. But I couldn't fix my own.
+      A few years ago I couldn't sleep. I'd lie awake replaying the day —
+      which was strange, given that helping people with anxiety is what I do.
+      But I couldn't seem to fix my own.
     </p>
 
     <p>
-      One evening my wife said, <em>"Listen, I found something — breathing
-      exercises with specific music, guided by a voice."</em> I was skeptical.
-      But within a week, sleep started coming back.
+      One evening my wife mentioned something she'd found — breathing exercises
+      with specific music. I was sceptical. Within a week, sleep started
+      coming back.
     </p>
 
     <p>
-      And here's what really struck me. I work with people who are in therapy.
-      An hour a week — real work, real breakthroughs. Then the session ends,
-      and they're on their own. We did the math — that's roughly 167 hours
-      until the next one.
+      Over thirty years of working with people, I kept seeing the same thing:
+      someone finds a practice, a tool, some support — and then they're on
+      their own in the gap. No structure. Nothing to signal that things are
+      okay. Tension creeps back in the evenings. Mornings feel heavy.
+      Thoughts won't settle.
     </p>
 
     <p>
-      And in those hours, the same thing happens that happened to me. Anxiety
-      creeps back in the evening. Mornings feel heavy. Thoughts won't let go.
-    </p>
-
-    <p>
-      Therapy isn't meant to fill all that time — that's not its job. But
-      between sessions, people need something to hold onto. The thing that
-      helped me.
+      People need something to hold the nervous system steady through that gap.
+      The same thing that helped me.
     </p>
 
     <p style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--ink); margin-top: 28px;">
-      That's how LimenBridge came to be.
+      That's why LimenBridge exists.
     </p>
 
     <div class="mark-signature">
@@ -701,20 +697,18 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     <div class="testimonial-card">
       <span class="quote-mark">"</span>
       <p class="testimonial-text" style="font-size:18px;line-height:1.7">
-        Four days ago, I didn't know I'd miss music. I'm not in therapy. But
-        something has changed in four days. The first evening, while I was
-        figuring out the settings, I missed the track's time. But when I
-        turned it on, my eyes closed on their own. I can't remember the last
-        time I fell asleep so quickly. The morning of the second day started
-        with music. The whole day passed in a state of awakening. In the
-        evening, I no longer waited for a reminder — I turned it on myself.
-        On the morning of the fourth day, there was no track. There was a
-        message instead — an offer to continue. And I really missed this
-        morning and evening music. I'm not in therapy. I'm just someone who
-        likes to greet and see out the day with the right music. Everything
-        is already selected — you just turn it on and listen. And one more
-        thing: each day you note your mood at the bottom. The graph records
-        your state. I want to see my graph.
+        Four days ago I didn't know I'd miss the music. I'm not in therapy.
+        But something has shifted. The first evening I missed the track —
+        got caught up with the settings. When I finally put it on, my eyes
+        closed by themselves. I can't remember the last time I fell asleep
+        that quickly. The second morning started with music. The whole day
+        felt easier. By the evening I didn't wait for the reminder — I just
+        turned it on. On the fourth morning there was no track — just an
+        offer to continue. And I genuinely missed it. I'm not in therapy.
+        I'm just someone who likes to begin and end the day with the right
+        music. Everything is already chosen for you. You just press play.
+        And one more thing — each day you rate your mood. The graph tracks
+        how you're feeling. I want to see mine.
       </p>
       <p class="testimonial-attr">
         <strong>Olga</strong> · After four days
@@ -728,23 +722,24 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
   <div class="container">
     <h2>Before you start</h2>
     <p>
-      LimenBridge is built for a specific moment. It works best when you know
-      who it's for — and who it isn't.
+      LimenBridge is designed for a specific kind of person. It works best
+      when you know whether that's you.
     </p>
 
     <div class="filter-grid">
       <div class="filter-card for">
-        <p class="filter-label">For</p>
+        <p class="filter-label">It's for</p>
         <p>
-          People in psychotherapy who want gentle structure between sessions —
-          a way to hold the work in the body when the room is no longer there.
+          People who want daily structure for their nervous system — something
+          reliable to return to, morning and evening, day in, day out.
         </p>
       </div>
       <div class="filter-card notfor">
-        <p class="filter-label">Not for</p>
+        <p class="filter-label">It's not for</p>
         <p>
-          Acute crisis or active suicidal ideation. If you are in distress,
-          please reach out to your therapist or your local emergency services.
+          Anyone in acute crisis or experiencing suicidal thoughts. If that's
+          where you are right now, please reach out to a professional or your
+          local emergency services.
         </p>
       </div>
     </div>
@@ -754,60 +749,42 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     <div class="faq-list">
 
       <details class="faq-item">
-        <summary>Should I tell my therapist I'm using this?</summary>
-        <div class="faq-body">
-          <p>
-            Yes — and we'd encourage it. Your therapist knows your rhythm and
-            can give you the most useful feedback on whether LimenBridge is
-            helping, or whether your time between sessions might be better
-            spent another way.
-          </p>
-        </div>
-      </details>
-
-      <details class="faq-item">
         <summary>How is this different from Calm or Headspace?</summary>
         <div class="faq-body">
           <p>
-            Calm and Headspace are general meditation apps — meditation, sleep
-            stories, gratitude practices, breath work, focus music. They're
-            built for anyone, for any moment.
+            Calm and Headspace are broad platforms — meditation, sleep stories,
+            breathwork, focus music. Something for everyone, any time of day.
           </p>
           <p>
-            LimenBridge does one thing: it supports your nervous system on the
-            days between psychotherapy sessions, with a structured morning and
-            evening track that follows the body's biological rhythm. No menus,
-            no choices to make — the right track arrives at the right time.
+            LimenBridge does one thing: a structured morning and evening track,
+            timed to your body's natural rhythms. No library to browse, no
+            decisions to make — the right track is simply there when it's time.
           </p>
         </div>
       </details>
 
       <details class="faq-item">
-        <summary>What's actually inside the program?</summary>
+        <summary>What's actually inside the programme?</summary>
         <div class="faq-body">
           <p>
-            A 28-day cycle of morning and evening audio sessions, each built on
-            guided breathing and specific musical structures timed to your
-            body's natural rhythms.
+            A 28-day cycle of morning and evening audio sessions built around
+            guided breathing and music structured to work with your body's
+            natural rhythms.
           </p>
           <p>
-            The program uses 14 tracks, listened to twice — not because we ran
-            out of material. The second listen happens with a nervous system
-            that has already started to change. Research on habit formation
-            shows the largest gains in automaticity happen in the first weeks;
-            by day 28, the pattern is consolidating, not just beginning. The
-            same track lands differently when you're different.
+            The programme uses 14 tracks, heard twice. Not because we ran
+            short of material — but because the second time you hear a track,
+            your nervous system has already begun to shift. The same audio
+            lands differently when you're in a different state.
           </p>
           <p>
-            On days 29 and 30, there are no tracks. Two short reflection
-            questions instead. Your nervous system needs space to register what
-            shifted before the next cycle begins. This is how consolidation
-            works — the change happens during the doing, and settles in the
-            pause.
+            Days 29 and 30 have no tracks — just two short reflection
+            questions. A pause for your nervous system to register what's
+            changed before the next cycle begins.
           </p>
           <p>
-            You also get a progress graph that opens on day four — 28 days of
-            morning and evening mood, visible day by day.
+            From day four, a progress graph opens — 28 days of morning and
+            evening mood, laid out day by day.
           </p>
         </div>
       </details>
@@ -816,21 +793,21 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
         <summary>Where is my data stored?</summary>
         <div class="faq-body">
           <p>
-            Your listening history and mood check-ins are stored locally, on
-            your device. We don't keep a database of them, sell data, or run
-            ads. If you switch devices or clear your browser, that history
-            won't carry over — a synced version is on our roadmap.
+            Your listening history and mood ratings are stored locally on your
+            device. We don't hold a database, sell data, or run ads. If you
+            change devices or clear your browser, that history won't transfer —
+            syncing across devices is on our roadmap.
           </p>
         </div>
       </details>
 
       <details class="faq-item">
-        <summary>What if it doesn't help me?</summary>
+        <summary>What if it doesn't work for me?</summary>
         <div class="faq-body">
           <p>
-            The first three days are free, with no card required — that's
-            specifically so you can find out without committing. After that,
-            you can cancel at any time directly from your account.
+            The first three days are free with no card required — so you can
+            find out before committing to anything. After that, you can cancel
+            whenever you like.
           </p>
         </div>
       </details>
@@ -867,10 +844,9 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 
 <!-- FOOTER CTA -->
 <section class="footer-cta">
-  <!-- images/sunset.webp — sunset over water -->
   <div class="footer-cta-image"></div>
   <div class="footer-cta-content">
-    <h2>The next session<br><em>is still six days away.</em></h2>
+    <h2>Your next calm morning<br><em>is three days away.</em></h2>
     <p>Start your free three days. No card. No commitment.</p>
     <a href="#" class="btn-primary" onclick="startFree();return false;">Start free</a>
   </div>
@@ -970,7 +946,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       </div>
       <p style="color:var(--muted);font-size:.85rem;margin-top:1.25rem">Your data won't be deleted if you wait. Try it — full refund within 7 days.</p>
       <div class="card" style="margin-top:1.75rem;text-align:left;padding:1.25rem 1.5rem">
-        <p style="font-size:.92rem;line-height:1.6;font-style:italic;color:var(--fg);margin-bottom:.5rem">"I really missed this morning and evening music all day. Everything is already selected — you just turn it on and listen."</p>
+        <p style="font-size:.92rem;line-height:1.6;font-style:italic;color:var(--fg);margin-bottom:.5rem">"I genuinely missed this morning and evening music. Everything is already chosen — you just press play."</p>
         <p style="font-size:.8rem;color:var(--muted)">— Olga, after four days</p>
       </div>
       <p style="margin-top:1.5rem"><a href="#" onclick="goHome();return false;" style="color:var(--muted);font-size:.85rem;text-decoration:underline;text-underline-offset:2px">Learn more about LimenBridge</a></p>
@@ -987,7 +963,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 <div id="modal-help" class="modal-overlay" onclick="closeHelp(event)">
   <div class="modal-box fade-in" onclick="event.stopPropagation()" style="max-width:480px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-      <h3 class="display" style="font-size:1.3rem">How your program works</h3>
+      <h3 class="display" style="font-size:1.3rem">How your programme works</h3>
       <button onclick="closeHelp()" style="background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:.25rem">×</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:1.25rem">
@@ -1005,7 +981,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       </div>
       <div>
         <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Missed a day?</p>
-        <p style="color:var(--muted);font-size:.95rem">That's fine. LimenBridge remembers where you are. Come back whenever you're ready — your program continues from where you left off.</p>
+        <p style="color:var(--muted);font-size:.95rem">That's fine. LimenBridge remembers where you are. Come back whenever you're ready — your programme continues from where you left off.</p>
       </div>
     </div>
     <button class="btn btn-ghost btn-full" style="margin-top:1.75rem" onclick="closeHelp()">Got it</button>
@@ -1321,7 +1297,7 @@ function renderObStep() {
     () => {
       el.innerHTML = `
         <h2 class="display" style="font-size:1.75rem;margin-bottom:.75rem">Welcome to LimenBridge</h2>
-        <p style="color:var(--muted);margin-bottom:2rem">To match the program to you, please answer a few short questions. 5 questions — about a minute.</p>
+        <p style="color:var(--muted);margin-bottom:2rem">To match the programme to you, please answer a few short questions. 5 questions — about a minute.</p>
         <button class="btn btn-primary btn-full" onclick="obNext()">Let's go</button>
       `;
     },
@@ -1338,7 +1314,7 @@ function renderObStep() {
     () => {
       el.innerHTML = `
         <p class="eyebrow" style="margin-bottom:1.25rem">Question 2 of 4</p>
-        <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">How often do you feel anxious between sessions?</h3>
+        <h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">How often do you feel anxious or on edge during the day?</h3>
         ${['Rarely','Sometimes','Often','Almost always'].map(o => `
           <button class="option-btn${obAnswers.q2===o?' selected':''}" onclick="obSelect('q2','${o}',this)">${o}</button>
         `).join('')}
@@ -1510,7 +1486,7 @@ function showRecommendation(u) {
     el.innerHTML =
       '<div class="fade-in">' +
       '<p class="eyebrow" style="color:var(--accent-soft);margin-bottom:1rem">Based on your answers</p>' +
-      '<h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Let\'s start with the ' + kindLabel + ' program.</h2>' +
+      '<h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Let\'s start with the ' + kindLabel + ' programme.</h2>' +
       '<p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p>' +
       '<div class="card" style="margin-bottom:1.5rem">' +
       '<p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p>' +
@@ -1752,7 +1728,7 @@ function renderReflectionPause(u) {
       <div class="card fade-in" style="margin-bottom:1.5rem;text-align:center">
         <p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Cycle ${cycle} · Day ${28 + pauseDay}</p>
         <h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">No track today.</h2>
-        <p style="color:var(--muted);font-size:.95rem;line-height:1.65">Your nervous system is consolidating what shifted over 28 days. This is part of the program — not a gap in it.</p>
+        <p style="color:var(--muted);font-size:.95rem;line-height:1.65">Your nervous system is consolidating what shifted over 28 days. This is part of the programme — not a gap in it.</p>
       </div>
       <div class="card fade-in">
         <p style="font-size:1rem;line-height:1.65;margin-bottom:1.25rem">${question.text}</p>
@@ -1791,7 +1767,7 @@ function renderAnnualOffer(u) {
         <p style="font-size:.95rem;line-height:1.7">Four complete cycles. Four consolidation pauses. One year.</p>
       </div>
       <div class="card fade-in" style="text-align:center">
-        <p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Annual program</p>
+        <p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Annual programme</p>
         <p style="font-size:2rem;font-family:'Cormorant Garamond',serif;font-weight:400;margin-bottom:.25rem">$163 / year</p>
         <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem">$13.60 per month · Cancel anytime</p>
         <button class="btn btn-primary btn-full" onclick="startCheckout('annual',this)" style="margin-bottom:.75rem">Continue with annual</button>
