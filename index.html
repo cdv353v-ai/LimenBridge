@@ -19,7 +19,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
 <style>
-/* ── Reset & base ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100vh;background:#F4F1EA;color:#2C2623;font-family:'Jost',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 html{scroll-behavior:smooth}
@@ -30,46 +29,14 @@ button{font-family:'Jost',sans-serif;cursor:pointer;border:none;background:none}
 input,textarea{font-family:'Jost',sans-serif;color:#2C2623}
 a{color:inherit;text-decoration:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-
-/* ── Tokens ── */
 :root{
-  --bg:#F4F1EA;
-  --surface:#ECE6DC;
-  --accent:#C98A73;
-  --accent-soft:#B87963;
-  --fg:#2C2623;
-  --muted:#8C827A;
-  --border:#E3DDD3;
-  --success:#6E9072;
-  --card-morning:#E2DFEB;
-  --card-evening:#DFE3DB;
-  --radius:6px;
-  --narrow:680px;
-  --cream:#F4F1EA;
-  --cream-2:#ECE6DA;
-  --paper:#FFFDFB;
-  --ink:#2C2620;
-  --ink-soft:#4A3F35;
-  --warm-grey:#8C827A;
-  --terra:#C98A73;
-  --terra-dk:#B87963;
-  --peach:#F2DCC0;
-  --peach-soft:#F8E8D5;
-  --clay:#B58068;
-  --clay-soft:#D4A992;
+  --bg:#F4F1EA;--surface:#ECE6DC;--accent:#C98A73;--accent-soft:#B87963;--fg:#2C2623;--muted:#8C827A;--border:#E3DDD3;--success:#6E9072;--radius:6px;--narrow:680px;
+  --cream:#F4F1EA;--cream-2:#ECE6DA;--paper:#FFFDFB;--ink:#2C2620;--ink-soft:#4A3F35;--warm-grey:#8C827A;--terra:#C98A73;--terra-dk:#B87963;--peach:#F2DCC0;--peach-soft:#F8E8D5;--clay:#B58068;--clay-soft:#D4A992;
 }
-
-/* ── Layout ── */
 .wrap{max-width:var(--narrow);margin-inline:auto;padding-inline:1.25rem}
 .screen{display:none;min-height:100vh}
 .screen.active{display:block}
-
-/* ── Typography ── */
 .eyebrow{color:var(--muted);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
-.hero-h1{font-size:clamp(1.9rem,5vw,3rem);margin-bottom:1.5rem}
-.section-h2{font-size:clamp(1.5rem,4vw,2rem);margin-bottom:1rem}
-
-/* ── Buttons ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 28px;border-radius:var(--radius);font-size:1rem;font-weight:500;transition:background 200ms,opacity 200ms,border-color 200ms;cursor:pointer;border:none}
 .btn-primary{background:var(--accent);color:var(--fg)}
 .btn-primary:hover{background:var(--accent-soft)}
@@ -77,98 +44,35 @@ a{color:inherit;text-decoration:none}
 .btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--border)}
 .btn-ghost:hover{border-color:var(--accent-soft)}
 .btn-full{width:100%}
-
-/* ── Form elements ── */
 .field{display:block;margin-bottom:.85rem}
 .field label{display:block;margin-bottom:.35rem}
 .input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;color:var(--fg);outline:none;font-size:1rem;transition:border-color 200ms}
 .input:focus{border-color:var(--accent)}
 .input::placeholder{color:var(--muted)}
-
-/* ── Card ── */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem}
-.card-accent{border-color:var(--accent)}
-
-/* ── Animations ── */
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn 350ms ease both}
-@keyframes waveAnim{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.4)}}
-
-/* ── Modal ── */
+@keyframes barPulse{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.25);opacity:.9}}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:1.25rem;z-index:100;opacity:0;pointer-events:none;transition:opacity 250ms}
 .modal-overlay.open{opacity:1;pointer-events:all}
 .modal-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;max-width:420px;width:100%}
-
-/* ── Trust line ── */
 .trust{margin-top:.75rem;font-size:.82rem;color:var(--muted);text-align:center}
-
-/* ── Waveform ── */
-.waveform-svg{display:block;width:100%;max-width:520px;margin:0 auto;overflow:visible}
-.waveform-svg .bar{transform-origin:center;animation:barPulse 2.4s ease-in-out infinite}
-@keyframes barPulse{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.25);opacity:.9}}
-.waveform-svg .bar:nth-child(1){animation-delay:0s}
-.waveform-svg .bar:nth-child(2){animation-delay:.08s}
-.waveform-svg .bar:nth-child(3){animation-delay:.16s}
-.waveform-svg .bar:nth-child(4){animation-delay:.24s}
-.waveform-svg .bar:nth-child(5){animation-delay:.32s}
-.waveform-svg .bar:nth-child(6){animation-delay:.4s}
-.waveform-svg .bar:nth-child(7){animation-delay:.48s}
-.waveform-svg .bar:nth-child(8){animation-delay:.56s}
-.waveform-svg .bar:nth-child(9){animation-delay:.64s}
-.waveform-svg .bar:nth-child(10){animation-delay:.72s}
-.waveform-svg .bar:nth-child(11){animation-delay:.8s}
-.waveform-svg .bar:nth-child(12){animation-delay:.72s}
-.waveform-svg .bar:nth-child(13){animation-delay:.64s}
-.waveform-svg .bar:nth-child(14){animation-delay:.56s}
-.waveform-svg .bar:nth-child(15){animation-delay:.48s}
-.waveform-svg .bar:nth-child(16){animation-delay:.4s}
-.waveform-svg .bar:nth-child(17){animation-delay:.32s}
-.waveform-svg .bar:nth-child(18){animation-delay:.24s}
-.waveform-svg .bar:nth-child(19){animation-delay:.16s}
-.waveform-svg .bar:nth-child(20){animation-delay:.08s}
-.waveform-svg .bar:nth-child(21){animation-delay:0s}
-.waveform-svg .bar:nth-child(22){animation-delay:.08s}
-.waveform-svg .bar:nth-child(23){animation-delay:.16s}
-.waveform-svg .bar:nth-child(24){animation-delay:.24s}
-.waveform-svg .bar:nth-child(25){animation-delay:.32s}
 .waveform-player{display:flex;align-items:center;justify-content:center;gap:3px;height:40px}
 .waveform-player span{display:inline-block;width:3px;background:var(--accent);border-radius:2px;opacity:.6;transform-origin:center}
 .waveform-player.playing span{animation:barPulse 1.4s ease-in-out infinite}
 .waveform-player.playing span:nth-child(2n){animation-delay:.1s}
 .waveform-player.playing span:nth-child(3n){animation-delay:.2s}
 .waveform-player.playing span:nth-child(5n){animation-delay:.35s}
-
-/* ── Progress bar ── */
 .progress-wrap{height:2px;background:var(--border);border-radius:2px;width:100%;overflow:hidden}
 .progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 500ms linear}
-
-/* ── Mood scale ── */
 .mood-scale{display:flex;gap:.5rem;flex-wrap:wrap}
 .mood-btn{flex:1;min-width:44px;padding:.65rem .5rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:1rem;transition:border-color 200ms,color 200ms,background 200ms;cursor:pointer}
 .mood-btn:hover,.mood-btn.selected{border-color:var(--accent);color:var(--fg);background:rgba(201,138,115,.12)}
-
-/* ── Graph ── */
 .graph-wrap{position:relative;margin-top:1.25rem}
-.graph-locked{position:absolute;inset:0;background:rgba(244,241,234,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;border-radius:var(--radius);backdrop-filter:blur(3px)}
-.graph-locked svg{opacity:.5}
-
-/* ── Timeline ── */
-.timeline{list-style:none;border-left:1px solid var(--border);padding-left:1.5rem}
-.timeline li{margin-bottom:1.75rem;position:relative}
-.timeline li::before{content:'';position:absolute;left:-1.65rem;top:.45rem;width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
-
-/* ── Streak ── */
 .streak-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(201,138,115,.15);border:1px solid rgba(201,138,115,.3);border-radius:20px;padding:.35rem .9rem;font-size:.85rem;color:var(--accent-soft)}
-
-/* ── Step indicator ── */
 .steps{display:flex;gap:.4rem;justify-content:center;margin-bottom:2rem}
 .step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background 250ms}
 .step-dot.active{background:var(--accent)}
-
-/* ── Pricing ── */
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem}
-
-/* ── Player card ── */
 .player-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:2rem;text-align:center}
 .play-btn{width:72px;height:72px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;margin:1.5rem auto;cursor:pointer;transition:background 200ms,transform 100ms;border:none}
 .play-btn:hover{background:var(--accent-soft)}
@@ -176,31 +80,15 @@ a{color:inherit;text-decoration:none}
 .play-btn svg{pointer-events:none}
 .track-label{font-size:.8rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
 .track-status{font-size:.82rem;color:var(--success);margin-top:.75rem;min-height:1.2rem}
-
-/* ── Day progress ── */
 .day-prog{margin-top:1.75rem}
 .day-prog-label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:.4rem}
-
-/* ── Sections ── */
 .section{padding-top:80px;padding-bottom:80px}
 @media(max-width:640px){.section{padding-top:48px;padding-bottom:48px}}
-
-/* ── How it works grid ── */
-.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1.5rem}
-
-/* ── Founder ── */
-.founder-row{display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap}
 .founder-photo{width:88px;height:88px;border-radius:50%;background:var(--surface);border:1px solid var(--border);background-image:url(founder.jpg);background-size:cover;background-position:center;flex-shrink:0}
-
-/* ── Footer ── */
 footer{padding:2rem 0;color:var(--muted);font-size:.82rem}
-
-/* ── Nav ── */
 nav{padding:1.5rem 0 1rem}
 .nav-inner{display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:'Playfair Display',serif;font-size:1.4rem;letter-spacing:.01em}
-
-/* ── Onboarding ── */
 .onboard-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem}
 .onboard-card{width:100%;max-width:520px}
 .option-btn{width:100%;text-align:left;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--fg);font-size:1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color 200ms,background 200ms}
@@ -209,32 +97,19 @@ nav{padding:1.5rem 0 1rem}
 .time-row .field{flex:1;min-width:140px}
 input[type=time]{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;color:var(--fg);font-size:1rem;width:100%;outline:none}
 input[type=time]:focus{border-color:var(--accent)}
-
-/* ── Trial ended ── */
-.trial-ended{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem;text-align:center}
-
-/* ── Stripe loading state ── */
 .btn-loading{opacity:.6;cursor:default;pointer-events:none}
-
-/* ── Scrollbar ── */
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 
-/* ════════════════════════════════════════════════════════
-   LANDING REDESIGN v4
-   ════════════════════════════════════════════════════════ */
-
+/* ── Landing ── */
 #screen-landing{font-family:'Manrope',sans-serif;font-weight:300}
 #screen-landing button{font-family:'Manrope',sans-serif}
-
 .brand-mark{display:inline-block;width:22px;height:14px;color:var(--terra);vertical-align:-3px;flex-shrink:0}
 .brand-mark.lg{width:32px;height:20px}
 .brand-mark.sm{width:16px;height:10px}
-
 #screen-landing > nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
 #screen-landing .logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;letter-spacing:.04em;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
 .nav-cta{font-size:19px;letter-spacing:.01em;color:var(--ink);text-decoration:none;font-family:'Cormorant Garamond',serif;font-weight:400}
-
 .hero{padding-top:64px;background:var(--cream)}
 .hero-image{width:100%;height:58vh;min-height:360px;background-image:linear-gradient(160deg,rgba(242,220,192,.25) 0%,rgba(180,128,104,.15) 100%),url('images/hero.webp');background-size:cover;background-position:center;background-color:var(--peach-soft);position:relative}
 .hero-image::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,var(--cream) 100%)}
@@ -244,10 +119,8 @@ input[type=time]:focus{border-color:var(--accent)}
 .hero-title em{font-style:italic;color:var(--terra)}
 .hero-body{font-size:16px;line-height:1.75;color:var(--ink-soft);max-width:540px;margin-bottom:36px}
 .hero-note{display:block;margin-top:14px;font-size:13px;color:var(--warm-grey)}
-
 #screen-landing .btn-primary{display:inline-block;padding:16px 36px;background:var(--terra);color:var(--paper);font-family:'Manrope',sans-serif;font-size:14px;font-weight:500;letter-spacing:.02em;text-decoration:none;border-radius:32px;box-shadow:0 4px 16px rgba(191,126,103,.18);transition:all .25s ease}
 #screen-landing .btn-primary:hover{background:var(--terra-dk);transform:translateY(-1px);box-shadow:0 6px 20px rgba(191,126,103,.28)}
-
 section{padding:96px 28px}
 .container{max-width:640px;margin:0 auto}
 .section-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:18px}
@@ -255,7 +128,6 @@ section{padding:96px 28px}
 #screen-landing h2 em{font-style:italic;color:var(--terra)}
 section p{font-size:16px;line-height:1.78;color:var(--ink-soft);margin-bottom:18px}
 section p:last-child{margin-bottom:0}
-
 .biology{background:var(--cream-2)}
 .time-grid{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .time-card{padding:40px 30px;border-radius:6px;position:relative;overflow:hidden}
@@ -273,12 +145,10 @@ section p:last-child{margin-bottom:0}
 .time-card p{font-size:15px;line-height:1.7;margin-bottom:0}
 .time-card.morning p{color:var(--ink-soft)}
 .time-card.evening p{color:var(--peach-soft);opacity:.95}
-
 .img-break{height:70vh;min-height:480px;background-image:url('images/door.webp');background-size:cover;background-position:center;background-color:var(--clay);position:relative}
 .floor-quote{position:absolute;top:50%;left:4%;transform:translateY(-50%);width:36%;max-width:300px;background:rgba(248,240,224,.92);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);padding:24px 24px 22px;border-left:2px solid var(--terra);box-shadow:0 8px 24px rgba(44,30,20,.18);text-align:left}
 .floor-quote-text{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.8vw,23px);font-style:italic;font-weight:500;color:#2B1810;line-height:1.4;margin-bottom:14px}
 .floor-quote-attr{font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--terra);font-weight:600}
-
 .product{background:var(--cream);border-top:1px solid var(--border)}
 .product-layout{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
 .phone-frame{width:100%;max-width:290px;margin:0 auto;background:#0E0D0C;border-radius:38px;padding:10px;box-shadow:0 24px 60px rgba(44,30,20,.28),0 6px 14px rgba(44,30,20,.1);position:relative}
@@ -287,7 +157,6 @@ section p:last-child{margin-bottom:0}
 .app-topbar{display:flex;align-items:flex-start;justify-content:space-between;padding:0 4px 0;margin-bottom:18px}
 .app-logo-wrap{display:flex;align-items:center;gap:5px}
 .app-logo{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--ink);font-weight:500;line-height:1;letter-spacing:.01em}
-.app-trial{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);line-height:1.1;margin-left:2px;font-weight:600}
 .app-help{width:18px;height:18px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--warm-grey)}
 .app-greeting{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink-soft);font-weight:400;margin-bottom:14px;padding:0 4px}
 .app-track-card{background:linear-gradient(160deg,var(--peach-soft) 0%,var(--peach) 100%);border-radius:16px;padding:18px 14px 16px;text-align:center;margin-bottom:18px}
@@ -306,11 +175,9 @@ section p:last-child{margin-bottom:0}
 .app-your-progress{padding:0 4px}
 .app-your-progress h4{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ink);font-weight:500;margin-bottom:4px}
 .app-your-progress-sub{font-size:9px;color:var(--warm-grey);margin-bottom:12px}
-.app-lock{text-align:center;padding:12px 0 8px}
-.app-lock-icon{width:24px;height:24px;margin:0 auto 8px;border:1.2px solid var(--warm-grey);border-radius:4px;position:relative}
-.app-lock-icon::before{content:"";position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:12px;height:8px;border:1.2px solid var(--warm-grey);border-bottom:none;border-radius:6px 6px 0 0;margin-bottom:-1px}
-.app-lock-text{font-size:9px;color:var(--warm-grey);line-height:1.4;max-width:200px;margin:0 auto}
-
+.app-graph-preview{padding:8px 4px}
+.app-graph-bars{display:flex;align-items:flex-end;gap:2px;height:36px}
+.app-graph-bar{flex:1;border-radius:1px 1px 0 0;opacity:.7}
 #screen-landing .product-copy h2{margin-bottom:20px}
 .day-flow{margin-top:32px;display:flex;flex-direction:column;gap:0}
 .day-flow-item{padding:20px 0;border-top:1px solid var(--border)}
@@ -321,7 +188,6 @@ section p:last-child{margin-bottom:0}
 .day-flow-item p{font-family:'Manrope',sans-serif}
 .day-flow-item.highlight{background:var(--cream-2);padding:22px 22px 24px;margin-top:8px;border-top:none;border-left:3px solid var(--terra);border-radius:0 4px 4px 0}
 .day-flow-item.highlight .day-flow-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;letter-spacing:.02em;text-transform:none;color:var(--ink);font-weight:400}
-
 .mark-story{background:var(--cream-2)}
 .mark-inner{max-width:620px;margin:0 auto}
 .mark-story p{font-size:16.5px;line-height:1.85;margin-bottom:20px}
@@ -331,14 +197,7 @@ section p:last-child{margin-bottom:0}
 .mark-sig-line{flex:1}
 .mark-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--ink);margin-bottom:2px}
 .mark-role{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);font-weight:500}
-
 .testimonial{background:var(--cream);border-top:1px solid var(--border)}
-.testimonial-card{margin-top:36px;padding:40px 36px;background:var(--paper);border-radius:6px;border:1px solid var(--border);position:relative}
-.quote-mark{position:absolute;top:18px;left:24px;font-family:'Cormorant Garamond',serif;font-size:64px;line-height:1;color:var(--terra);opacity:.35;font-weight:400}
-.testimonial-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:400;line-height:1.55;color:var(--ink);margin:16px 0 22px;padding-left:8px}
-.testimonial-attr{padding-left:8px;font-size:13px;color:var(--warm-grey);letter-spacing:.04em}
-.testimonial-attr strong{color:var(--ink);font-weight:500}
-
 .testimonial-grid{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .t-card{background:var(--paper);border:1px solid var(--border);border-radius:6px;position:relative;overflow:hidden}
 .t-card > summary{list-style:none;cursor:pointer;display:block;padding:30px 28px 24px;position:relative}
@@ -356,7 +215,6 @@ section p:last-child{margin-bottom:0}
 .t-more .less-label{display:none}
 .t-attr{padding:0 28px 26px;font-size:13px;color:var(--warm-grey);letter-spacing:.04em}
 .t-attr strong{color:var(--ink);font-weight:500}
-
 .before-start{background:var(--cream);border-top:1px solid var(--border)}
 .filter-grid{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:56px}
 .filter-card{padding:30px 26px;border-radius:6px;background:var(--paper);border:1px solid var(--border)}
@@ -366,7 +224,6 @@ section p:last-child{margin-bottom:0}
 .filter-card.for .filter-label{color:var(--terra)}
 .filter-card.notfor .filter-label{color:var(--warm-grey)}
 .filter-card p{font-size:15px;line-height:1.7;color:var(--ink-soft);margin-bottom:0}
-
 .faq-list{margin-top:12px;border-top:1px solid var(--border)}
 .faq-item{border-bottom:1px solid var(--border)}
 .faq-item summary{list-style:none;cursor:pointer;padding:22px 0;font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:16px;transition:color .2s}
@@ -377,7 +234,6 @@ section p:last-child{margin-bottom:0}
 .faq-body{padding:0 0 22px;font-size:15px;line-height:1.75;color:var(--ink-soft)}
 .faq-body p{margin-bottom:12px;font-size:15px}
 .faq-body p:last-child{margin-bottom:0}
-
 .pricing{background:var(--cream-2)}
 .price-grid{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .price-card{background:var(--paper);padding:40px 28px;border-radius:6px;border:1px solid var(--border);position:relative;text-align:center}
@@ -392,67 +248,47 @@ section p:last-child{margin-bottom:0}
 .price-card.featured .btn-outline{background:var(--terra);color:var(--paper)}
 .price-card.featured .btn-outline:hover{background:var(--terra-dk);border-color:var(--terra-dk)}
 .pricing-note{margin-top:32px;font-size:13px;color:var(--warm-grey);text-align:center}
-
 .footer-cta{padding:0;background:var(--cream)}
 .footer-cta-image{height:50vh;min-height:320px;background-image:url('images/sunset.webp');background-size:cover;background-position:center;background-color:var(--clay);position:relative}
 .footer-cta-image::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,var(--cream) 100%)}
 .footer-cta-content{max-width:560px;margin:-60px auto 0;padding:48px 28px 96px;text-align:center;position:relative;z-index:2}
 #screen-landing .footer-cta-content h2{margin-bottom:20px}
 .footer-cta-content p{max-width:420px;margin:0 auto 32px}
-
 footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border-top:1px solid var(--border)}
 .footer-line{font-size:13px;color:var(--warm-grey);margin-bottom:16px}
 .footer-notice{max-width:600px;margin:16px auto 0;font-size:11px;line-height:1.65;color:#A8A099;text-align:left}
 
-/* ════════════════════════════════════════════════════════
-   SANDBOX SCREEN
-   ════════════════════════════════════════════════════════ */
+/* ── Sandbox ── */
 #screen-sandbox{font-family:'Manrope',sans-serif;font-weight:300;background:var(--cream)}
-#screen-sandbox nav{position:sticky;top:0;left:0;width:100%;z-index:100;padding:16px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+#screen-sandbox nav{position:sticky;top:0;left:0;width:100%;z-index:100;padding:16px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
 #screen-sandbox .logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;letter-spacing:.04em;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
 .sandbox-wrap{max-width:680px;margin:0 auto;padding:48px 28px 80px}
-
-/* Gallery steps */
 .sandbox-intro{margin-bottom:52px}
 .sandbox-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,36px);font-weight:400;color:var(--ink);line-height:1.22;margin-bottom:16px}
 .sandbox-intro h2 em{font-style:italic;color:var(--terra)}
 .sandbox-intro p{font-size:15px;line-height:1.78;color:var(--ink-soft)}
-
 .sandbox-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:52px}
 .sandbox-step{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--paper)}
-.sandbox-step-header{display:flex;align-items:center;gap:16px;padding:20px 24px;cursor:default}
+.sandbox-step-header{display:flex;align-items:center;gap:16px;padding:20px 24px}
 .sandbox-step-num{width:28px;height:28px;border-radius:50%;background:var(--terra);color:var(--paper);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Manrope',sans-serif}
 .sandbox-step-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--ink)}
 .sandbox-step-body{padding:0 24px 24px}
 .sandbox-step-desc{font-size:14px;line-height:1.7;color:var(--ink-soft);margin-bottom:16px}
-
-/* Mini screen mockups inside steps */
 .mini-screen{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;font-size:13px;color:var(--ink-soft)}
 .mini-screen-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:10px}
 .mini-option{padding:8px 12px;border:1px solid var(--border);border-radius:4px;margin-bottom:6px;font-size:13px;color:var(--ink-soft)}
 .mini-option.selected{border-color:var(--terra);background:rgba(201,138,115,.08);color:var(--ink)}
-.mini-time-row{display:flex;gap:12px;margin-top:4px}
-.mini-time-box{flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--ink-soft)}
-.mini-time-box span{display:block;font-size:10px;color:var(--terra);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;font-weight:600}
-
 .mini-player{background:linear-gradient(160deg,var(--peach-soft),var(--peach));border-radius:8px;padding:14px;text-align:center;margin-bottom:10px}
 .mini-player-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--clay);font-weight:600;margin-bottom:8px}
 .mini-play-circle{width:36px;height:36px;border-radius:50%;background:var(--terra);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;color:var(--paper);font-size:11px}
 .mini-player-hint{font-size:9px;color:var(--warm-grey)}
-
 .mini-graph-row{display:flex;align-items:flex-end;gap:3px;height:40px;padding:0 4px}
 .mini-bar{flex:1;background:var(--terra);border-radius:2px 2px 0 0;opacity:.7}
 .mini-bar.eve{background:var(--success)}
-.mini-graph-lock{text-align:center;padding:8px 0 4px;border-top:1px solid var(--border);margin-top:6px}
-.mini-lock-text{font-size:10px;color:var(--warm-grey)}
-
-.mini-cal{padding:4px 0}
 .mini-cal-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
 .mini-cal-row:last-child{border-bottom:none}
 .mini-cal-dot{width:8px;height:8px;border-radius:50%;background:var(--terra);flex-shrink:0}
 .mini-cal-text{font-size:12px;color:var(--ink-soft)}
-
-/* Demo player */
 .sandbox-player-section{margin-bottom:48px}
 .sandbox-player-section h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--ink);margin-bottom:8px}
 .sandbox-player-note{font-size:13px;color:var(--warm-grey);margin-bottom:24px;line-height:1.6;padding:12px 16px;background:var(--surface);border-radius:6px;border-left:3px solid var(--terra)}
@@ -470,13 +306,10 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 .demo-progress-wrap{height:2px;background:var(--border);border-radius:2px;width:100%;overflow:hidden;margin-top:12px}
 .demo-progress-fill{height:100%;background:var(--terra);border-radius:2px;width:0%;transition:width 500ms linear}
 .demo-track-status{font-size:12px;color:var(--success);margin-top:6px;min-height:1.1rem}
-
-/* Sandbox CTA */
 .sandbox-cta{background:var(--cream-2);border:1px solid var(--border);border-radius:10px;padding:36px 32px;text-align:center;margin-bottom:32px}
 .sandbox-cta h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--ink);margin-bottom:12px}
 .sandbox-cta p{font-size:15px;color:var(--ink-soft);margin-bottom:28px;line-height:1.7}
 .sandbox-cta-btns{display:flex;flex-direction:column;gap:12px;max-width:360px;margin:0 auto}
-#sandbox .btn-primary,
 .sandbox-btn-primary{display:block;padding:16px 32px;background:var(--terra);color:var(--paper);font-family:'Manrope',sans-serif;font-size:14px;font-weight:500;letter-spacing:.02em;border-radius:32px;box-shadow:0 4px 16px rgba(191,126,103,.18);transition:all .25s ease;border:none;cursor:pointer;text-align:center}
 .sandbox-btn-primary:hover{background:var(--terra-dk);transform:translateY(-1px)}
 .sandbox-blog-link{display:block;padding:14px 32px;border:1px solid var(--border);color:var(--ink-soft);font-family:'Manrope',sans-serif;font-size:13px;font-weight:400;border-radius:32px;transition:all .25s ease;text-align:center;text-decoration:none}
@@ -492,107 +325,72 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
   .footer-cta-content{padding:40px 24px 72px}
   .img-break{min-height:420px;height:60vh}
   .product-layout{grid-template-columns:1fr;gap:40px}
-  .product-copy{text-align:left}
   .mark-story p.opening{font-size:19px}
-  .testimonial-card{padding:32px 24px 28px}
   .testimonial-grid{grid-template-columns:1fr;gap:16px}
   .sandbox-wrap{padding:32px 20px 60px}
   .demo-track-card{flex-wrap:wrap}
   .sandbox-cta{padding:28px 20px}
+  .filter-grid{grid-template-columns:1fr;gap:16px}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN: LANDING
-═══════════════════════════════════════════ -->
+<!-- SCREEN: LANDING -->
 <div id="screen-landing" class="screen">
-
 <nav>
   <a href="#" class="logo" onclick="return false;">
-    <svg class="brand-mark" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-      <circle cx="12" cy="11" r="1.6" fill="currentColor"/>
-    </svg>
+    <svg class="brand-mark" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="12" cy="11" r="1.6" fill="currentColor"/></svg>
     LimenBridge
   </a>
   <div style="display:flex;align-items:center;gap:20px">
     <a href="/blog/" class="nav-cta">Blog</a>
-    <a href="#" class="nav-cta" onclick="openSandbox();return false;">Try free</a>
+    <a href="#" class="nav-cta" onclick="openSandbox();return false;">See how it works</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-image"></div>
   <div class="hero-content">
     <span class="tagline">Daily nervous system support</span>
-    <h1 class="hero-title">
-      Your body reads threat<br>
-      before you've opened<br>
-      <em>your eyes.</em>
-    </h1>
-    <p class="hero-body">
-      LimenBridge is a daily audio programme that helps your nervous system
-      shift out of survival mode. A few minutes in the morning and evening —
-      over 28 days.
-    </p>
+    <h1 class="hero-title">Your body reads threat<br>before you've opened<br><em>your eyes.</em></h1>
+    <p class="hero-body">LimenBridge is a daily audio programme that helps your nervous system shift out of survival mode. A few minutes in the morning and evening — over 28 days.</p>
     <a href="#" class="btn-primary" onclick="openSandbox();return false;">See how it works</a>
-    <span class="hero-note">No credit card · Listen before you decide</span>
+    <span class="hero-note">Listen before you decide · No card required</span>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="biology">
   <div class="container">
     <p class="section-label">How it works</p>
     <h2>Two states.<br><em>Two tracks.</em></h2>
-    <p>
-      The way you feel throughout the day isn't random. It follows a biological
-      pattern. LimenBridge is built around that pattern — morning and evening
-      tracks are different because your body is in a different state at each
-      end of the day.
-    </p>
+    <p>The way you feel throughout the day isn't random. It follows a biological pattern. LimenBridge is built around that pattern — morning and evening tracks are different because your body is in a different state at each end of the day.</p>
     <div class="time-grid">
       <div class="time-card morning">
         <div class="time-icon">☼</div>
         <p class="time-label">Morning</p>
         <h3>So the day doesn't begin with anxiety already waiting</h3>
-        <p>
-          Around thirty minutes after waking, your body shifts from sleep into
-          the day. That's a natural transition — not a stress response. The
-          morning track is quiet and grounding. It works with that moment
-          rather than against it.
-        </p>
+        <p>Around thirty minutes after waking, your body shifts from sleep into the day. That's a natural transition — not a stress response. The morning track is quiet and grounding. It works with that moment rather than against it.</p>
       </div>
       <div class="time-card evening">
         <div class="time-icon">☾</div>
         <p class="time-label">Evening</p>
         <h3>So sleep comes more easily</h3>
-        <p>
-          By evening your body is ready to wind down. But tension, screens,
-          and the noise of the day often get in the way. The evening track
-          is slower and deeper. It helps the transition happen.
-        </p>
+        <p>By evening your body is ready to wind down. But tension, screens, and the noise of the day often get in the way. The evening track is slower and deeper. It helps the transition happen.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- IMAGE BREAK -->
 <div class="img-break">
   <div class="floor-quote">
-    <p class="floor-quote-text">
-      "Your body can learn safety. It just needs a consistent signal."
-    </p>
+    <p class="floor-quote-text">"Your body can learn safety. It just needs a consistent signal."</p>
     <p class="floor-quote-attr">Mark Vdovskikh</p>
   </div>
 </div>
 
-<!-- PRODUCT MOCKUP -->
 <section class="product">
-  <div class="container" style="max-width: 920px;">
+  <div class="container" style="max-width:920px">
     <div class="product-layout">
       <div>
         <div class="phone-frame">
@@ -600,12 +398,8 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
           <div class="phone-screen">
             <div class="app-topbar">
               <div class="app-logo-wrap">
-                <svg class="brand-mark sm" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-                  <circle cx="12" cy="11" r="1.8" fill="currentColor"/>
-                </svg>
+                <svg class="brand-mark sm" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="12" cy="11" r="1.8" fill="currentColor"/></svg>
                 <span class="app-logo">LimenBridge</span>
-                <span class="app-trial">Free<br>Trial</span>
               </div>
               <div class="app-help">?</div>
             </div>
@@ -613,7 +407,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
             <div class="app-track-card">
               <p class="app-track-label">Morning Track · Day 2</p>
               <div class="app-wave">
-                <span style="height: 6px"></span><span style="height: 11px"></span><span style="height: 18px"></span><span style="height: 14px"></span><span style="height: 20px"></span><span style="height: 16px"></span><span style="height: 22px"></span><span style="height: 18px"></span><span style="height: 14px"></span><span style="height: 20px"></span><span style="height: 12px"></span><span style="height: 18px"></span><span style="height: 22px"></span><span style="height: 16px"></span><span style="height: 12px"></span><span style="height: 18px"></span><span style="height: 14px"></span><span style="height: 8px"></span>
+                <span style="height:6px"></span><span style="height:11px"></span><span style="height:18px"></span><span style="height:14px"></span><span style="height:20px"></span><span style="height:16px"></span><span style="height:22px"></span><span style="height:18px"></span><span style="height:14px"></span><span style="height:20px"></span><span style="height:12px"></span><span style="height:18px"></span><span style="height:22px"></span><span style="height:16px"></span><span style="height:12px"></span><span style="height:18px"></span><span style="height:14px"></span><span style="height:8px"></span>
               </div>
               <div class="app-play">▶</div>
               <p class="app-play-hint">Tap to play · tap again to pause</p>
@@ -627,9 +421,16 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
             <div class="app-your-progress">
               <h4>Your progress</h4>
               <p class="app-your-progress-sub">Morning &amp; evening mood · 28 days</p>
-              <div class="app-lock">
-                <div class="app-lock-icon"></div>
-                <p class="app-lock-text">Your graph starts on day 4. Keep going.</p>
+              <div class="app-graph-preview">
+                <div class="app-graph-bars">
+                  <div class="app-graph-bar" style="height:40%;background:var(--terra)"></div>
+                  <div class="app-graph-bar" style="height:30%;background:var(--success)"></div>
+                  <div class="app-graph-bar" style="height:55%;background:var(--terra)"></div>
+                  <div class="app-graph-bar" style="height:45%;background:var(--success)"></div>
+                  <div class="app-graph-bar" style="height:60%;background:var(--terra)"></div>
+                  <div class="app-graph-bar" style="height:70%;background:var(--success)"></div>
+                </div>
+                <p style="font-size:9px;color:var(--warm-grey);margin-top:6px;text-align:center">Your mood · day by day</p>
               </div>
             </div>
           </div>
@@ -638,11 +439,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       <div class="product-copy">
         <p class="section-label">One day with LimenBridge</p>
         <h2>The right track<br><em>at the right moment.</em></h2>
-        <p>
-          When you're anxious or tired, even deciding what to listen to takes
-          effort. LimenBridge removes that decision — the right track is there
-          when you need it.
-        </p>
+        <p>When you're anxious or tired, even deciding what to listen to takes effort. LimenBridge removes that decision — the right track is there when you need it.</p>
         <div class="day-flow">
           <div class="day-flow-item">
             <p class="day-flow-label">Your morning</p>
@@ -658,7 +455,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
           </div>
           <div class="day-flow-item highlight">
             <p class="day-flow-label">28 days</p>
-            <p>LimenBridge keeps your answers — not to judge, but to show you something useful four weeks in: a simple graph of how your state shifted morning and evening, day by day.</p>
+            <p>LimenBridge keeps your answers and shows you a graph of how your state shifted morning and evening, day by day. On day 29 there's no track — a pause for your nervous system to consolidate what's changed.</p>
           </div>
         </div>
         <p style="margin-top:28px;padding-top:18px;border-top:1px solid var(--border);font-size:14px;color:var(--warm-grey);display:flex;align-items:center;gap:10px">
@@ -670,7 +467,6 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
   </div>
 </section>
 
-<!-- MARK'S STORY -->
 <section class="mark-story">
   <div class="mark-inner">
     <p class="section-label">From Mark</p>
@@ -678,7 +474,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     <p class="opening">A few years ago I couldn't sleep. I'd lie awake replaying the day — which was strange, given that helping people with anxiety is what I do. But I couldn't seem to fix my own.</p>
     <p>One evening my wife mentioned something she'd found — breathing exercises with specific music. I was sceptical. Within a week, sleep started coming back.</p>
     <p>Over thirty years of working with people, I kept seeing the same thing: someone finds a practice, a tool, some support — and then they're on their own in the gap. No structure. Nothing to signal that things are okay. Tension creeps back in the evenings. Mornings feel heavy. Thoughts won't settle.</p>
-    <p>People need something to hold the nervous system steady through that gap. The same thing that helped me.</p>
+    <p>People need something to hold the nervous system steady. The same thing that helped me.</p>
     <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--ink);margin-top:28px">That's why LimenBridge exists.</p>
     <div class="mark-signature">
       <div class="mark-photo" role="img" aria-label="Mark Vdovskikh"></div>
@@ -690,49 +486,31 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
   </div>
 </section>
 
-<!-- TESTIMONIAL -->
 <section class="testimonial">
   <div class="container">
     <p class="section-label">From early users</p>
     <h2>What people say<br><em>after a few days.</em></h2>
     <div class="testimonial-grid">
       <details class="t-card">
-        <summary>
-          <span class="t-quote">"</span>
-          <p class="t-text">Four days ago I didn't know I'd miss the music. I'm not in therapy. But something has shifted. The first evening I missed the track — got caught up with the settings. When I finally put it on, my eyes closed by themselves. I can't remember the last time I fell asleep that quickly. The second morning started with music. The whole day felt easier. By the evening I didn't wait for the reminder — I just turned it on. On the fourth morning there was no track — just an offer to continue. And I genuinely missed it. I'm not in therapy. I'm just someone who likes to begin and end the day with the right music. Everything is already chosen for you. You just press play. And one more thing — each day you rate your mood. The graph tracks how you're feeling. I want to see mine.</p>
-          <span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span>
-        </summary>
+        <summary><span class="t-quote">"</span><p class="t-text">Four days ago I didn't know I'd miss the music. But something has shifted. The first evening I missed the track — got caught up with the settings. When I finally put it on, my eyes closed by themselves. I can't remember the last time I fell asleep that quickly. The second morning started with music. The whole day felt easier. By the evening I didn't wait for the reminder — I just turned it on. I'm just someone who likes to begin and end the day with the right music. Everything is already chosen for you. You just press play.</p><span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span></summary>
         <p class="t-attr"><strong>Olga</strong> · After four days</p>
       </details>
       <details class="t-card">
-        <summary>
-          <span class="t-quote">"</span>
-          <p class="t-text">I'll keep this short. It's a tiny tool for a very specific problem. Morning or evening, you know you'll drift off peacefully and wake up ready for the day. Like a good friend who's always there when you need a hand, never intruding.</p>
-          <span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span>
-        </summary>
+        <summary><span class="t-quote">"</span><p class="t-text">I'll keep this short. It's a tiny tool for a very specific problem. Morning or evening, you know you'll drift off peacefully and wake up ready for the day. Like a good friend who's always there when you need a hand, never intruding.</p><span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span></summary>
         <p class="t-attr"><strong>Sophia</strong> · London</p>
       </details>
       <details class="t-card">
-        <summary>
-          <span class="t-quote">"</span>
-          <p class="t-text">Every night, the noise of the day swirls around in my head. At two in the morning, you're on edge, and the last thing you want to do is choose a track. Here, it plays for a couple of minutes, and then there's silence, and I finally fall asleep.</p>
-          <span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span>
-        </summary>
+        <summary><span class="t-quote">"</span><p class="t-text">Every night, the noise of the day swirls around in my head. At two in the morning, you're on edge, and the last thing you want to do is choose a track. Here, it plays for a couple of minutes, and then there's silence, and I finally fall asleep.</p><span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span></summary>
         <p class="t-attr"><strong>Nora</strong> · Birmingham</p>
       </details>
       <details class="t-card">
-        <summary>
-          <span class="t-quote">"</span>
-          <p class="t-text">I paid for a month, and if I want to skip the next one, I can just cancel it, no strings attached. I get a reminder on my calendar, click a button in my browser, and zone out for five minutes. No scrolling through playlists — that's exactly what my brain needed.</p>
-          <span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span>
-        </summary>
+        <summary><span class="t-quote">"</span><p class="t-text">I paid for a month, and if I want to skip the next one, I can just cancel it, no strings attached. I get a reminder on my calendar, click a button in my browser, and zone out for five minutes. No scrolling through playlists — that's exactly what my brain needed.</p><span class="t-more"><span class="more-label">Read more</span><span class="less-label">Show less</span></span></summary>
         <p class="t-attr"><strong>Anthony</strong> · Toronto</p>
       </details>
     </div>
   </div>
 </section>
 
-<!-- BEFORE YOU START -->
 <section class="before-start">
   <div class="container">
     <h2>Before you start</h2>
@@ -762,7 +540,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
           <p>A 28-day cycle of morning and evening audio sessions built around guided breathing and music structured to work with your body's natural rhythms.</p>
           <p>The programme uses 14 tracks, heard twice. Not because we ran short of material — but because the second time you hear a track, your nervous system has already begun to shift. The same audio lands differently when you're in a different state.</p>
           <p>Days 29 and 30 have no tracks — just two short reflection questions. A pause for your nervous system to register what's changed before the next cycle begins.</p>
-          <p>From day four, a progress graph opens — 28 days of morning and evening mood, laid out day by day.</p>
+          <p>Your progress graph is available from the first day — 28 days of morning and evening mood, building day by day.</p>
         </div>
       </details>
       <details class="faq-item">
@@ -774,14 +552,13 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       <details class="faq-item">
         <summary>What if it doesn't work for me?</summary>
         <div class="faq-body">
-          <p>Listen to both tracks in the sandbox before you commit to anything. After that, you can cancel whenever you like with a full refund within 7 days.</p>
+          <p>Listen to both tracks in the sandbox before you commit to anything. After starting the programme, you can cancel with a full refund within 7 days.</p>
         </div>
       </details>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
 <section class="pricing" id="start">
   <div class="container">
     <p class="section-label">Your choice</p>
@@ -805,21 +582,17 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
   </div>
 </section>
 
-<!-- FOOTER CTA -->
 <section class="footer-cta">
   <div class="footer-cta-image"></div>
   <div class="footer-cta-content">
-    <h2>Your next calm morning<br><em>is three days away.</em></h2>
+    <h2>Your nervous system<br><em>is ready to learn.</em></h2>
     <p>Listen to both tracks. No card. No commitment.</p>
-    <a href="#" class="btn-primary" onclick="openSandbox();return false;">Try the sandbox</a>
+    <a href="#" class="btn-primary" onclick="openSandbox();return false;">See how it works</a>
   </div>
 </section>
 
 <footer>
-  <svg class="brand-mark lg" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom:16px;opacity:.7">
-    <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-    <circle cx="12" cy="11" r="1.6" fill="currentColor"/>
-  </svg>
+  <svg class="brand-mark lg" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom:16px;opacity:.7"><path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><circle cx="12" cy="11" r="1.6" fill="currentColor"/></svg>
   <div class="footer-social" style="display:flex;justify-content:center;gap:18px;margin-bottom:16px">
     <a href="https://www.tiktok.com/@limenbridge" target="_blank" rel="noopener" aria-label="LimenBridge on TikTok" style="color:var(--warm-grey);display:inline-flex">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.83-.9-1.29-2.07-1.29-3.32h-3.07v13.66a3.07 3.07 0 1 1-2.62-3.04V9.97a6.13 6.13 0 1 0 5.69 6.11V9.4a8.16 8.16 0 0 0 4.55 1.39V7.72a4.85 4.85 0 0 1-3.26-1.9z"/></svg>
@@ -829,47 +602,29 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
     </a>
   </div>
   <div class="footer-line">© 2026 LimenBridge · limenbridge.cc · <a href="/privacy.html" style="color:var(--warm-grey);text-decoration:none;border-bottom:1px solid var(--border)">Privacy Policy</a> · <a href="/refund.html" style="color:var(--warm-grey);text-decoration:none;border-bottom:1px solid var(--border)">Refund Policy</a></div>
-  <div class="footer-notice">
-    <strong>Important notice.</strong> LimenBridge is a wellness audio program intended for general informational and self-care purposes only. It is not a medical device and has not been evaluated by the FDA or any other regulatory authority. LimenBridge is not intended to diagnose, treat, cure, or prevent any medical or psychological condition. It is not a substitute for professional medical advice, diagnosis, or treatment from a licensed physician, psychotherapist, psychologist, or other qualified mental health provider. Always seek the advice of your qualified health provider with any questions you may have regarding a medical or mental health condition. Never disregard professional medical advice or delay seeking it because of something you have read or heard through LimenBridge. If you are experiencing a mental health crisis or having thoughts of harming yourself or others, contact emergency services or a crisis helpline immediately. In the US: call or text 988 (Suicide &amp; Crisis Lifeline). In the UK: call 116 123 (Samaritans). In Canada: call 1-833-456-4566. Use of LimenBridge does not create a therapeutic relationship of any kind.
-  </div>
+  <div class="footer-notice"><strong>Important notice.</strong> LimenBridge is a wellness audio program intended for general informational and self-care purposes only. It is not a medical device and has not been evaluated by the FDA or any other regulatory authority. LimenBridge is not intended to diagnose, treat, cure, or prevent any medical or psychological condition. It is not a substitute for professional medical advice, diagnosis, or treatment from a licensed physician, psychotherapist, psychologist, or other qualified mental health provider. Always seek the advice of your qualified health provider with any questions you may have regarding a medical or mental health condition. Never disregard professional medical advice or delay seeking it because of something you have read or heard through LimenBridge. If you are experiencing a mental health crisis or having thoughts of harming yourself or others, contact emergency services or a crisis helpline immediately. In the US: call or text 988 (Suicide &amp; Crisis Lifeline). In the UK: call 116 123 (Samaritans). In Canada: call 1-833-456-4566. Use of LimenBridge does not create a therapeutic relationship of any kind.</div>
 </footer>
+</div>
 
-</div><!-- /screen-landing -->
-
-<!-- ═══════════════════════════════════════════
-     SCREEN: SANDBOX
-═══════════════════════════════════════════ -->
+<!-- SCREEN: SANDBOX -->
 <div id="screen-sandbox" class="screen">
   <nav>
     <a href="#" class="logo" onclick="closeSandbox();return false;">
-      <svg class="brand-mark" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-        <circle cx="12" cy="11" r="1.6" fill="currentColor"/>
-      </svg>
+      <svg class="brand-mark" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="12" cy="11" r="1.6" fill="currentColor"/></svg>
       LimenBridge
     </a>
     <button onclick="closeSandbox()" style="background:none;border:none;color:var(--warm-grey);font-size:14px;font-family:'Manrope',sans-serif;cursor:pointer;letter-spacing:.02em">← Back</button>
   </nav>
-
   <div class="sandbox-wrap">
-
-    <!-- Intro -->
     <div class="sandbox-intro">
       <h2>This is what you're<br><em>paying for.</em></h2>
       <p>Walk through the four steps of a real day in LimenBridge — then listen to both tracks. No account, no card.</p>
     </div>
-
-    <!-- Steps gallery -->
     <div class="sandbox-steps">
-
-      <!-- Step 1: Onboarding questions -->
       <div class="sandbox-step">
-        <div class="sandbox-step-header">
-          <div class="sandbox-step-num">1</div>
-          <p class="sandbox-step-title">Four questions — about a minute</p>
-        </div>
+        <div class="sandbox-step-header"><div class="sandbox-step-num">1</div><p class="sandbox-step-title">Four questions — about a minute</p></div>
         <div class="sandbox-step-body">
-          <p class="sandbox-step-desc">LimenBridge asks what brought you here, how often you feel on edge, what time of day is hardest, and when you wake and sleep. That's it. Your answers set the timing — the programme does the rest.</p>
+          <p class="sandbox-step-desc">LimenBridge asks what brought you here, how often you feel on edge, what time of day is hardest, and when you wake and sleep. Your answers set the timing — the programme does the rest.</p>
           <div class="mini-screen">
             <p class="mini-screen-label">What made you look for something like this?</p>
             <div class="mini-option selected">Anxiety through the day</div>
@@ -879,80 +634,38 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
           </div>
         </div>
       </div>
-
-      <!-- Step 2: Calendar -->
       <div class="sandbox-step">
-        <div class="sandbox-step-header">
-          <div class="sandbox-step-num">2</div>
-          <p class="sandbox-step-title">One tap — reminders in your calendar</p>
-        </div>
+        <div class="sandbox-step-header"><div class="sandbox-step-num">2</div><p class="sandbox-step-title">One tap — reminders in your calendar</p></div>
         <div class="sandbox-step-body">
           <p class="sandbox-step-desc">After the questions, you add two recurring events to your calendar — morning and evening, at the times you chose. From then on, your phone reminds you. You don't have to remember anything.</p>
           <div class="mini-screen">
             <p class="mini-screen-label">Your daily reminders</p>
-            <div class="mini-cal">
-              <div class="mini-cal-row">
-                <div class="mini-cal-dot"></div>
-                <span class="mini-cal-text">LimenBridge — Morning track · 07:00 · Daily</span>
-              </div>
-              <div class="mini-cal-row">
-                <div class="mini-cal-dot" style="background:var(--success)"></div>
-                <span class="mini-cal-text">LimenBridge — Evening track · 22:00 · Daily</span>
-              </div>
-            </div>
+            <div class="mini-cal-row"><div class="mini-cal-dot"></div><span class="mini-cal-text">LimenBridge — Morning track · 07:00 · Daily</span></div>
+            <div class="mini-cal-row"><div class="mini-cal-dot" style="background:var(--success)"></div><span class="mini-cal-text">LimenBridge — Evening track · 22:00 · Daily</span></div>
             <p style="font-size:11px;color:var(--warm-grey);margin-top:10px">Tap once → adds to Google Calendar or Apple Calendar</p>
           </div>
         </div>
       </div>
-
-      <!-- Step 3: Player -->
       <div class="sandbox-step">
-        <div class="sandbox-step-header">
-          <div class="sandbox-step-num">3</div>
-          <p class="sandbox-step-title">The track arrives — you just press play</p>
-        </div>
+        <div class="sandbox-step-header"><div class="sandbox-step-num">3</div><p class="sandbox-step-title">The track arrives — you just press play</p></div>
         <div class="sandbox-step-body">
           <p class="sandbox-step-desc">No playlist to browse. No decision to make. The right track for the right moment is already there — morning track in the morning, evening track in the evening. One button.</p>
           <div class="mini-screen">
             <p class="mini-screen-label">Morning Track · Day 4</p>
-            <div class="mini-player">
-              <p class="mini-player-label">Morning</p>
-              <div class="mini-play-circle">▶</div>
-              <p class="mini-player-hint">Tap to play</p>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--warm-grey);margin-top:8px">
-              <span>Program progress</span><span>Day 4 of 28</span>
-            </div>
-            <div style="height:2px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden">
-              <div style="height:100%;width:14%;background:var(--terra);border-radius:2px"></div>
-            </div>
+            <div class="mini-player"><p class="mini-player-label">Morning</p><div class="mini-play-circle">▶</div><p class="mini-player-hint">Tap to play</p></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--warm-grey);margin-top:8px"><span>Program progress</span><span>Day 4 of 28</span></div>
+            <div style="height:2px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:14%;background:var(--terra);border-radius:2px"></div></div>
           </div>
         </div>
       </div>
-
-      <!-- Step 4: Graph -->
       <div class="sandbox-step">
-        <div class="sandbox-step-header">
-          <div class="sandbox-step-num">4</div>
-          <p class="sandbox-step-title">28 days — your progress in one graph</p>
-        </div>
+        <div class="sandbox-step-header"><div class="sandbox-step-num">4</div><p class="sandbox-step-title">Your progress — visible from day one</p></div>
         <div class="sandbox-step-body">
-          <p class="sandbox-step-desc">After each track, one question: how do you feel right now? Your answers build a graph — morning and evening state, day by day. By day four it unlocks. By day 28 you can see exactly what shifted.</p>
+          <p class="sandbox-step-desc">After each track, one question: how do you feel right now? Your answers build a graph — morning and evening state, day by day. It's there from the start, growing with each session.</p>
           <div class="mini-screen">
             <p class="mini-screen-label">Your progress · 28 days</p>
             <div class="mini-graph-row">
-              <div class="mini-bar" style="height:55%"></div>
-              <div class="mini-bar eve" style="height:40%"></div>
-              <div class="mini-bar" style="height:60%"></div>
-              <div class="mini-bar eve" style="height:50%"></div>
-              <div class="mini-bar" style="height:70%"></div>
-              <div class="mini-bar eve" style="height:65%"></div>
-              <div class="mini-bar" style="height:75%"></div>
-              <div class="mini-bar eve" style="height:70%"></div>
-              <div class="mini-bar" style="height:80%"></div>
-              <div class="mini-bar eve" style="height:75%"></div>
-              <div class="mini-bar" style="height:85%"></div>
-              <div class="mini-bar eve" style="height:80%"></div>
+              <div class="mini-bar" style="height:55%"></div><div class="mini-bar eve" style="height:40%"></div><div class="mini-bar" style="height:60%"></div><div class="mini-bar eve" style="height:50%"></div><div class="mini-bar" style="height:70%"></div><div class="mini-bar eve" style="height:65%"></div><div class="mini-bar" style="height:75%"></div><div class="mini-bar eve" style="height:70%"></div><div class="mini-bar" style="height:80%"></div><div class="mini-bar eve" style="height:75%"></div><div class="mini-bar" style="height:85%"></div><div class="mini-bar eve" style="height:80%"></div>
             </div>
             <div style="display:flex;gap:12px;margin-top:8px;font-size:10px;color:var(--warm-grey)">
               <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:2px;background:var(--terra);display:inline-block;border-radius:1px"></span>Morning</span>
@@ -961,49 +674,42 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
           </div>
         </div>
       </div>
+    </div>
 
-    </div><!-- /sandbox-steps -->
-
-    <!-- Demo player -->
     <div class="sandbox-player-section">
       <h3>Now listen — both tracks, 60 seconds each</h3>
-      <p class="sandbox-player-note">In the real programme, morning track arrives in the morning, evening track in the evening — your phone's calendar reminder tells you when. Here you hear both at once, so you understand the difference before you decide.</p>
-
+      <p class="sandbox-player-note">In the programme, morning track arrives in the morning, evening track in the evening — your calendar tells you when. Here you hear both at once, so you understand the difference before you decide.</p>
       <div class="demo-tracks">
-
         <div class="demo-track-card" id="demo-card-morning">
           <div class="demo-track-icon">☼</div>
           <div class="demo-track-info">
             <p class="demo-track-name">Morning track</p>
             <p class="demo-track-desc">Quiet and grounding. Works with the natural cortisol rise after waking.</p>
-            <div class="demo-progress-wrap" id="demo-prog-morning"><div class="demo-progress-fill" id="demo-fill-morning"></div></div>
+            <div class="demo-progress-wrap"><div class="demo-progress-fill" id="demo-fill-morning"></div></div>
             <p class="demo-track-status" id="demo-status-morning"></p>
           </div>
           <button class="demo-play-btn" id="demo-btn-morning" onclick="demoToggle('morning')" title="Play morning track">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path id="demo-icon-morning" d="M8 5v14l11-7z"/></svg>
           </button>
         </div>
-
         <div class="demo-track-card" id="demo-card-evening">
           <div class="demo-track-icon">☾</div>
           <div class="demo-track-info">
             <p class="demo-track-name">Evening track</p>
             <p class="demo-track-desc">Slower and deeper. Helps the nervous system shift into recovery mode.</p>
-            <div class="demo-progress-wrap" id="demo-prog-evening"><div class="demo-progress-fill" id="demo-fill-evening"></div></div>
+            <div class="demo-progress-wrap"><div class="demo-progress-fill" id="demo-fill-evening"></div></div>
             <p class="demo-track-status" id="demo-status-evening"></p>
           </div>
           <button class="demo-play-btn" id="demo-btn-evening" onclick="demoToggle('evening')" title="Play evening track">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path id="demo-icon-evening" d="M8 5v14l11-7z"/></svg>
           </button>
         </div>
-
       </div>
     </div>
 
-    <!-- CTA -->
     <div class="sandbox-cta">
       <h3>Ready to start the programme?</h3>
-      <p>28 days. Morning and evening. Your nervous system, given a consistent signal — every day, not just when you remember.</p>
+      <p>28 days. Morning and evening. Your nervous system, given a consistent signal — every day.</p>
       <div class="sandbox-cta-btns">
         <button class="sandbox-btn-primary" id="sandbox-monthly-btn" onclick="startCheckout('monthly',this)">Start — $19 / month</button>
         <button class="sandbox-btn-primary" style="background:transparent;color:var(--terra);border:1px solid var(--terra);box-shadow:none" id="sandbox-annual-btn" onclick="startCheckout('annual',this)">Start — $163 / year · 2 months free</button>
@@ -1011,42 +717,31 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       </div>
       <p class="sandbox-trust">Full refund within 7 days · Cancel anytime · No account required to listen</p>
     </div>
+  </div>
+</div>
 
-  </div><!-- /sandbox-wrap -->
-</div><!-- /screen-sandbox -->
-
-<!-- ═══════════════════════════════════════════
-     MODAL: REGISTER
-═══════════════════════════════════════════ -->
+<!-- MODAL: REGISTER -->
 <div id="modal" class="modal-overlay" onclick="closeModal(event)">
   <div class="modal-box fade-in" onclick="event.stopPropagation()">
     <div id="modal-form">
-      <h3 class="display" style="font-size:1.5rem;margin-bottom:1.25rem">Get a reminder before your trial ends</h3>
-      <div class="field">
-        <label class="eyebrow" for="reg-email">Email</label>
-        <input type="email" id="reg-email" class="input" placeholder="you@email.com" required/>
-      </div>
-      <div class="field">
-        <label class="eyebrow" for="reg-name">Name</label>
-        <input type="text" id="reg-name" class="input" placeholder="Your name (optional)"/>
-      </div>
+      <h3 class="display" style="font-size:1.5rem;margin-bottom:1.25rem">Save your email</h3>
+      <div class="field"><label class="eyebrow" for="reg-email">Email</label><input type="email" id="reg-email" class="input" placeholder="you@email.com" required/></div>
+      <div class="field"><label class="eyebrow" for="reg-name">Name</label><input type="text" id="reg-name" class="input" placeholder="Your name (optional)"/></div>
       <button class="btn btn-primary btn-full" id="reg-submit" onclick="submitRegistration()">Save email</button>
-      <p class="trust">Used only to remind you before day 4 · Unsubscribe anytime · <a href="/privacy.html" target="_blank" style="color:var(--muted)">Privacy Policy</a></p>
+      <p class="trust">Used only to contact you about your programme · Unsubscribe anytime · <a href="/privacy.html" target="_blank" style="color:var(--muted)">Privacy Policy</a></p>
     </div>
     <div id="modal-done" style="display:none;text-align:center;padding:1rem 0">
       <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">Saved</h3>
-      <p style="color:var(--muted)">We'll email you before your free days end.</p>
+      <p style="color:var(--muted)">Got it.</p>
     </div>
     <div id="modal-welcome-back" style="display:none;text-align:center;padding:1rem 0">
       <h3 class="display" style="font-size:1.4rem;margin-bottom:.75rem">Welcome back</h3>
-      <p style="color:var(--muted)">We already have your account on file — picking up where you left off.</p>
+      <p style="color:var(--muted)">Picking up where you left off.</p>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN: ONBOARDING
-═══════════════════════════════════════════ -->
+<!-- SCREEN: ONBOARDING -->
 <div id="screen-onboarding" class="screen">
   <div class="onboard-wrap">
     <div class="onboard-card fade-in">
@@ -1056,52 +751,25 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN: APP (Player)
-═══════════════════════════════════════════ -->
+<!-- SCREEN: APP -->
 <div id="screen-app" class="screen">
   <div class="wrap">
     <nav><div class="nav-inner">
       <span class="logo">LimenBridge</span>
       <div style="display:flex;align-items:center;gap:.75rem">
         <span id="plan-badge" style="font-size:.78rem;color:var(--muted)"></span>
-        <button onclick="openHelp()" style="width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 200ms,color 200ms" onmouseover="this.style.borderColor='var(--accent-soft)';this.style.color='var(--fg)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" title="How it works">?</button>
-        <button onclick="goHome()" style="background:var(--surface);border:1px solid var(--border);color:var(--fg);font-size:.9rem;cursor:pointer;padding:.5rem 1rem;border-radius:4px;transition:border-color 200ms;font-family:'Jost',sans-serif" onmouseover="this.style.borderColor='var(--accent-soft)'" onmouseout="this.style.borderColor='var(--border)'">← Back to site</button>
+        <button onclick="openHelp()" style="width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 200ms,color 200ms" title="How it works">?</button>
+        <button onclick="goHome()" style="background:var(--surface);border:1px solid var(--border);color:var(--fg);font-size:.9rem;cursor:pointer;padding:.5rem 1rem;border-radius:4px;font-family:'Jost',sans-serif">← Back to site</button>
       </div>
     </div></nav>
     <div id="app-content" style="padding-bottom:4rem"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN: TRIAL ENDED
-═══════════════════════════════════════════ -->
-<div id="screen-trial-ended" class="screen">
-  <div class="trial-ended fade-in">
-    <div style="max-width:460px;width:100%">
-      <h2 class="display" style="font-size:2rem;margin-bottom:1.25rem">Your 3 days are complete.</h2>
-      <p id="trial-ended-msg" style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem"></p>
-      <div style="display:flex;flex-direction:column;gap:.75rem">
-        <button class="btn btn-primary btn-full" id="trial-monthly-btn" onclick="startCheckout('monthly',this)">Continue — $19 / month</button>
-        <button class="btn btn-ghost btn-full" id="trial-annual-btn" onclick="startCheckout('annual',this)">Continue — $163 / year · Two months free</button>
-      </div>
-      <p style="color:var(--muted);font-size:.85rem;margin-top:1.25rem">Your data won't be deleted if you wait. Try it — full refund within 7 days.</p>
-      <div class="card" style="margin-top:1.75rem;text-align:left;padding:1.25rem 1.5rem">
-        <p style="font-size:.92rem;line-height:1.6;font-style:italic;color:var(--fg);margin-bottom:.5rem">"I genuinely missed this morning and evening music. Everything is already chosen — you just press play."</p>
-        <p style="font-size:.8rem;color:var(--muted)">— Olga, after four days</p>
-      </div>
-      <p style="margin-top:1.5rem"><a href="#" onclick="goHome();return false;" style="color:var(--muted);font-size:.85rem;text-decoration:underline;text-underline-offset:2px">Learn more about LimenBridge</a></p>
-    </div>
-  </div>
-</div>
-
-<!-- Hidden audio element -->
 <audio id="audio-player" preload="none"></audio>
 <audio id="demo-audio" preload="none"></audio>
 
-<!-- ═══════════════════════════════════════════
-     MODAL: HELP
-═══════════════════════════════════════════ -->
+<!-- MODAL: HELP -->
 <div id="modal-help" class="modal-overlay" onclick="closeHelp(event)">
   <div class="modal-box fade-in" onclick="event.stopPropagation()" style="max-width:480px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
@@ -1109,703 +777,380 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       <button onclick="closeHelp()" style="background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:.25rem">×</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:1.25rem">
-      <div>
-        <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Morning track</p>
-        <p style="color:var(--muted);font-size:.95rem">Available within 2 hours of your wake time. If you miss it, the next one is tomorrow morning.</p>
-      </div>
-      <div>
-        <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Evening track</p>
-        <p style="color:var(--muted);font-size:.95rem">Available from 3 hours before your bedtime. Come back then and it will be ready.</p>
-      </div>
-      <div>
-        <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Calendar reminder</p>
-        <p style="color:var(--muted);font-size:.95rem">No reminders yet? Return to the setup screen and add the calendar reminder — it adds a daily reminder to your calendar automatically.</p>
-      </div>
-      <div>
-        <p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Missed a day?</p>
-        <p style="color:var(--muted);font-size:.95rem">That's fine. LimenBridge remembers where you are. Come back whenever you're ready — your programme continues from where you left off.</p>
-      </div>
+      <div><p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Morning track</p><p style="color:var(--muted);font-size:.95rem">Available within 2 hours of your wake time. If you miss it, the next one is tomorrow morning.</p></div>
+      <div><p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Evening track</p><p style="color:var(--muted);font-size:.95rem">Available from 3 hours before your bedtime. Come back then and it will be ready.</p></div>
+      <div><p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Calendar reminder</p><p style="color:var(--muted);font-size:.95rem">No reminders yet? Return to the setup screen and add the calendar reminder — it adds a daily reminder to your calendar automatically.</p></div>
+      <div><p style="font-weight:500;margin-bottom:.35rem;color:var(--accent-soft)">Missed a day?</p><p style="color:var(--muted);font-size:.95rem">That's fine. LimenBridge remembers where you are. Come back whenever you're ready.</p></div>
     </div>
     <button class="btn btn-ghost btn-full" style="margin-top:1.75rem" onclick="closeHelp()">Got it</button>
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════
-// STRIPE CONFIG
-// ═══════════════════════════════════════════
-const STRIPE_KEY = 'pk_live_51TUlctF5LLi6LixPBafRgNuQP0OEZUkDvqQVMvGWH6E7aDLVFtqpYoBUUhvLBVwxROHJvnaWk97bKYfVm0WXyMxA00h2KDCY10';
-const PRICE_MONTHLY = 'price_1Tgne8F5LLi6LixPqHFzot7I';
-const PRICE_ANNUAL  = 'price_1TgnIsF5LLi6LixPW62xgHtt';
-const stripeInstance = Stripe(STRIPE_KEY);
+const STRIPE_KEY='pk_live_51TUlctF5LLi6LixPBafRgNuQP0OEZUkDvqQVMvGWH6E7aDLVFtqpYoBUUhvLBVwxROHJvnaWk97bKYfVm0WXyMxA00h2KDCY10';
+const stripeInstance=Stripe(STRIPE_KEY);
+const API_URL='https://limenbridge-mailerlite.cdv353v.workers.dev';
+const MAILERLITE_GROUP_ID='189792851698124588';
 
-// ═══════════════════════════════════════════
-// API
-// ═══════════════════════════════════════════
-const API_URL = 'https://limenbridge-mailerlite.cdv353v.workers.dev';
-const MAILERLITE_GROUP_ID = '189792851698124588';
+function syncUser(email,updates){if(!email)return;fetch(API_URL+'/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,updates})}).catch(()=>{});}
 
-function syncUser(email, updates) {
-  if (!email) return;
-  fetch(API_URL + '/sync', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, updates })
-  }).catch(() => {});
+function startCheckout(plan,btn){
+  if(btn){btn.classList.add('btn-loading');btn.textContent='Loading\u2026';}
+  const monthlyLink='https://buy.stripe.com/eVq6oH2wpgxRdT8d6X6sw02';
+  const annualLink='https://buy.stripe.com/6oU14ngnf6Xh16m2sj6sw03';
+  const base=plan==='annual'?annualLink:monthlyLink;
+  const u=loadUser();
+  const email=(u&&u.email)?encodeURIComponent(u.email):'';
+  window.location.href=email?base+'?prefilled_email='+email:base;
 }
 
-function startCheckout(plan, btn) {
-  if (btn) { btn.classList.add('btn-loading'); btn.textContent = 'Loading\u2026'; }
-  const monthlyLink = 'https://buy.stripe.com/eVq6oH2wpgxRdT8d6X6sw02';
-  const annualLink  = 'https://buy.stripe.com/6oU14ngnf6Xh16m2sj6sw03';
-  const base = plan === 'annual' ? annualLink : monthlyLink;
-  const u = loadUser();
-  const email = (u && u.email) ? encodeURIComponent(u.email) : '';
-  window.location.href = email ? base + '?prefilled_email=' + email : base;
-}
-
-function handleStripeReturn() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('payment') === 'success') {
-    const u = loadUser();
-    if (u) { u.plan = 'monthly'; saveUser(u); syncUser(u.email, { plan: 'monthly' }); }
-    window.history.replaceState({}, '', '/');
+function handleStripeReturn(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('payment')==='success'){
+    const u=loadUser();
+    if(u){u.plan='monthly';saveUser(u);syncUser(u.email,{plan:'monthly'});}
+    window.history.replaceState({},'','/');
   }
 }
 
-// ═══════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════
-const KEY = 'limenbridge_user';
-function loadUser() { try { const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; } catch { return null; } }
-function saveUser(u) { localStorage.setItem(KEY, JSON.stringify(u)); }
-function todayISO() { return new Date().toISOString().slice(0,10); }
-function daysSince(iso) {
-  const s = new Date(iso); s.setHours(0,0,0,0);
-  const t = new Date(); t.setHours(0,0,0,0);
-  return Math.floor((t - s) / 86400000);
-}
-function trialDay(u) { return daysSince(u.registeredAt) + 1; }
-function cyclePosition(u) { const d = daysSince(u.registeredAt) + 1; return ((d - 1) % 30) + 1; }
-function currentCycle(u) { const d = daysSince(u.registeredAt) + 1; return Math.floor((d - 1) / 30) + 1; }
-function programDay(u) { return Math.min(cyclePosition(u), 28); }
-function trackIndex(u) { return ((programDay(u) - 1) % 14) + 1; }
+const KEY='limenbridge_user';
+function loadUser(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null;}catch{return null;}}
+function saveUser(u){localStorage.setItem(KEY,JSON.stringify(u));}
+function todayISO(){return new Date().toISOString().slice(0,10);}
+function daysSince(iso){const s=new Date(iso);s.setHours(0,0,0,0);const t=new Date();t.setHours(0,0,0,0);return Math.floor((t-s)/86400000);}
+function cyclePosition(u){const d=daysSince(u.registeredAt)+1;return((d-1)%30)+1;}
+function currentCycle(u){const d=daysSince(u.registeredAt)+1;return Math.floor((d-1)/30)+1;}
+function programDay(u){return Math.min(cyclePosition(u),28);}
+function trackIndex(u){return((programDay(u)-1)%14)+1;}
 
-function deriveState(u) {
-  if (!u) return 'LANDING';
-  if (!u.onboardingComplete) return 'ONBOARDING';
-  if (u.plan === 'monthly' || u.plan === 'annual') {
-    const pos = cyclePosition(u);
-    if (pos <= 28) return 'ACTIVE';
-    if (u.annualOfferDismissed || u.plan === 'annual') return 'ACTIVE';
-    if (pos === 29 || (pos === 30 && !u.reflectionQ2)) return 'REFLECTION_PAUSE';
-    if (pos === 30 && u.reflectionQ2) return 'ANNUAL_OFFER';
-    return 'ACTIVE';
+function deriveState(u){
+  if(!u)return'LANDING';
+  if(!u.onboardingComplete)return'ONBOARDING';
+  if(u.plan==='monthly'||u.plan==='annual'){
+    const pos=cyclePosition(u);
+    if(pos<=28)return'ACTIVE';
+    if(u.annualOfferDismissed||u.plan==='annual')return'ACTIVE';
+    if(pos===29||(pos===30&&!u.reflectionQ2))return'REFLECTION_PAUSE';
+    if(pos===30&&u.reflectionQ2)return'ANNUAL_OFFER';
+    return'ACTIVE';
   }
-  if (trialDay(u) > 3) return 'TRIAL_ENDED';
-  return 'TRIAL';
+  return'LANDING';
 }
 
-function currentTrackKind() { return new Date().getHours() < 14 ? 'morning' : 'evening'; }
-function greeting(name) {
-  const h = new Date().getHours();
-  const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  return name ? `${g}, ${name}` : g;
-}
-function streakDays(u) {
-  const byDate = new Set(u.moodLog.map(m => m.date));
-  let streak = 0;
-  const d = new Date(); d.setHours(0,0,0,0);
-  if (!byDate.has(d.toISOString().slice(0,10))) d.setDate(d.getDate()-1);
-  while (byDate.has(d.toISOString().slice(0,10))) { streak++; d.setDate(d.getDate()-1); }
-  return streak;
-}
-function hasListenedToday(u, kind) {
-  const l = u.lastListened;
-  if (!l || l.date !== todayISO()) return false;
-  return kind === 'morning' ? !!l.morning : !!l.evening;
-}
-function markListened(u, kind) {
-  if (!u.lastListened || u.lastListened.date !== todayISO()) u.lastListened = { date: todayISO() };
-  u.lastListened[kind] = true;
-  saveUser(u);
-}
+function currentTrackKind(){return new Date().getHours()<14?'morning':'evening';}
+function greeting(name){const h=new Date().getHours();const g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';return name?`${g}, ${name}`:g;}
+function streakDays(u){const byDate=new Set(u.moodLog.map(m=>m.date));let streak=0;const d=new Date();d.setHours(0,0,0,0);if(!byDate.has(d.toISOString().slice(0,10)))d.setDate(d.getDate()-1);while(byDate.has(d.toISOString().slice(0,10))){streak++;d.setDate(d.getDate()-1);}return streak;}
+function hasListenedToday(u,kind){const l=u.lastListened;if(!l||l.date!==todayISO())return false;return kind==='morning'?!!l.morning:!!l.evening;}
+function markListened(u,kind){if(!u.lastListened||u.lastListened.date!==todayISO())u.lastListened={date:todayISO()};u.lastListened[kind]=true;saveUser(u);}
 
-// ═══════════════════════════════════════════
-// ROUTING
-// ═══════════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
-function route() {
+function route(){
   handleStripeReturn();
-  const u = loadUser();
-  const state = deriveState(u);
-  if (state === 'LANDING') { showScreen('screen-landing'); return; }
-  if (state === 'ONBOARDING') { showScreen('screen-onboarding'); renderOnboarding(u); return; }
-  if (state === 'TRIAL_ENDED') { showScreen('screen-trial-ended'); renderTrialEnded(u); return; }
+  const u=loadUser();
+  const state=deriveState(u);
+  if(state==='LANDING'){showScreen('screen-landing');return;}
+  if(state==='ONBOARDING'){showScreen('screen-onboarding');renderOnboarding(u);return;}
   showScreen('screen-app');
-  if (state === 'REFLECTION_PAUSE') { renderReflectionPause(u); return; }
-  if (state === 'ANNUAL_OFFER') { renderAnnualOffer(u); return; }
+  if(state==='REFLECTION_PAUSE'){renderReflectionPause(u);return;}
+  if(state==='ANNUAL_OFFER'){renderAnnualOffer(u);return;}
   renderApp(u);
 }
 
-function goHome() {
-  if (isPlaying) { audioEl.pause(); isPlaying = false; }
-  showScreen('screen-landing');
-}
-function openHelp() { document.getElementById('modal-help').classList.add('open'); }
-function closeHelp(e) {
-  if (!e || e.target === document.getElementById('modal-help'))
-    document.getElementById('modal-help').classList.remove('open');
-}
+function goHome(){if(isPlaying){audioEl.pause();isPlaying=false;}showScreen('screen-landing');}
+function openHelp(){document.getElementById('modal-help').classList.add('open');}
+function closeHelp(e){if(!e||e.target===document.getElementById('modal-help'))document.getElementById('modal-help').classList.remove('open');}
 
-// ═══════════════════════════════════════════
-// SANDBOX
-// ═══════════════════════════════════════════
-const DEMO_MORNING_URL = 'https://audio.limenbridge.cc/demo_morning.mp3';
-const DEMO_EVENING_URL = 'https://audio.limenbridge.cc/demo_evening.mp3';
-const DEMO_DURATION = 60; // seconds
+/* SANDBOX */
+const DEMO_MORNING_URL='https://audio.limenbridge.cc/demo_morning.mp3';
+const DEMO_EVENING_URL='https://audio.limenbridge.cc/demo_evening.mp3';
+const DEMO_DURATION=60;
+let demoAudio=document.getElementById('demo-audio');
+let demoPlaying=null;
+let demoTimer=null;
+let demoStartTime=null;
+let demoAnimFrame=null;
 
-let demoAudio = document.getElementById('demo-audio');
-let demoPlaying = null; // 'morning' | 'evening' | null
-let demoTimer = null;
-let demoStartTime = null;
-let demoAnimFrame = null;
-let demoCompleted = { morning: false, evening: false };
+function openSandbox(){if(isPlaying){audioEl.pause();isPlaying=false;}stopDemo();showScreen('screen-sandbox');window.scrollTo(0,0);}
+function closeSandbox(){stopDemo();showScreen('screen-landing');window.scrollTo(0,0);}
 
-function openSandbox() {
-  if (isPlaying) { audioEl.pause(); isPlaying = false; }
-  stopDemo();
-  showScreen('screen-sandbox');
-  window.scrollTo(0, 0);
-}
-
-function closeSandbox() {
-  stopDemo();
-  showScreen('screen-landing');
-  window.scrollTo(0, 0);
-}
-
-function stopDemo() {
-  if (demoAudio) { demoAudio.pause(); demoAudio.src = ''; }
-  clearTimeout(demoTimer);
-  cancelAnimationFrame(demoAnimFrame);
-  demoPlaying = null;
-  demoStartTime = null;
-  ['morning','evening'].forEach(k => {
-    const btn = document.getElementById('demo-btn-' + k);
-    const icon = document.getElementById('demo-icon-' + k);
-    const card = document.getElementById('demo-card-' + k);
-    if (btn) btn.classList.remove('playing');
-    if (icon) icon.setAttribute('d','M8 5v14l11-7z');
-    if (card) card.classList.remove('active');
+function stopDemo(){
+  if(demoAudio){demoAudio.pause();demoAudio.src='';}
+  clearTimeout(demoTimer);cancelAnimationFrame(demoAnimFrame);demoPlaying=null;demoStartTime=null;
+  ['morning','evening'].forEach(k=>{
+    const btn=document.getElementById('demo-btn-'+k);
+    const icon=document.getElementById('demo-icon-'+k);
+    const card=document.getElementById('demo-card-'+k);
+    if(btn)btn.classList.remove('playing');
+    if(icon)icon.setAttribute('d','M8 5v14l11-7z');
+    if(card)card.classList.remove('active');
   });
 }
 
-function demoToggle(kind) {
-  if (demoPlaying === kind) {
-    // pause
-    demoAudio.pause();
-    clearTimeout(demoTimer);
-    cancelAnimationFrame(demoAnimFrame);
-    document.getElementById('demo-btn-' + kind).classList.remove('playing');
-    document.getElementById('demo-icon-' + kind).setAttribute('d','M8 5v14l11-7z');
-    document.getElementById('demo-card-' + kind).classList.remove('active');
-    demoPlaying = null;
-    return;
+function demoToggle(kind){
+  if(demoPlaying===kind){
+    demoAudio.pause();clearTimeout(demoTimer);cancelAnimationFrame(demoAnimFrame);
+    document.getElementById('demo-btn-'+kind).classList.remove('playing');
+    document.getElementById('demo-icon-'+kind).setAttribute('d','M8 5v14l11-7z');
+    document.getElementById('demo-card-'+kind).classList.remove('active');
+    demoPlaying=null;return;
   }
-  // stop other if playing
-  if (demoPlaying) stopDemo();
-
-  const url = kind === 'morning' ? DEMO_MORNING_URL : DEMO_EVENING_URL;
-  demoAudio.src = url;
-  demoAudio.currentTime = 0;
-  demoAudio.play().catch(() => {});
-  demoPlaying = kind;
-  demoStartTime = Date.now();
-
-  document.getElementById('demo-btn-' + kind).classList.add('playing');
-  document.getElementById('demo-icon-' + kind).setAttribute('d','M6 19h4V5H6v14zm8-14v14h4V5h-4z');
-  document.getElementById('demo-card-' + kind).classList.add('active');
-  document.getElementById('demo-status-' + kind).textContent = '';
-
-  // progress animation
-  function animateDemoProgress() {
-    if (demoPlaying !== kind) return;
-    const elapsed = (Date.now() - demoStartTime) / 1000;
-    const pct = Math.min((elapsed / DEMO_DURATION) * 100, 100);
-    const fill = document.getElementById('demo-fill-' + kind);
-    if (fill) fill.style.width = pct.toFixed(1) + '%';
-    if (pct < 100) {
-      demoAnimFrame = requestAnimationFrame(animateDemoProgress);
-    }
+  if(demoPlaying)stopDemo();
+  const url=kind==='morning'?DEMO_MORNING_URL:DEMO_EVENING_URL;
+  demoAudio.src=url;demoAudio.currentTime=0;demoAudio.play().catch(()=>{});
+  demoPlaying=kind;demoStartTime=Date.now();
+  document.getElementById('demo-btn-'+kind).classList.add('playing');
+  document.getElementById('demo-icon-'+kind).setAttribute('d','M6 19h4V5H6v14zm8-14v14h4V5h-4z');
+  document.getElementById('demo-card-'+kind).classList.add('active');
+  document.getElementById('demo-status-'+kind).textContent='';
+  function animProg(){
+    if(demoPlaying!==kind)return;
+    const elapsed=(Date.now()-demoStartTime)/1000;
+    const pct=Math.min((elapsed/DEMO_DURATION)*100,100);
+    const fill=document.getElementById('demo-fill-'+kind);
+    if(fill)fill.style.width=pct.toFixed(1)+'%';
+    if(pct<100)demoAnimFrame=requestAnimationFrame(animProg);
   }
-  demoAnimFrame = requestAnimationFrame(animateDemoProgress);
-
-  // auto-stop at DEMO_DURATION
-  demoTimer = setTimeout(() => {
-    demoAudio.pause();
-    demoPlaying = null;
-    demoCompleted[kind] = true;
-    const fill = document.getElementById('demo-fill-' + kind);
-    if (fill) fill.style.width = '100%';
-    document.getElementById('demo-btn-' + kind).classList.remove('playing');
-    document.getElementById('demo-icon-' + kind).setAttribute('d','M8 5v14l11-7z');
-    document.getElementById('demo-card-' + kind).classList.remove('active');
-    document.getElementById('demo-status-' + kind).textContent = '✓ Done';
+  demoAnimFrame=requestAnimationFrame(animProg);
+  demoTimer=setTimeout(()=>{
+    demoAudio.pause();demoPlaying=null;
+    const fill=document.getElementById('demo-fill-'+kind);if(fill)fill.style.width='100%';
+    document.getElementById('demo-btn-'+kind).classList.remove('playing');
+    document.getElementById('demo-icon-'+kind).setAttribute('d','M8 5v14l11-7z');
+    document.getElementById('demo-card-'+kind).classList.remove('active');
+    document.getElementById('demo-status-'+kind).textContent='✓ Done';
     cancelAnimationFrame(demoAnimFrame);
-  }, DEMO_DURATION * 1000);
+  },DEMO_DURATION*1000);
 }
 
-// also stop at natural audio end (if track < 60s)
-document.getElementById('demo-audio').addEventListener('ended', () => {
-  if (!demoPlaying) return;
-  const kind = demoPlaying;
-  clearTimeout(demoTimer);
-  cancelAnimationFrame(demoAnimFrame);
-  demoPlaying = null;
-  demoCompleted[kind] = true;
-  const fill = document.getElementById('demo-fill-' + kind);
-  if (fill) fill.style.width = '100%';
-  document.getElementById('demo-btn-' + kind).classList.remove('playing');
-  document.getElementById('demo-icon-' + kind).setAttribute('d','M8 5v14l11-7z');
-  document.getElementById('demo-card-' + kind).classList.remove('active');
-  document.getElementById('demo-status-' + kind).textContent = '✓ Done';
+document.getElementById('demo-audio').addEventListener('ended',()=>{
+  if(!demoPlaying)return;
+  const kind=demoPlaying;clearTimeout(demoTimer);cancelAnimationFrame(demoAnimFrame);demoPlaying=null;
+  const fill=document.getElementById('demo-fill-'+kind);if(fill)fill.style.width='100%';
+  document.getElementById('demo-btn-'+kind).classList.remove('playing');
+  document.getElementById('demo-icon-'+kind).setAttribute('d','M8 5v14l11-7z');
+  document.getElementById('demo-card-'+kind).classList.remove('active');
+  document.getElementById('demo-status-'+kind).textContent='✓ Done';
 });
 
-// ═══════════════════════════════════════════
-// MODAL
-// ═══════════════════════════════════════════
-function openModal(prefillEmail) {
-  const m = document.getElementById('modal');
-  document.getElementById('modal-form').style.display = 'block';
-  document.getElementById('modal-done').style.display = 'none';
-  document.getElementById('modal-welcome-back').style.display = 'none';
-  const submitBtn = document.getElementById('reg-submit');
-  submitBtn.disabled = false; submitBtn.textContent = 'Save email';
-  if (prefillEmail) document.getElementById('reg-email').value = prefillEmail;
+/* MODAL */
+function openModal(prefillEmail){
+  const m=document.getElementById('modal');
+  document.getElementById('modal-form').style.display='block';
+  document.getElementById('modal-done').style.display='none';
+  document.getElementById('modal-welcome-back').style.display='none';
+  const btn=document.getElementById('reg-submit');btn.disabled=false;btn.textContent='Save email';
+  if(prefillEmail)document.getElementById('reg-email').value=prefillEmail;
   m.classList.add('open');
 }
-function closeModal(e) {
-  if (!e || e.target === document.getElementById('modal'))
-    document.getElementById('modal').classList.remove('open');
-}
+function closeModal(e){if(!e||e.target===document.getElementById('modal'))document.getElementById('modal').classList.remove('open');}
 
-function startFree() {
-  let u = loadUser();
-  if (!u) {
-    u = { registeredAt: new Date().toISOString(), plan: 'free', onboardingComplete: false, moodLog: [], lastListened: { date: todayISO() } };
-    saveUser(u);
-    fetch(API_URL + '/track-start', { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' }).catch(() => {});
-  }
-  route();
-}
-
-function dismissEmailPrompt() {
-  const u = loadUser();
-  if (!u) return;
-  u.emailPromptDismissed = true;
-  saveUser(u);
-  renderApp(u);
-}
-
-async function submitRegistration() {
-  const email = document.getElementById('reg-email').value.trim().toLowerCase();
-  if (!email) return;
-  const name = document.getElementById('reg-name').value;
-  const btn = document.getElementById('reg-submit');
-  btn.disabled = true; btn.textContent = 'Saving\u2026';
-  const local = loadUser();
-  let result = null;
-  try {
-    const resp = await fetch(API_URL + '/register', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, name, groupId: MAILERLITE_GROUP_ID })
-    });
-    result = await resp.json();
-  } catch {}
-  if (result && result.status === 'existing' && (!local || !local.onboardingComplete)) {
-    const r = result.user;
-    const user = { email: r.email, name: r.name || undefined, registeredAt: r.registeredAt, plan: r.plan || 'free', onboardingComplete: !!r.onboardingComplete, firstTrack: r.firstTrack || undefined, morningTime: r.morningTime || undefined, eveningTime: r.eveningTime || undefined, moodLog: [], lastListened: { date: todayISO() } };
+async function submitRegistration(){
+  const email=document.getElementById('reg-email').value.trim().toLowerCase();
+  if(!email)return;
+  const name=document.getElementById('reg-name').value;
+  const btn=document.getElementById('reg-submit');btn.disabled=true;btn.textContent='Saving\u2026';
+  const local=loadUser();
+  let result=null;
+  try{const resp=await fetch(API_URL+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name,groupId:MAILERLITE_GROUP_ID})});result=await resp.json();}catch{}
+  if(result&&result.status==='existing'&&(!local||!local.onboardingComplete)){
+    const r=result.user;
+    const user={email:r.email,name:r.name||undefined,registeredAt:r.registeredAt,plan:r.plan||'free',onboardingComplete:!!r.onboardingComplete,firstTrack:r.firstTrack||undefined,morningTime:r.morningTime||undefined,eveningTime:r.eveningTime||undefined,moodLog:[],lastListened:{date:todayISO()}};
     saveUser(user);
-    document.getElementById('modal-form').style.display = 'none';
-    document.getElementById('modal-welcome-back').style.display = 'block';
-    setTimeout(() => { document.getElementById('modal').classList.remove('open'); route(); }, 1400);
-    return;
+    document.getElementById('modal-form').style.display='none';
+    document.getElementById('modal-welcome-back').style.display='block';
+    setTimeout(()=>{document.getElementById('modal').classList.remove('open');route();},1400);return;
   }
-  const user = local || { registeredAt: new Date().toISOString(), plan: 'free', onboardingComplete: false, moodLog: [], lastListened: { date: todayISO() } };
-  user.email = email;
-  if (name) user.name = name;
-  saveUser(user);
-  syncUser(email, { registeredAt: user.registeredAt, plan: user.plan, onboardingComplete: user.onboardingComplete, firstTrack: user.firstTrack, morningTime: user.morningTime, eveningTime: user.eveningTime });
-  document.getElementById('modal-form').style.display = 'none';
-  document.getElementById('modal-done').style.display = 'block';
-  setTimeout(() => { document.getElementById('modal').classList.remove('open'); route(); }, 1200);
+  const user=local||{registeredAt:new Date().toISOString(),plan:'free',onboardingComplete:false,moodLog:[],lastListened:{date:todayISO()}};
+  user.email=email;if(name)user.name=name;saveUser(user);
+  syncUser(email,{registeredAt:user.registeredAt,plan:user.plan,onboardingComplete:user.onboardingComplete,firstTrack:user.firstTrack,morningTime:user.morningTime,eveningTime:user.eveningTime});
+  document.getElementById('modal-form').style.display='none';
+  document.getElementById('modal-done').style.display='block';
+  setTimeout(()=>{document.getElementById('modal').classList.remove('open');route();},1200);
 }
 
-// ═══════════════════════════════════════════
-// ONBOARDING
-// ═══════════════════════════════════════════
-const OB_STEPS = 5;
-let obStep = 0;
-let obAnswers = {};
-
-function renderOnboarding(u) { obStep = 0; obAnswers = {}; renderObStep(); }
-
-function renderObStepDots() {
-  const el = document.getElementById('ob-steps');
-  el.innerHTML = '';
-  for (let i = 0; i < OB_STEPS; i++) {
-    const d = document.createElement('div');
-    d.className = 'step-dot' + (i === obStep ? ' active' : '');
-    el.appendChild(d);
-  }
-}
-
-function renderObStep() {
-  renderObStepDots();
-  const el = document.getElementById('ob-content');
-  el.innerHTML = '';
-  const steps = [
-    () => { el.innerHTML = `<h2 class="display" style="font-size:1.75rem;margin-bottom:.75rem">Welcome to LimenBridge</h2><p style="color:var(--muted);margin-bottom:2rem">To match the programme to you, please answer a few short questions. 5 questions — about a minute.</p><button class="btn btn-primary btn-full" onclick="obNext()">Let's go</button>`; },
-    () => { el.innerHTML = `<p class="eyebrow" style="margin-bottom:1.25rem">Question 1 of 4</p><h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">What made you look for something like this?</h3>${['Anxiety through the day','Hard to wind down at night','Mornings start tense','I just want daily structure'].map(o=>`<button class="option-btn${obAnswers.q1===o?' selected':''}" onclick="obSelect('q1','${o}',this)">${o}</button>`).join('')}<button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q1?'disabled':''} id="ob-next-1">Continue</button>`; },
-    () => { el.innerHTML = `<p class="eyebrow" style="margin-bottom:1.25rem">Question 2 of 4</p><h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">How often do you feel anxious or on edge during the day?</h3>${['Rarely','Sometimes','Often','Almost always'].map(o=>`<button class="option-btn${obAnswers.q2===o?' selected':''}" onclick="obSelect('q2','${o}',this)">${o}</button>`).join('')}<button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q2?'disabled':''} id="ob-next-2">Continue</button>`; },
-    () => { el.innerHTML = `<p class="eyebrow" style="margin-bottom:1.25rem">Question 3 of 4</p><h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">What bothers you most right now?</h3>${[['Mornings — hard to start the day','morning'],['Evenings and sleep — hard to wind down','evening'],['Everything equally','auto']].map(([label,val])=>`<button class="option-btn${obAnswers.q3===val?' selected':''}" onclick="obSelect('q3','${val}',this)">${label}</button>`).join('')}<button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q3?'disabled':''} id="ob-next-3">Continue</button>`; },
-    () => { el.innerHTML = `<p class="eyebrow" style="margin-bottom:1.25rem">Question 4 of 4</p><h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">At what time do you usually wake up and go to sleep?</h3><div class="time-row"><div class="field"><label class="eyebrow" for="ob-morning-time">I wake up at</label><input type="time" id="ob-morning-time" value="07:00"/></div><div class="field"><label class="eyebrow" for="ob-evening-time">I go to sleep at</label><input type="time" id="ob-evening-time" value="22:30"/></div></div><div class="field" style="margin-top:.5rem"><label class="eyebrow" for="ob-source">How did you hear about LimenBridge? <span style="color:var(--muted)">(optional)</span></label><input type="text" id="ob-source" class="input" placeholder="Optional"/></div><button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="obFinish()">Continue</button>`; }
+/* ONBOARDING */
+const OB_STEPS=5;let obStep=0;let obAnswers={};
+function renderOnboarding(u){obStep=0;obAnswers={};renderObStep();}
+function renderObStepDots(){const el=document.getElementById('ob-steps');el.innerHTML='';for(let i=0;i<OB_STEPS;i++){const d=document.createElement('div');d.className='step-dot'+(i===obStep?' active':'');el.appendChild(d);}}
+function renderObStep(){
+  renderObStepDots();const el=document.getElementById('ob-content');el.innerHTML='';
+  const steps=[
+    ()=>{el.innerHTML=`<h2 class="display" style="font-size:1.75rem;margin-bottom:.75rem">Welcome to LimenBridge</h2><p style="color:var(--muted);margin-bottom:2rem">To match the programme to you, please answer a few short questions. 5 questions — about a minute.</p><button class="btn btn-primary btn-full" onclick="obNext()">Let's go</button>`;},
+    ()=>{el.innerHTML=`<p class="eyebrow" style="margin-bottom:1.25rem">Question 1 of 4</p><h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">What made you look for something like this?</h3>${['Anxiety through the day','Hard to wind down at night','Mornings start tense','I just want daily structure'].map(o=>`<button class="option-btn${obAnswers.q1===o?' selected':''}" onclick="obSelect('q1','${o}',this)">${o}</button>`).join('')}<button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q1?'disabled':''} id="ob-next-1">Continue</button>`;},
+    ()=>{el.innerHTML=`<p class="eyebrow" style="margin-bottom:1.25rem">Question 2 of 4</p><h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">How often do you feel anxious or on edge during the day?</h3>${['Rarely','Sometimes','Often','Almost always'].map(o=>`<button class="option-btn${obAnswers.q2===o?' selected':''}" onclick="obSelect('q2','${o}',this)">${o}</button>`).join('')}<button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q2?'disabled':''} id="ob-next-2">Continue</button>`;},
+    ()=>{el.innerHTML=`<p class="eyebrow" style="margin-bottom:1.25rem">Question 3 of 4</p><h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">What bothers you most right now?</h3>${[['Mornings — hard to start the day','morning'],['Evenings and sleep — hard to wind down','evening'],['Everything equally','auto']].map(([label,val])=>`<button class="option-btn${obAnswers.q3===val?' selected':''}" onclick="obSelect('q3','${val}',this)">${label}</button>`).join('')}<button class="btn btn-ghost btn-full" style="margin-top:.5rem" onclick="obNext()" ${!obAnswers.q3?'disabled':''} id="ob-next-3">Continue</button>`;},
+    ()=>{el.innerHTML=`<p class="eyebrow" style="margin-bottom:1.25rem">Question 4 of 4</p><h3 class="display" style="font-size:1.4rem;margin-bottom:1.5rem">At what time do you usually wake up and go to sleep?</h3><div class="time-row"><div class="field"><label class="eyebrow" for="ob-morning-time">I wake up at</label><input type="time" id="ob-morning-time" value="07:00"/></div><div class="field"><label class="eyebrow" for="ob-evening-time">I go to sleep at</label><input type="time" id="ob-evening-time" value="22:30"/></div></div><div class="field" style="margin-top:.5rem"><label class="eyebrow" for="ob-source">How did you hear about LimenBridge? <span style="color:var(--muted)">(optional)</span></label><input type="text" id="ob-source" class="input" placeholder="Optional"/></div><button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="obFinish()">Continue</button>`;}
   ];
   steps[obStep]();
 }
-
-function obSelect(key, val, btn) {
-  obAnswers[key] = val;
-  btn.closest('.onboard-card').querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  const nextBtn = document.getElementById(`ob-next-${obStep}`);
-  if (nextBtn) nextBtn.removeAttribute('disabled');
-}
-
-function obNext() {
-  obStep++;
-  renderObStep();
-  document.querySelector('.onboard-card').classList.remove('fade-in');
-  void document.querySelector('.onboard-card').offsetWidth;
-  document.querySelector('.onboard-card').classList.add('fade-in');
-}
-
-function obFinish() {
-  const morningTime = document.getElementById('ob-morning-time').value || '07:00';
-  const eveningTime = document.getElementById('ob-evening-time').value || '22:30';
-  const source = document.getElementById('ob-source')?.value || '';
-  let firstTrack = obAnswers.q3;
-  if (firstTrack === 'auto') firstTrack = currentTrackKind();
-  const u = loadUser();
-  u.onboardingComplete = true; u.firstTrack = firstTrack; u.morningTime = morningTime; u.eveningTime = eveningTime;
-  if (source) u.source = source;
-  saveUser(u);
-  syncUser(u.email, { onboardingComplete: true, firstTrack: u.firstTrack, morningTime: u.morningTime, eveningTime: u.eveningTime });
+function obSelect(key,val,btn){obAnswers[key]=val;btn.closest('.onboard-card').querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');const nextBtn=document.getElementById(`ob-next-${obStep}`);if(nextBtn)nextBtn.removeAttribute('disabled');}
+function obNext(){obStep++;renderObStep();document.querySelector('.onboard-card').classList.remove('fade-in');void document.querySelector('.onboard-card').offsetWidth;document.querySelector('.onboard-card').classList.add('fade-in');}
+function obFinish(){
+  const morningTime=document.getElementById('ob-morning-time').value||'07:00';
+  const eveningTime=document.getElementById('ob-evening-time').value||'22:30';
+  const source=document.getElementById('ob-source')?.value||'';
+  let firstTrack=obAnswers.q3;if(firstTrack==='auto')firstTrack=currentTrackKind();
+  const u=loadUser();u.onboardingComplete=true;u.firstTrack=firstTrack;u.morningTime=morningTime;u.eveningTime=eveningTime;if(source)u.source=source;saveUser(u);
+  syncUser(u.email,{onboardingComplete:true,firstTrack:u.firstTrack,morningTime:u.morningTime,eveningTime:u.eveningTime});
   showRecommendation(u);
 }
 
-function generateICS(u, kinds) {
-  const now = new Date();
-  const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
-  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LimenBridge//EN','CALSCALE:GREGORIAN'];
-  kinds.forEach(kind => {
-    const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
-    lines.push('BEGIN:VEVENT',`UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,`SUMMARY:LimenBridge — ${kind === 'morning' ? 'Morning' : 'Evening'} track`,`DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,'RRULE:FREQ=DAILY','DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.','END:VEVENT');
-  });
+function generateICS(u,kinds){
+  const now=new Date();const dateStr=now.toISOString().slice(0,10).replace(/-/g,'');
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LimenBridge//EN','CALSCALE:GREGORIAN'];
+  kinds.forEach(kind=>{const timeStr=(kind==='morning'?(u.morningTime||'07:00'):(u.eveningTime||'22:00')).replace(':','');lines.push('BEGIN:VEVENT',`UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,`SUMMARY:LimenBridge — ${kind==='morning'?'Morning':'Evening'} track`,`DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,'RRULE:FREQ=DAILY','DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.','END:VEVENT');});
   lines.push('END:VCALENDAR');
-  const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
-  return URL.createObjectURL(blob);
+  const blob=new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'});return URL.createObjectURL(blob);
+}
+function isAndroid(){return/android/i.test(navigator.userAgent);}
+function googleCalendarLink(u,kind){
+  const timeStr=(kind==='morning'?(u.morningTime||'07:00'):(u.eveningTime||'22:00')).replace(':','');
+  const now=new Date();const dateStr=now.toISOString().slice(0,10).replace(/-/g,'');
+  const title=encodeURIComponent(`LimenBridge — ${kind==='morning'?'Morning':'Evening'} track`);
+  const details=encodeURIComponent('Your daily LimenBridge track. Open limenbridge.cc to listen.');
+  return`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}T${timeStr}00/${dateStr}T${timeStr}00&recur=RRULE:FREQ=DAILY&details=${details}`;
+}
+function calendarButtonHTML(u){
+  if(isAndroid())return'<a href="'+googleCalendarLink(u,'morning')+'" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex;margin-bottom:.5rem">Add morning reminder</a>'+'<a href="'+googleCalendarLink(u,'evening')+'" target="_blank" class="btn btn-ghost btn-full" style="text-decoration:none;justify-content:center;display:flex">Add evening reminder</a>';
+  return'<a href="'+generateICS(u,['morning','evening'])+'" download="limenbridge-reminders.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar — morning &amp; evening</a>'+'<p style="color:var(--muted);font-size:.8rem;margin-top:.6rem;text-align:center">A file will download — open it to add both reminders to your calendar.</p>';
 }
 
-function isAndroid() { return /android/i.test(navigator.userAgent); }
-
-function googleCalendarLink(u, kind) {
-  const timeStr = (kind === 'morning' ? (u.morningTime || '07:00') : (u.eveningTime || '22:00')).replace(':', '');
-  const now = new Date();
-  const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
-  const title = encodeURIComponent(`LimenBridge — ${kind === 'morning' ? 'Morning' : 'Evening'} track`);
-  const details = encodeURIComponent('Your daily LimenBridge track. Open limenbridge.cc to listen.');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}T${timeStr}00/${dateStr}T${timeStr}00&recur=RRULE:FREQ=DAILY&details=${details}`;
-}
-
-function calendarButtonHTML(u) {
-  if (isAndroid()) {
-    return '<a href="' + googleCalendarLink(u,'morning') + '" target="_blank" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex;margin-bottom:.5rem">Add morning reminder</a>' +
-           '<a href="' + googleCalendarLink(u,'evening') + '" target="_blank" class="btn btn-ghost btn-full" style="text-decoration:none;justify-content:center;display:flex">Add evening reminder</a>';
-  }
-  return '<a href="' + generateICS(u,['morning','evening']) + '" download="limenbridge-reminders.ics" class="btn btn-primary btn-full" style="text-decoration:none;justify-content:center;display:flex">Add to calendar — morning &amp; evening</a>' +
-         '<p style="color:var(--muted);font-size:.8rem;margin-top:.6rem;text-align:center">A file will download — open it to add both reminders to your calendar.</p>';
-}
-
-function showRecommendation(u) {
-  const el = document.getElementById('ob-content');
-  document.getElementById('ob-steps').innerHTML = '';
-  const isMorning = u.firstTrack === 'morning';
-  const hour = new Date().getHours();
-  const morningTimeLabel = u.morningTime || '07:00';
-  const eveningTimeLabel = u.eveningTime || '22:00';
-  const userEveningHour = parseInt(eveningTimeLabel.split(':')[0], 10);
-  const userMorningHour = parseInt((u.morningTime || '07:00').split(':')[0], 10);
-  const morningWindow = hour >= userMorningHour && hour < userMorningHour + 2;
-  const morningComingTomorrow = isMorning && !morningWindow;
-  const eveningWindow = hour >= userEveningHour - 3;
-  const eveningComingLater = !isMorning && !eveningWindow;
-  const trackComingLater = morningComingTomorrow || eveningComingLater;
-
-  if (trackComingLater) {
-    const kindLabel = isMorning ? 'morning' : 'evening';
-    const timeLabel = isMorning ? morningTimeLabel : eveningTimeLabel;
-    const whenLabel = isMorning ? 'tomorrow morning at ' + morningTimeLabel : 'this evening at ' + eveningTimeLabel;
-    const desc = isMorning ? "The morning track works with your body's natural rhythm — designed for the first 30 minutes after waking, not for the evening." : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
-    el.innerHTML = '<div class="fade-in"><p class="eyebrow" style="color:var(--accent-soft);margin-bottom:1rem">You\'re all set</p><h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Your first ' + kindLabel + ' track will be ready ' + whenLabel + '.</h2><p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p><div class="card" style="margin-bottom:1.5rem"><p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p><p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening — added to your calendar at once.</p>' + calendarButtonHTML(u) + '</div><p style="margin-top:1.25rem;font-size:.9rem;color:var(--muted);text-align:center;line-height:1.6">Or simply come back at ' + timeLabel + ' without the calendar.<br>LimenBridge remembers you — your track will be waiting.</p><button class="btn btn-ghost btn-full" style="margin-top:1.25rem" onclick="route()">Go to site</button></div>';
-  } else {
-    const kindLabel = isMorning ? 'morning' : 'evening';
-    const desc = isMorning ? "Your body is already in its natural rising phase in the mornings. The morning track works with that moment." : 'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
-    el.innerHTML = '<div class="fade-in"><p class="eyebrow" style="color:var(--accent-soft);margin-bottom:1rem">Based on your answers</p><h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Let\'s start with the ' + kindLabel + ' programme.</h2><p style="color:var(--muted);margin-bottom:2rem">' + desc + '</p><div class="card" style="margin-bottom:1.5rem"><p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p><p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening — added to your calendar at once.</p>' + calendarButtonHTML(u) + '</div><button class="btn btn-primary btn-full" onclick="route()">Start now</button></div>';
+function showRecommendation(u){
+  const el=document.getElementById('ob-content');document.getElementById('ob-steps').innerHTML='';
+  const isMorning=u.firstTrack==='morning';const hour=new Date().getHours();
+  const morningTimeLabel=u.morningTime||'07:00';const eveningTimeLabel=u.eveningTime||'22:00';
+  const userEveningHour=parseInt(eveningTimeLabel.split(':')[0],10);const userMorningHour=parseInt((u.morningTime||'07:00').split(':')[0],10);
+  const morningWindow=hour>=userMorningHour&&hour<userMorningHour+2;
+  const morningComingTomorrow=isMorning&&!morningWindow;
+  const eveningWindow=hour>=userEveningHour-3;const eveningComingLater=!isMorning&&!eveningWindow;
+  const trackComingLater=morningComingTomorrow||eveningComingLater;
+  if(trackComingLater){
+    const kindLabel=isMorning?'morning':'evening';const timeLabel=isMorning?morningTimeLabel:eveningTimeLabel;const whenLabel=isMorning?'tomorrow morning at '+morningTimeLabel:'this evening at '+eveningTimeLabel;const desc=isMorning?"The morning track works with your body's natural rhythm — designed for the first 30 minutes after waking.":'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
+    el.innerHTML='<div class="fade-in"><p class="eyebrow" style="color:var(--accent-soft);margin-bottom:1rem">You\'re all set</p><h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Your first '+kindLabel+' track will be ready '+whenLabel+'.</h2><p style="color:var(--muted);margin-bottom:2rem">'+desc+'</p><div class="card" style="margin-bottom:1.5rem"><p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p><p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening — added to your calendar at once.</p>'+calendarButtonHTML(u)+'</div><p style="margin-top:1.25rem;font-size:.9rem;color:var(--muted);text-align:center;line-height:1.6">Or simply come back at '+timeLabel+' without the calendar.<br>LimenBridge remembers you — your track will be waiting.</p><button class="btn btn-ghost btn-full" style="margin-top:1.25rem" onclick="route()">Go to site</button></div>';
+  }else{
+    const kindLabel=isMorning?'morning':'evening';const desc=isMorning?"Your body is already in its natural rising phase in the mornings. The morning track works with that moment.":'Evenings are when accumulated tension needs somewhere to go. The evening track helps that transition happen.';
+    el.innerHTML='<div class="fade-in"><p class="eyebrow" style="color:var(--accent-soft);margin-bottom:1rem">Based on your answers</p><h2 class="display" style="font-size:1.6rem;margin-bottom:1rem">Let\'s start with the '+kindLabel+' programme.</h2><p style="color:var(--muted);margin-bottom:2rem">'+desc+'</p><div class="card" style="margin-bottom:1.5rem"><p style="font-weight:500;margin-bottom:.5rem">Add your daily reminders</p><p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">One for morning, one for evening — added to your calendar at once.</p>'+calendarButtonHTML(u)+'</div><button class="btn btn-primary btn-full" onclick="route()">Start now</button></div>';
   }
 }
 
-// ═══════════════════════════════════════════
-// APP / PLAYER
-// ═══════════════════════════════════════════
-let audioEl = document.getElementById('audio-player');
-let isPlaying = false;
+/* APP / PLAYER */
+let audioEl=document.getElementById('audio-player');let isPlaying=false;
 
-function renderApp(u) {
-  const el = document.getElementById('app-content');
-  const kind = currentTrackKind();
-  const idx = String(trackIndex(u)).padStart(2,'0');
-  const trackUrl = `https://audio.limenbridge.cc/${kind}_${idx}.mp3`;
-  const listened = hasListenedToday(u, kind);
-  const pDay = programDay(u);
-  const streak = streakDays(u);
-  const planLabel = u.plan === 'free' ? 'FREE TRIAL' : u.plan.toUpperCase();
-  document.getElementById('plan-badge').textContent = planLabel;
-
-  const emailBanner = (u.plan === 'free' && !u.email && trialDay(u) >= 2 && trialDay(u) <= 3 && !u.emailPromptDismissed)
-    ? `<div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;padding:.85rem 1.1rem"><p style="font-size:.88rem;color:var(--muted);margin:0">Want a reminder before your free days end?</p><div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0"><button class="btn btn-ghost" style="padding:.4rem .9rem;font-size:.82rem" onclick="openModal()">Add email</button><button onclick="dismissEmailPrompt()" title="Dismiss" style="background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1;padding:.25rem">&times;</button></div></div>` : '';
-
-  el.innerHTML = `
-    ${emailBanner}
+function renderApp(u){
+  const el=document.getElementById('app-content');
+  const kind=currentTrackKind();const idx=String(trackIndex(u)).padStart(2,'0');
+  const trackUrl=`https://audio.limenbridge.cc/${kind}_${idx}.mp3`;
+  const listened=hasListenedToday(u,kind);const pDay=programDay(u);const streak=streakDays(u);
+  document.getElementById('plan-badge').textContent=u.plan.toUpperCase();
+  el.innerHTML=`
     <p style="color:var(--muted);font-size:1.05rem;margin-bottom:2rem">${greeting(u.name)}</p>
     <div class="player-card fade-in">
-      <div class="track-label">${kind === 'morning' ? 'Morning' : 'Evening'} track &middot; Day ${pDay}</div>
+      <div class="track-label">${kind==='morning'?'Morning':'Evening'} track &middot; Day ${pDay}</div>
       <div class="waveform-player" id="player-wave" style="margin:1rem 0">${'<span style="height:20px"></span>'.repeat(18)}</div>
       <button class="play-btn" id="play-btn" onclick="togglePlay('${trackUrl}','${kind}')" title="Play / Pause">
         <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="var(--fg)"><path id="play-path" d="M8 5v14l11-7z"/></svg>
       </button>
       <p style="font-size:.78rem;color:var(--muted);margin-top:-.5rem">Tap to play &middot; tap again to pause</p>
       <div class="progress-wrap" style="margin:0 auto;max-width:320px"><div class="progress-fill" id="track-progress" style="width:0%"></div></div>
-      <div class="track-status" id="track-status">${listened ? '&#10003; Listened today' : ''}</div>
+      <div class="track-status" id="track-status">${listened?'&#10003; Listened today':''}</div>
     </div>
     <div class="day-prog">
       <div class="day-prog-label"><span>Program progress</span><span>Day ${pDay} of 28</span></div>
       <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/28*100).toFixed(1)}%"></div></div>
     </div>
-    ${streak >= 2 ? `<div style="margin-top:1.25rem"><span class="streak-badge">&#128293; ${streak} days in a row</span></div>` : ''}
+    ${streak>=2?`<div style="margin-top:1.25rem"><span class="streak-badge">&#128293; ${streak} days in a row</span></div>`:''}
     <div style="margin-top:2.5rem">
       <h3 class="display" style="font-size:1.2rem;margin-bottom:.25rem">Your progress</h3>
       <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem">Morning &amp; evening mood &middot; 28 days</p>
       <div class="graph-wrap">
         <canvas id="mood-graph" width="640" height="180" style="width:100%;height:180px;display:block;border-radius:var(--radius)"></canvas>
-        ${u.plan === 'free' ? `<div class="graph-locked"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2C2623" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Your graph starts on day 4. Keep going.</p><button class="btn btn-primary" onclick="startCheckout('monthly',this)" style="font-size:.85rem;padding:10px 20px">Unlock full access &mdash; $19/mo</button></div>` : ''}
       </div>
     </div>
     <div id="mood-section" style="display:none"></div>
   `;
-
-  if (u.plan !== 'free') drawGraph(u);
-  setupAudio(trackUrl, kind, u);
+  drawGraph(u);
+  setupAudio(trackUrl,kind,u);
 }
 
-function setupAudio(url, kind, u) {
-  audioEl.src = url; audioEl.load();
-  audioEl.ontimeupdate = () => {
-    if (!audioEl.duration) return;
-    const pct = audioEl.currentTime / audioEl.duration * 100;
-    document.getElementById('track-progress').style.width = pct.toFixed(1) + '%';
-    if (pct >= 80 && !hasListenedToday(u, kind)) {
-      markListened(u, kind);
-      document.getElementById('track-status').textContent = '✓ Listened today';
-      showMoodSection(kind, u);
-    }
+function setupAudio(url,kind,u){
+  audioEl.src=url;audioEl.load();
+  audioEl.ontimeupdate=()=>{
+    if(!audioEl.duration)return;
+    const pct=audioEl.currentTime/audioEl.duration*100;
+    document.getElementById('track-progress').style.width=pct.toFixed(1)+'%';
+    if(pct>=80&&!hasListenedToday(u,kind)){markListened(u,kind);document.getElementById('track-status').textContent='✓ Listened today';showMoodSection(kind,u);}
   };
-  audioEl.onended = () => { setPlayIcon(false); document.getElementById('player-wave')?.classList.remove('playing'); };
+  audioEl.onended=()=>{setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');};
 }
 
-function togglePlay(url, kind) {
-  if (isPlaying) {
-    audioEl.pause(); setPlayIcon(false); document.getElementById('player-wave')?.classList.remove('playing');
-  } else {
-    if (!audioEl.src || audioEl.src !== url) audioEl.src = url;
-    audioEl.play().catch(() => {}); setPlayIcon(true); document.getElementById('player-wave')?.classList.add('playing');
-  }
-  isPlaying = !isPlaying;
+function togglePlay(url,kind){
+  if(isPlaying){audioEl.pause();setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');}
+  else{if(!audioEl.src||audioEl.src!==url)audioEl.src=url;audioEl.play().catch(()=>{});setPlayIcon(true);document.getElementById('player-wave')?.classList.add('playing');}
+  isPlaying=!isPlaying;
 }
+function setPlayIcon(playing){const icon=document.getElementById('play-icon');if(!icon)return;icon.setAttribute('d',playing?'M6 19h4V5H6v14zm8-14v14h4V5h-4z':'M8 5v14l11-7z');}
 
-function setPlayIcon(playing) {
-  const icon = document.getElementById('play-icon');
-  if (!icon) return;
-  icon.setAttribute('d', playing ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z' : 'M8 5v14l11-7z');
+function showMoodSection(kind,u){
+  const el=document.getElementById('mood-section');if(!el)return;
+  const q1=kind==='morning'?'How are you feeling right now?':'How did the day go, anxiety-wise?';
+  const q2=kind==='morning'?"What's on your mind most today?":'What helped today?';
+  el.style.display='block';
+  el.innerHTML=`<div class="card fade-in" style="margin-top:2rem"><h3 class="display" style="font-size:1.2rem;margin-bottom:1.25rem">Quick check-in</h3><p style="margin-bottom:.75rem">${q1}</p><div class="mood-scale" id="mood-score-btns">${[1,2,3,4,5].map(n=>`<button class="mood-btn" onclick="selectMood(${n},this)">${n}</button>`).join('')}</div><p style="font-size:.8rem;color:var(--muted);margin-top:.35rem;display:flex;justify-content:space-between"><span>Heavy</span><span>Light</span></p><div class="field" style="margin-top:1.25rem"><label class="eyebrow" for="mood-note">${q2} <span style="color:var(--muted)">(optional)</span></label><p style="font-size:.78rem;color:var(--muted);margin-top:.35rem;margin-bottom:.5rem">Your notes stay on this device. We can't read them.</p><input type="text" id="mood-note" class="input" maxlength="100" placeholder="..."/></div><button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="saveMood('${kind}')">Save</button></div>`;
 }
+let selectedMoodScore=null;
+function selectMood(n,btn){selectedMoodScore=n;document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+function saveMood(kind){const u=loadUser();const note=document.getElementById('mood-note')?.value||'';if(selectedMoodScore){u.moodLog.push({date:todayISO(),time:kind,score:selectedMoodScore,note:note||undefined});saveUser(u);}document.getElementById('mood-section').innerHTML=`<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Saved ✓</p>`;selectedMoodScore=null;}
 
-function showMoodSection(kind, u) {
-  const el = document.getElementById('mood-section');
-  if (!el) return;
-  const q1 = kind === 'morning' ? 'How are you feeling right now?' : 'How did the day go, anxiety-wise?';
-  const q2 = kind === 'morning' ? "What's on your mind most today?" : 'What helped today?';
-  el.style.display = 'block';
-  el.innerHTML = `<div class="card fade-in" style="margin-top:2rem"><h3 class="display" style="font-size:1.2rem;margin-bottom:1.25rem">Quick check-in</h3><p style="margin-bottom:.75rem">${q1}</p><div class="mood-scale" id="mood-score-btns">${[1,2,3,4,5].map(n=>`<button class="mood-btn" onclick="selectMood(${n},this)">${n}</button>`).join('')}</div><p style="font-size:.8rem;color:var(--muted);margin-top:.35rem;display:flex;justify-content:space-between"><span>Heavy</span><span>Light</span></p><div class="field" style="margin-top:1.25rem"><label class="eyebrow" for="mood-note">${q2} <span style="color:var(--muted)">(optional)</span></label><p style="font-size:.78rem;color:var(--muted);margin-top:.35rem;margin-bottom:.5rem">Your notes stay on this device. We can't read them.</p><input type="text" id="mood-note" class="input" maxlength="100" placeholder="..."/></div><button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="saveMood('${kind}')">Save</button></div>`;
-}
-
-let selectedMoodScore = null;
-function selectMood(n, btn) {
-  selectedMoodScore = n;
-  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-}
-
-function saveMood(kind) {
-  const u = loadUser();
-  const note = document.getElementById('mood-note')?.value || '';
-  if (selectedMoodScore) { u.moodLog.push({ date: todayISO(), time: kind, score: selectedMoodScore, note: note || undefined }); saveUser(u); }
-  document.getElementById('mood-section').innerHTML = `<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Saved ✓</p>`;
-  selectedMoodScore = null;
-}
-
-// ═══════════════════════════════════════════
-// GRAPH
-// ═══════════════════════════════════════════
-function drawGraph(u) {
-  const canvas = document.getElementById('mood-graph');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  const pad = { top:16, right:16, bottom:28, left:28 };
-  const iW = W - pad.left - pad.right, iH = H - pad.top - pad.bottom;
-  ctx.clearRect(0,0,W,H); ctx.fillStyle='#ECE6DC'; ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='#DCD4C7'; ctx.lineWidth=1;
-  for (let i=1;i<=4;i++){const y=pad.top+(iH/4)*i;ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+iW,y);ctx.stroke();}
+/* GRAPH */
+function drawGraph(u){
+  const canvas=document.getElementById('mood-graph');if(!canvas)return;
+  const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;
+  const pad={top:16,right:16,bottom:28,left:28};const iW=W-pad.left-pad.right,iH=H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#ECE6DC';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#DCD4C7';ctx.lineWidth=1;
+  for(let i=1;i<=4;i++){const y=pad.top+(iH/4)*i;ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+iW,y);ctx.stroke();}
   const days=[];for(let i=27;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toISOString().slice(0,10));}
   function avg(entries){if(!entries.length)return null;return entries.reduce((s,e)=>s+e.score,0)/entries.length;}
   const morning=days.map(d=>avg(u.moodLog.filter(m=>m.date===d&&m.time==='morning')));
   const evening=days.map(d=>avg(u.moodLog.filter(m=>m.date===d&&m.time==='evening')));
   function drawLine(data,color){
     const points=data.map((v,i)=>({x:pad.left+(i/27)*iW,y:v===null?null:pad.top+iH-((v-1)/4)*iH}));
-    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;ctx.lineJoin='round';
-    let started=false;
-    points.forEach(p=>{if(p.y===null)return;if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);});
-    ctx.stroke();
+    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;ctx.lineJoin='round';let started=false;
+    points.forEach(p=>{if(p.y===null)return;if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);});ctx.stroke();
     points.forEach(p=>{if(p.y===null)return;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();});
   }
-  drawLine(morning,'#C98A73'); drawLine(evening,'#6E9072');
+  drawLine(morning,'#C98A73');drawLine(evening,'#6E9072');
   ctx.fillStyle='#8C827A';ctx.font='11px Jost, sans-serif';ctx.textAlign='center';
   [0,13,27].forEach(i=>{ctx.fillText('Day '+(i+1),pad.left+(i/27)*iW,H-6);});
-  ctx.fillStyle='#C98A73';ctx.fillRect(pad.left,6,10,3);
-  ctx.fillStyle='#8C827A';ctx.font='10px Jost, sans-serif';ctx.textAlign='left';ctx.fillText('Morning',pad.left+14,11);
+  ctx.fillStyle='#C98A73';ctx.fillRect(pad.left,6,10,3);ctx.fillStyle='#8C827A';ctx.font='10px Jost, sans-serif';ctx.textAlign='left';ctx.fillText('Morning',pad.left+14,11);
   ctx.fillStyle='#6E9072';ctx.fillRect(pad.left+70,6,10,3);ctx.fillText('Evening',pad.left+84,11);
 }
 
-// ═══════════════════════════════════════════
-// REFLECTION PAUSE
-// ═══════════════════════════════════════════
-function renderReflectionPause(u) {
-  const el = document.getElementById('app-content');
-  const pos = cyclePosition(u);
-  const pauseDay = pos - 28;
-  const cycle = currentCycle(u);
-  const isDay1 = pauseDay === 1;
-  const question = isDay1
-    ? { text: 'What felt different on day 28 compared to day 1?', field: 'reflectionQ1', stored: u.reflectionQ1 }
-    : { text: 'What do you want to notice more in the next 28 days?', field: 'reflectionQ2', stored: u.reflectionQ2 };
-  el.innerHTML = `<div style="max-width:480px;margin:0 auto;padding-top:3rem"><div class="card fade-in" style="margin-bottom:1.5rem;text-align:center"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Cycle ${cycle} · Day ${28+pauseDay}</p><h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">No track today.</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.65">Your nervous system is consolidating what shifted over 28 days. This is part of the programme — not a gap in it.</p></div><div class="card fade-in"><p style="font-size:1rem;line-height:1.65;margin-bottom:1.25rem">${question.text}</p>${question.stored?`<p style="color:var(--muted);font-size:.9rem;padding:.85rem 1rem;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);line-height:1.55">${question.stored}</p><p style="color:var(--muted);font-size:.82rem;margin-top:.75rem">✓ Saved</p>`:`<textarea id="reflection-answer" placeholder="Take your time." style="width:100%;min-height:120px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem;font-family:'Jost',sans-serif;font-size:.95rem;color:var(--fg);resize:vertical;box-sizing:border-box;outline:none"></textarea><button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="saveReflection('${question.field}')">Save</button>`}</div></div>`;
+/* REFLECTION PAUSE */
+function renderReflectionPause(u){
+  const el=document.getElementById('app-content');const pos=cyclePosition(u);const pauseDay=pos-28;const cycle=currentCycle(u);const isDay1=pauseDay===1;
+  const question=isDay1?{text:'What felt different on day 28 compared to day 1?',field:'reflectionQ1',stored:u.reflectionQ1}:{text:'What do you want to notice more in the next 28 days?',field:'reflectionQ2',stored:u.reflectionQ2};
+  el.innerHTML=`<div style="max-width:480px;margin:0 auto;padding-top:3rem"><div class="card fade-in" style="margin-bottom:1.5rem;text-align:center"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Cycle ${cycle} · Day ${28+pauseDay}</p><h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">No track today.</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.65">Your nervous system is consolidating what shifted over 28 days. This is part of the programme — not a gap in it.</p></div><div class="card fade-in"><p style="font-size:1rem;line-height:1.65;margin-bottom:1.25rem">${question.text}</p>${question.stored?`<p style="color:var(--muted);font-size:.9rem;padding:.85rem 1rem;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);line-height:1.55">${question.stored}</p><p style="color:var(--muted);font-size:.82rem;margin-top:.75rem">✓ Saved</p>`:`<textarea id="reflection-answer" placeholder="Take your time." style="width:100%;min-height:120px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem;font-family:'Jost',sans-serif;font-size:.95rem;color:var(--fg);resize:vertical;box-sizing:border-box;outline:none"></textarea><button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="saveReflection('${question.field}')">Save</button>`}</div></div>`;
 }
+function saveReflection(field){const answer=(document.getElementById('reflection-answer').value||'').trim();if(!answer)return;const u=loadUser();u[field]=answer;saveUser(u);route();}
 
-function saveReflection(field) {
-  const answer = (document.getElementById('reflection-answer').value || '').trim();
-  if (!answer) return;
-  const u = loadUser(); u[field] = answer; saveUser(u); route();
+function renderAnnualOffer(u){
+  const el=document.getElementById('app-content');
+  el.innerHTML=`<div style="max-width:480px;margin:0 auto;padding-top:3rem"><div class="card fade-in" style="margin-bottom:1.5rem"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">28 days complete</p><h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">You've seen what one cycle can do.</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.65">Research on habit formation is clear: the automaticity curve is still rising. You're in the most active phase of change — not at the end of it.</p></div><div class="card fade-in" style="margin-bottom:1.5rem"><p style="font-size:.95rem;line-height:1.7;margin-bottom:1rem">A second cycle deepens what the first one started. A third makes it structural. By the fourth, the practice no longer requires effort — it becomes the default state.</p><p style="font-size:.95rem;line-height:1.7">Four complete cycles. Four consolidation pauses. One year.</p></div><div class="card fade-in" style="text-align:center"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Annual programme</p><p style="font-size:2rem;font-family:'Cormorant Garamond',serif;font-weight:400;margin-bottom:.25rem">$163 / year</p><p style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem">$13.60 per month · Cancel anytime</p><button class="btn btn-primary btn-full" onclick="startCheckout('annual',this)" style="margin-bottom:.75rem">Continue with annual</button><button class="btn btn-ghost btn-full" onclick="dismissAnnualOffer()">Stay monthly</button></div></div>`;
 }
+function dismissAnnualOffer(){const u=loadUser();u.annualOfferDismissed=true;saveUser(u);route();}
 
-// ANNUAL OFFER
-function renderAnnualOffer(u) {
-  const el = document.getElementById('app-content');
-  el.innerHTML = `<div style="max-width:480px;margin:0 auto;padding-top:3rem"><div class="card fade-in" style="margin-bottom:1.5rem"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">28 days complete</p><h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">You've seen what one cycle can do.</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.65">Research on habit formation is clear: the automaticity curve is still rising. You're in the most active phase of change — not at the end of it.</p></div><div class="card fade-in" style="margin-bottom:1.5rem"><p style="font-size:.95rem;line-height:1.7;margin-bottom:1rem">A second cycle deepens what the first one started. A third makes it structural. By the fourth, the practice no longer requires effort — it becomes the default state.</p><p style="font-size:.95rem;line-height:1.7">Four complete cycles. Four consolidation pauses. One year.</p></div><div class="card fade-in" style="text-align:center"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Annual programme</p><p style="font-size:2rem;font-family:'Cormorant Garamond',serif;font-weight:400;margin-bottom:.25rem">$163 / year</p><p style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem">$13.60 per month · Cancel anytime</p><button class="btn btn-primary btn-full" onclick="startCheckout('annual',this)" style="margin-bottom:.75rem">Continue with annual</button><button class="btn btn-ghost btn-full" onclick="dismissAnnualOffer()">Stay monthly</button></div></div>`;
-}
+/* PWA */
+const FB_CONFIG={apiKey:"AIzaSyBP1VOwZt1hOPqFd0HY96x6ipLWa1TGPeg",authDomain:"limenbridge.firebaseapp.com",projectId:"limenbridge",storageBucket:"limenbridge.firebasestorage.app",messagingSenderId:"795817059671",appId:"1:795817059671:web:e40d740c68e984be608a12"};
+const VAPID_KEY="BF6ZfqF0ubdGw77PluD3vk2gtsgMBly5xXUht6SKiaZqHvbs3crnSaZWA1Y1qB9SmZ2jsrUY67FG0Lq8PnlekOM";
+let fbMessaging=null;
+async function registerSW(){if(!('serviceWorker'in navigator))return;try{const reg=await navigator.serviceWorker.register('/sw.js');window._swReg=reg;const app=firebase.initializeApp(FB_CONFIG);fbMessaging=firebase.messaging();fbMessaging.onMessage(payload=>{const{title,body}=payload.data||{};if(Notification.permission==='granted')new Notification(title||'LimenBridge',{body:body||'Your track is ready.',icon:'/icon-192.png'});});}catch(e){console.log('SW/FCM init failed:',e);}}
+async function requestPushPermission(){if(!('Notification'in window)||!fbMessaging)return;if(Notification.permission==='denied')return;try{const token=await fbMessaging.getToken({vapidKey:VAPID_KEY});if(token){const u=loadUser();if(u&&u.fcmToken!==token){u.fcmToken=token;saveUser(u);}}}catch(e){console.log('Push failed:',e);}}
+function isInStandaloneMode(){return window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;}
+function showInstallPrompt(){if(isInStandaloneMode())return;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);if(!isIOS)return;setTimeout(()=>{const existing=document.getElementById('ios-install-banner');if(existing)return;const banner=document.createElement('div');banner.id='ios-install-banner';banner.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#ECE6DC;border-top:1px solid #E3DDD3;padding:1rem 1.25rem;z-index:200;display:flex;align-items:flex-start;gap:.75rem';banner.innerHTML=`<div style="flex:1"><p style="font-size:.9rem;font-weight:500;margin-bottom:.25rem">Add to your home screen</p><p style="font-size:.8rem;color:#8C827A;line-height:1.5">Tap <strong style="color:#B87963">Share</strong> &rarr; <strong style="color:#B87963">Add to Home Screen</strong> to get daily reminders on your phone.</p></div><button onclick="document.getElementById('ios-install-banner').remove()" style="background:none;border:none;color:#8C827A;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">&times;</button>`;document.body.appendChild(banner);},3000);}
 
-function dismissAnnualOffer() { const u = loadUser(); u.annualOfferDismissed = true; saveUser(u); route(); }
-
-function renderTrialEnded(u) {
-  const count = u.moodLog.length + (u.lastListened ? Object.keys(u.lastListened).filter(k=>k!=='date'&&u.lastListened[k]).length : 0);
-  document.getElementById('trial-ended-msg').textContent = `You showed up ${count} time${count!==1?'s':''}. That's not nothing. Your account stays open — your notes are still here. Ready to continue?`;
-}
-
-// ═══════════════════════════════════════════
-// PWA — FIREBASE FCM PUSH
-// ═══════════════════════════════════════════
-const FB_CONFIG = {
-  apiKey: "AIzaSyBP1VOwZt1hOPqFd0HY96x6ipLWa1TGPeg",
-  authDomain: "limenbridge.firebaseapp.com",
-  projectId: "limenbridge",
-  storageBucket: "limenbridge.firebasestorage.app",
-  messagingSenderId: "795817059671",
-  appId: "1:795817059671:web:e40d740c68e984be608a12"
-};
-const VAPID_KEY = "BF6ZfqF0ubdGw77PluD3vk2gtsgMBly5xXUht6SKiaZqHvbs3crnSaZWA1Y1qB9SmZ2jsrUY67FG0Lq8PnlekOM";
-let fbMessaging = null;
-
-async function registerSW() {
-  if (!('serviceWorker' in navigator)) return;
-  try {
-    const reg = await navigator.serviceWorker.register('/sw.js');
-    window._swReg = reg;
-    const app = firebase.initializeApp(FB_CONFIG);
-    fbMessaging = firebase.messaging();
-    fbMessaging.onMessage(payload => {
-      const { title, body } = payload.data || {};
-      if (Notification.permission === 'granted') new Notification(title || 'LimenBridge', { body: body || 'Your track is ready.', icon: '/icon-192.png' });
-    });
-  } catch(e) { console.log('SW/FCM init failed:', e); }
-}
-
-async function requestPushPermission() {
-  if (!('Notification' in window) || !fbMessaging) return;
-  if (Notification.permission === 'denied') return;
-  try {
-    const token = await fbMessaging.getToken({ vapidKey: VAPID_KEY });
-    if (token) { const u = loadUser(); if (u && u.fcmToken !== token) { u.fcmToken = token; saveUser(u); } }
-  } catch(e) { console.log('Push permission failed:', e); }
-}
-
-function isInStandaloneMode() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone; }
-
-function showInstallPrompt() {
-  if (isInStandaloneMode()) return;
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  if (!isIOS) return;
-  setTimeout(() => {
-    const existing = document.getElementById('ios-install-banner');
-    if (existing) return;
-    const banner = document.createElement('div');
-    banner.id = 'ios-install-banner';
-    banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#ECE6DC;border-top:1px solid #E3DDD3;padding:1rem 1.25rem;z-index:200;display:flex;align-items:flex-start;gap:.75rem';
-    banner.innerHTML = `<div style="flex:1"><p style="font-size:.9rem;font-weight:500;margin-bottom:.25rem">Add to your home screen</p><p style="font-size:.8rem;color:#8C827A;line-height:1.5">Tap <strong style="color:#B87963">Share</strong> &rarr; <strong style="color:#B87963">Add to Home Screen</strong> to get daily reminders on your phone.</p></div><button onclick="document.getElementById('ios-install-banner').remove()" style="background:none;border:none;color:#8C827A;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">&times;</button>`;
-    document.body.appendChild(banner);
-  }, 3000);
-}
-
-// ═══════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════
-registerSW().then(() => {
-  const u = loadUser();
-  if (u && u.onboardingComplete) requestPushPermission();
-});
+registerSW().then(()=>{const u=loadUser();if(u&&u.onboardingComplete)requestPushPermission();});
 route();
 showInstallPrompt();
 </script>
