@@ -84,7 +84,6 @@ a{color:inherit;text-decoration:none}
 .day-prog-label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:.4rem}
 .section{padding-top:80px;padding-bottom:80px}
 @media(max-width:640px){.section{padding-top:48px;padding-bottom:48px}}
-.founder-photo{width:88px;height:88px;border-radius:50%;background:var(--surface);border:1px solid var(--border);background-image:url(founder.jpg);background-size:cover;background-position:center;flex-shrink:0}
 footer{padding:2rem 0;color:var(--muted);font-size:.82rem}
 nav{padding:1.5rem 0 1rem}
 .nav-inner{display:flex;align-items:center;justify-content:space-between}
@@ -107,9 +106,34 @@ input[type=time]:focus{border-color:var(--accent)}
 .brand-mark{display:inline-block;width:22px;height:14px;color:var(--terra);vertical-align:-3px;flex-shrink:0}
 .brand-mark.lg{width:32px;height:20px}
 .brand-mark.sm{width:16px;height:10px}
-#screen-landing > nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+
+/* ── Nav ── */
+#screen-landing > nav{position:fixed;top:0;left:0;width:100%;z-index:200;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,241,234,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
 #screen-landing .logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;letter-spacing:.04em;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:20px}
 .nav-cta{font-size:19px;letter-spacing:.01em;color:var(--ink);text-decoration:none;font-family:'Cormorant Garamond',serif;font-weight:400}
+
+/* Hamburger button */
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0}
+.nav-hamburger span{display:block;height:1.5px;background:var(--ink);border-radius:2px;transition:all 250ms}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Mobile menu drawer */
+.nav-drawer{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:190;flex-direction:column;padding-top:72px;background:rgba(244,241,234,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.nav-drawer.open{display:flex}
+.nav-drawer-links{display:flex;flex-direction:column;align-items:center;gap:0;padding:24px 0}
+.nav-drawer-link{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--ink);text-decoration:none;padding:18px 32px;letter-spacing:.02em;transition:color .2s}
+.nav-drawer-link:hover{color:var(--terra)}
+.nav-drawer-link.cta{color:var(--terra)}
+.nav-drawer-divider{width:40px;height:1px;background:var(--border);margin:8px auto}
+
+@media(max-width:640px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+}
+
 .hero{padding-top:64px;background:var(--cream)}
 .hero-image{width:100%;height:58vh;min-height:360px;background-image:linear-gradient(160deg,rgba(242,220,192,.25) 0%,rgba(180,128,104,.15) 100%),url('images/hero.webp');background-size:cover;background-position:center;background-color:var(--peach-soft);position:relative}
 .hero-image::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,var(--cream) 100%)}
@@ -338,15 +362,30 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 
 <!-- SCREEN: LANDING -->
 <div id="screen-landing" class="screen">
+
+<!-- Mobile menu drawer -->
+<div class="nav-drawer" id="nav-drawer">
+  <div class="nav-drawer-links">
+    <a href="/blog/" class="nav-drawer-link" onclick="closeDrawer()">Blog</a>
+    <div class="nav-drawer-divider"></div>
+    <a href="#" class="nav-drawer-link cta" onclick="closeDrawer();openSandbox();return false;">See how it works</a>
+  </div>
+</div>
+
 <nav>
   <a href="#" class="logo" onclick="return false;">
     <svg class="brand-mark" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 14 Q12 2 22 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="12" cy="11" r="1.6" fill="currentColor"/></svg>
     LimenBridge
   </a>
-  <div style="display:flex;align-items:center;gap:20px">
+  <!-- Desktop links -->
+  <div class="nav-links">
     <a href="/blog/" class="nav-cta">Blog</a>
     <a href="#" class="nav-cta" onclick="openSandbox();return false;">See how it works</a>
   </div>
+  <!-- Hamburger (mobile only) -->
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <section class="hero">
@@ -758,7 +797,7 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
       <span class="logo">LimenBridge</span>
       <div style="display:flex;align-items:center;gap:.75rem">
         <span id="plan-badge" style="font-size:.78rem;color:var(--muted)"></span>
-        <button onclick="openHelp()" style="width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 200ms,color 200ms" title="How it works">?</button>
+        <button onclick="openHelp()" style="width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="How it works">?</button>
         <button onclick="goHome()" style="background:var(--surface);border:1px solid var(--border);color:var(--fg);font-size:.9rem;cursor:pointer;padding:.5rem 1rem;border-radius:4px;font-family:'Jost',sans-serif">← Back to site</button>
       </div>
     </div></nav>
@@ -787,6 +826,20 @@ footer{padding:40px 28px 60px;text-align:center;background:var(--cream-2);border
 </div>
 
 <script>
+// ── Hamburger ──
+function toggleDrawer(){
+  const drawer=document.getElementById('nav-drawer');
+  const btn=document.getElementById('nav-hamburger');
+  const open=drawer.classList.toggle('open');
+  btn.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeDrawer(){
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('nav-hamburger').classList.remove('open');
+  document.body.style.overflow='';
+}
+
 const STRIPE_KEY='pk_live_51TUlctF5LLi6LixPBafRgNuQP0OEZUkDvqQVMvGWH6E7aDLVFtqpYoBUUhvLBVwxROHJvnaWk97bKYfVm0WXyMxA00h2KDCY10';
 const stripeInstance=Stripe(STRIPE_KEY);
 const API_URL='https://limenbridge-mailerlite.cdv353v.workers.dev';
@@ -866,12 +919,9 @@ const DEMO_MORNING_URL='https://audio.limenbridge.cc/demo_morning.mp3';
 const DEMO_EVENING_URL='https://audio.limenbridge.cc/demo_evening.mp3';
 const DEMO_DURATION=60;
 let demoAudio=document.getElementById('demo-audio');
-let demoPlaying=null;
-let demoTimer=null;
-let demoStartTime=null;
-let demoAnimFrame=null;
+let demoPlaying=null,demoTimer=null,demoStartTime=null,demoAnimFrame=null;
 
-function openSandbox(){if(isPlaying){audioEl.pause();isPlaying=false;}stopDemo();showScreen('screen-sandbox');window.scrollTo(0,0);}
+function openSandbox(){if(isPlaying){audioEl.pause();isPlaying=false;}stopDemo();closeDrawer();showScreen('screen-sandbox');window.scrollTo(0,0);}
 function closeSandbox(){stopDemo();showScreen('screen-landing');window.scrollTo(0,0);}
 
 function stopDemo(){
@@ -1034,7 +1084,7 @@ function showRecommendation(u){
   }
 }
 
-/* APP / PLAYER */
+/* APP */
 let audioEl=document.getElementById('audio-player');let isPlaying=false;
 
 function renderApp(u){
@@ -1069,8 +1119,7 @@ function renderApp(u){
     </div>
     <div id="mood-section" style="display:none"></div>
   `;
-  drawGraph(u);
-  setupAudio(trackUrl,kind,u);
+  drawGraph(u);setupAudio(trackUrl,kind,u);
 }
 
 function setupAudio(url,kind,u){
@@ -1083,7 +1132,6 @@ function setupAudio(url,kind,u){
   };
   audioEl.onended=()=>{setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');};
 }
-
 function togglePlay(url,kind){
   if(isPlaying){audioEl.pause();setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');}
   else{if(!audioEl.src||audioEl.src!==url)audioEl.src=url;audioEl.play().catch(()=>{});setPlayIcon(true);document.getElementById('player-wave')?.classList.add('playing');}
@@ -1102,7 +1150,6 @@ let selectedMoodScore=null;
 function selectMood(n,btn){selectedMoodScore=n;document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
 function saveMood(kind){const u=loadUser();const note=document.getElementById('mood-note')?.value||'';if(selectedMoodScore){u.moodLog.push({date:todayISO(),time:kind,score:selectedMoodScore,note:note||undefined});saveUser(u);}document.getElementById('mood-section').innerHTML=`<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Saved ✓</p>`;selectedMoodScore=null;}
 
-/* GRAPH */
 function drawGraph(u){
   const canvas=document.getElementById('mood-graph');if(!canvas)return;
   const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;
@@ -1127,7 +1174,6 @@ function drawGraph(u){
   ctx.fillStyle='#6E9072';ctx.fillRect(pad.left+70,6,10,3);ctx.fillText('Evening',pad.left+84,11);
 }
 
-/* REFLECTION PAUSE */
 function renderReflectionPause(u){
   const el=document.getElementById('app-content');const pos=cyclePosition(u);const pauseDay=pos-28;const cycle=currentCycle(u);const isDay1=pauseDay===1;
   const question=isDay1?{text:'What felt different on day 28 compared to day 1?',field:'reflectionQ1',stored:u.reflectionQ1}:{text:'What do you want to notice more in the next 28 days?',field:'reflectionQ2',stored:u.reflectionQ2};
@@ -1141,12 +1187,11 @@ function renderAnnualOffer(u){
 }
 function dismissAnnualOffer(){const u=loadUser();u.annualOfferDismissed=true;saveUser(u);route();}
 
-/* PWA */
 const FB_CONFIG={apiKey:"AIzaSyBP1VOwZt1hOPqFd0HY96x6ipLWa1TGPeg",authDomain:"limenbridge.firebaseapp.com",projectId:"limenbridge",storageBucket:"limenbridge.firebasestorage.app",messagingSenderId:"795817059671",appId:"1:795817059671:web:e40d740c68e984be608a12"};
 const VAPID_KEY="BF6ZfqF0ubdGw77PluD3vk2gtsgMBly5xXUht6SKiaZqHvbs3crnSaZWA1Y1qB9SmZ2jsrUY67FG0Lq8PnlekOM";
 let fbMessaging=null;
 async function registerSW(){if(!('serviceWorker'in navigator))return;try{const reg=await navigator.serviceWorker.register('/sw.js');window._swReg=reg;const app=firebase.initializeApp(FB_CONFIG);fbMessaging=firebase.messaging();fbMessaging.onMessage(payload=>{const{title,body}=payload.data||{};if(Notification.permission==='granted')new Notification(title||'LimenBridge',{body:body||'Your track is ready.',icon:'/icon-192.png'});});}catch(e){console.log('SW/FCM init failed:',e);}}
-async function requestPushPermission(){if(!('Notification'in window)||!fbMessaging)return;if(Notification.permission==='denied')return;try{const token=await fbMessaging.getToken({vapidKey:VAPID_KEY});if(token){const u=loadUser();if(u&&u.fcmToken!==token){u.fcmToken=token;saveUser(u);}}}catch(e){console.log('Push failed:',e);}}
+async function requestPushPermission(){if(!('Notification'in window)||!fbMessaging)return;if(Notification.permission==='denied')return;try{const token=await fbMessaging.getToken({vapidKey:VAPID_KEY});if(token){const u=loadUser();if(u&&u.fcmToken!==token){u.fcmToken=token;saveUser(u);}}}catch(e){}}
 function isInStandaloneMode(){return window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;}
 function showInstallPrompt(){if(isInStandaloneMode())return;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);if(!isIOS)return;setTimeout(()=>{const existing=document.getElementById('ios-install-banner');if(existing)return;const banner=document.createElement('div');banner.id='ios-install-banner';banner.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#ECE6DC;border-top:1px solid #E3DDD3;padding:1rem 1.25rem;z-index:200;display:flex;align-items:flex-start;gap:.75rem';banner.innerHTML=`<div style="flex:1"><p style="font-size:.9rem;font-weight:500;margin-bottom:.25rem">Add to your home screen</p><p style="font-size:.8rem;color:#8C827A;line-height:1.5">Tap <strong style="color:#B87963">Share</strong> &rarr; <strong style="color:#B87963">Add to Home Screen</strong> to get daily reminders on your phone.</p></div><button onclick="document.getElementById('ios-install-banner').remove()" style="background:none;border:none;color:#8C827A;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">&times;</button>`;document.body.appendChild(banner);},3000);}
 
