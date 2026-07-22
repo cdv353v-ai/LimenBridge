@@ -135,10 +135,10 @@ async function upsertMailerLite(email, plan, accountStatus, env, groupId) {
 //
 // customer.subscription.deleted: fires when a subscription ends — including
 // the automatic cancellation from "Limit the number of payments: 1" on the
-// weekly/monthly links, so this now fires for *every* customer who completes
-// their paid period as designed, not only for people who cancel early. Still
-// useful as the trigger for a "your access ended" / reactivation email later,
-// just don't read it as a dissatisfaction signal on its own.
+// weekly/monthly links. We tell apart "ended naturally after the paid
+// period" from "cancelled early" by comparing when it ended against when
+// the current billing period was scheduled to end (see below) — only
+// genuine early cancellations count as a dissatisfaction signal.
 async function handleStripeWebhook(request, env) {
   const payload = await request.text();
   const sig = request.headers.get('Stripe-Signature');
@@ -187,12 +187,31 @@ async function handleStripeWebhook(request, env) {
       if (email) {
         const key = 'user:' + email;
         const existingRaw = await env.LIMENBRIDGE_KV.get(key);
-        if (existingRaw) {
-          const existing = JSON.parse(existingRaw);
-          const updated = Object.assign({}, existing, { accountStatus: 'cancelled' });
+        const existing = existingRaw ? JSON.parse(existingRaw) : null;
+
+        // canceled_at/ended_at is when it actually ended. current_period_end
+        // is when the paid-for period was scheduled to end. If those line up
+        // (within a day, for processing delays), it's a normal finish —
+        // not an early cancellation.
+        const canceledAt = subscription.canceled_at || subscription.ended_at;
+        const periodEnd = subscription.items?.data?.[0]?.current_period_end
+          || subscription.current_period_end;
+        const ONE_DAY = 24 * 60 * 60; // Stripe timestamps are in seconds
+        const endedNaturally = canceledAt && periodEnd
+          ? Math.abs(canceledAt - periodEnd) <= ONE_DAY
+          : false;
+        const accountStatus = endedNaturally ? 'completed' : 'cancelled';
+
+        if (existing) {
+          const updated = Object.assign({}, existing, { accountStatus });
           await env.LIMENBRIDGE_KV.put(key, JSON.stringify(updated));
         }
-        await upsertMailerLite(email, existingRaw ? JSON.parse(existingRaw).plan : 'unknown', 'cancelled', env, env.MAILERLITE_CANCELLED_GROUP_ID);
+
+        const plan = existing ? existing.plan : 'unknown';
+        // Only genuine early cancellations go into the reactivation-email
+        // group. Natural completions just get their MailerLite fields updated.
+        const groupId = endedNaturally ? null : env.MAILERLITE_CANCELLED_GROUP_ID;
+        await upsertMailerLite(email, plan, accountStatus, env, groupId);
       }
     }
   }
