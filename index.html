@@ -236,31 +236,31 @@ footer.site-footer{padding:36px 24px 56px;text-align:center;background:var(--cre
 .now-listen-hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,12,9,0) 40%,rgba(15,12,9,.65) 100%);z-index:1}
 
 /* ── App / Onboarding / Modal (carried over from production) ── */
-h1,h2,h3,h4,.display{font-family:'Playfair Display',serif;font-weight:400;line-height:1.15;color:#2C2623}
-#screen-onboarding,#screen-app,#modal,#modal-help{font-family:'Jost',sans-serif;font-size:16px;line-height:1.6;color:#2C2623}
-#screen-onboarding button,#screen-app button,#modal button,#modal-help button{font-family:'Jost',sans-serif;cursor:pointer;border:none;background:none}
-#screen-onboarding input,#screen-app input,#screen-app textarea,#modal input{font-family:'Jost',sans-serif;color:#2C2623}
+h1,h2,h3,h4,.display{font-family:'Manrope',sans-serif;font-weight:600;line-height:1.15;color:#2C2623}
+#screen-onboarding,#screen-app,#modal,#modal-help{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;color:#2C2623}
+#screen-onboarding button,#screen-app button,#modal button,#modal-help button{font-family:'Manrope',sans-serif;cursor:pointer;border:none;background:none}
+#screen-onboarding input,#screen-app input,#screen-app textarea,#modal input{font-family:'Manrope',sans-serif;color:#2C2623}
 .eyebrow{color:var(--muted);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 28px;border-radius:var(--radius);font-size:1rem;font-weight:500;transition:background 200ms,opacity 200ms,border-color 200ms;cursor:pointer;border:none}
-.btn-primary{background:var(--accent);color:var(--fg)}
-.btn-primary:hover{background:var(--accent-soft)}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 28px;border-radius:28px;font-size:1rem;font-weight:500;transition:background 200ms,opacity 200ms,border-color 200ms;cursor:pointer;border:none}
+.btn-primary{background:var(--terra);color:var(--paper)}
+.btn-primary:hover{background:var(--terra-dk)}
 .btn-primary:disabled{opacity:.5;cursor:default}
-.btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--border)}
-.btn-ghost:hover{border-color:var(--accent-soft)}
+.btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--border);border-radius:28px}
+.btn-ghost:hover{border-color:var(--terra)}
 .btn-full{width:100%}
 .btn-loading{opacity:.6;cursor:default;pointer-events:none}
 .field{display:block;margin-bottom:.85rem}
 .field label{display:block;margin-bottom:.35rem}
-.input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;color:var(--fg);outline:none;font-size:1rem;transition:border-color 200ms}
-.input:focus{border-color:var(--accent)}
+.input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem 1rem;color:var(--fg);outline:none;font-size:1rem;transition:border-color 200ms}
+.input:focus{border-color:var(--terra)}
 .input::placeholder{color:var(--muted)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn 350ms ease both}
 @keyframes barPulse{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.25);opacity:.9}}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:1.25rem;z-index:100;opacity:0;pointer-events:none;transition:opacity 250ms}
 .modal-overlay.open{opacity:1;pointer-events:all}
-.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;max-width:420px;width:100%}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:2rem;max-width:420px;width:100%}
 .trust{margin-top:.75rem;font-size:.82rem;color:var(--muted);text-align:center}
 .waveform-player{display:flex;align-items:center;justify-content:center;gap:3px;height:40px}
 .waveform-player span{display:inline-block;width:3px;background:var(--accent);border-radius:2px;opacity:.6;transform-origin:center}
@@ -272,15 +272,15 @@ h1,h2,h3,h4,.display{font-family:'Playfair Display',serif;font-weight:400;line-h
 .progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 500ms linear}
 .mood-scale{display:flex;gap:.5rem;flex-wrap:wrap}
 .mood-btn{flex:1;min-width:44px;padding:.65rem .5rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:1rem;transition:border-color 200ms,color 200ms,background 200ms;cursor:pointer}
-.mood-btn:hover,.mood-btn.selected{border-color:var(--accent);color:var(--fg);background:rgba(201,138,115,.12)}
+.mood-btn:hover,.mood-btn.selected{border-color:var(--terra);color:var(--fg);background:rgba(201,138,115,.12)}
 .graph-wrap{position:relative;margin-top:1.25rem}
-.streak-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(201,138,115,.15);border:1px solid rgba(201,138,115,.3);border-radius:20px;padding:.35rem .9rem;font-size:.85rem;color:var(--accent-soft)}
+.streak-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(201,138,115,.15);border:1px solid rgba(201,138,115,.3);border-radius:20px;padding:.35rem .9rem;font-size:.85rem;color:var(--terra-dk)}
 .steps{display:flex;gap:.4rem;justify-content:center;margin-bottom:2rem}
 .step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background 250ms}
 .step-dot.active{background:var(--accent)}
 .player-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:2rem;text-align:center}
-.play-btn{width:72px;height:72px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;margin:1.5rem auto;cursor:pointer;transition:background 200ms,transform 100ms;border:none}
-.play-btn:hover{background:var(--accent-soft)}
+.play-btn{width:72px;height:72px;border-radius:50%;background:var(--terra);display:flex;align-items:center;justify-content:center;margin:1.5rem auto;cursor:pointer;transition:background 200ms,transform 100ms;border:none}
+.play-btn:hover{background:var(--terra-dk)}
 .play-btn:active{transform:scale(.95)}
 .play-btn svg{pointer-events:none}
 .track-label{font-size:.8rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
@@ -289,18 +289,18 @@ h1,h2,h3,h4,.display{font-family:'Playfair Display',serif;font-weight:400;line-h
 .day-prog-label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:.4rem}
 .onboard-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem}
 .onboard-card{width:100%;max-width:520px}
-.option-btn{width:100%;text-align:left;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--fg);font-size:1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color 200ms,background 200ms}
-.option-btn:hover,.option-btn.selected{border-color:var(--accent);color:var(--fg);background:rgba(201,138,115,.18);border-width:2px;font-weight:500}
+.option-btn{width:100%;text-align:left;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-size:1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color 200ms,background 200ms}
+.option-btn:hover,.option-btn.selected{border-color:var(--terra);background:rgba(201,138,115,.08)}
 .time-row{display:flex;gap:1rem;flex-wrap:wrap}
 .time-row .field{flex:1;min-width:140px}
-input[type=time]{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;color:var(--fg);font-size:1rem;width:100%;outline:none}
-input[type=time]:focus{border-color:var(--accent)}
+input[type=time]{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem 1rem;color:var(--fg);font-size:1rem;width:100%;outline:none}
+input[type=time]:focus{border-color:var(--terra)}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 #screen-app .wrap{max-width:var(--narrow);margin-inline:auto;padding-inline:1.25rem}
 #screen-app nav{padding:1.5rem 0 1rem}
 #screen-app .nav-inner{display:flex;align-items:center;justify-content:space-between}
-#screen-app .logo{font-family:'Playfair Display',serif;font-size:1.4rem;letter-spacing:.01em;color:#2C2623}
+#screen-app .logo{font-family:'Manrope',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:.01em;color:#2C2623}
 </style>
 </head>
 <body>
@@ -1094,7 +1094,7 @@ function renderApp(u){
       <div class="track-label">${kind==='morning'?'Morning':'Evening'} track &middot; Day ${pDay}</div>
       <div class="waveform-player" id="player-wave" style="margin:1rem 0">${'<span style="height:20px"></span>'.repeat(18)}</div>
       <button class="play-btn" id="play-btn" onclick="togglePlay('${trackUrl}','${kind}')" title="Play / Pause">
-        <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="var(--fg)"><path id="play-path" d="M8 5v14l11-7z"/></svg>
+        <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="var(--paper)">
       </button>
       <p style="font-size:.78rem;color:var(--muted);margin-top:-.5rem">Tap to play &middot; tap again to pause</p>
       <div class="progress-wrap" style="margin:0 auto;max-width:320px"><div class="progress-fill" id="track-progress" style="width:0%"></div></div>
