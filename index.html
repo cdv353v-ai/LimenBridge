@@ -1135,7 +1135,7 @@ function togglePlay(url,kind){
   else{if(!audioEl.src||audioEl.src!==url)audioEl.src=url;audioEl.play().catch(()=>{});setPlayIcon(true);document.getElementById('player-wave')?.classList.add('playing');}
   isPlaying=!isPlaying;
 }
-function setPlayIcon(playing){const icon=document.getElementById('play-icon');if(!icon)return;icon.setAttribute('d',playing?'M6 19h4V5H6v14zm8-14v14h4V5h-4z':'M8 5v14l11-7z');}
+function setPlayIcon(playing){const icon=document.function setPlayIcon(playing){const path=document.getElementById('play-path');if(!path)return;path.setAttribute('d',playing?'M6 19h4V5H6v14zm8-14v14h4V5h-4z':'M8 5v14l11-7z');}
 
 function showMoodSection(kind,u){
   const el=document.getElementById('mood-section');if(!el)return;
