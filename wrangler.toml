@@ -1,3 +1,7 @@
 name = "limenbridge-mailerlite"
 main = "worker.js"
 compatibility_date = "2026-06-12"
+
+[[kv_namespaces]]
+binding = "LIMENBRIDGE_KV"
+id = "f9074e39d353493097aaa528114deba3"
