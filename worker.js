@@ -66,6 +66,24 @@ async function handleSync(body, env) {
   return jsonResponse({ status: 'ok', user: updated });
 }
 
+// ── /demo-lead ──
+// Sandbox "Stay in tune" card: captures an email for the free full morning
+// track, kept entirely separate from /register (no plan, no onboarding state).
+// Stored under its own KV prefix so Mark can see who/when without opening
+// MailerLite — and added to a dedicated MailerLite group so an automation
+// there can send the track + one follow-up email.
+async function handleDemoLead(body, env) {
+  const email = normalizeEmail(body.email);
+  if (!email) return jsonResponse({ error: 'email required' }, 400);
+  const key = 'demo_lead:' + email;
+  const existingRaw = await env.LIMENBRIDGE_KV.get(key);
+  const capturedAt = existingRaw ? JSON.parse(existingRaw).capturedAt : new Date().toISOString();
+  const record = { email, capturedAt };
+  await env.LIMENBRIDGE_KV.put(key, JSON.stringify(record));
+  await upsertMailerLite(email, 'demo_lead', 'active', env, env.MAILERLITE_DEMO_LEAD_GROUP_ID);
+  return jsonResponse({ status: 'ok' });
+}
+
 // ── Stripe webhook signature verification ──
 // Pure Web Crypto HMAC-SHA256, no npm dependency needed.
 async function verifyStripeSignature(payload, sigHeader, secret) {
@@ -247,6 +265,7 @@ export default {
     }
     if (url.pathname === '/register') return handleRegister(body, env);
     if (url.pathname === '/sync') return handleSync(body, env);
+    if (url.pathname === '/demo-lead') return handleDemoLead(body, env);
     return jsonResponse({ error: 'not found' }, 404);
   }
 };
