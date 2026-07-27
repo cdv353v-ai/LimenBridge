@@ -734,6 +734,28 @@ input[type=time]:focus{border-color:var(--terra)}
         <a href="/blog/chronobiology-morning-evening-anxiety.html" class="sandbox-blog-link">Still not sure? Read the science behind the tracks →</a>
       </div>
       <p class="sandbox-trust">No auto-renewal, ever · No registration required to listen</p>
+
+      <div style="margin-top:22px;padding-top:20px;border-top:1px solid var(--border)">
+        <div class="flip-card" onclick="fcToggle(this)" style="max-width:320px;margin:0 auto;min-height:440px">
+          <div class="fc-inner" style="height:440px">
+            <div class="fc-face fc-front" style="height:440px">
+              <img class="fc-img" src="assets/lead-magnet-track.jpg" alt=""/>
+              <div class="fc-scrim"></div>
+              <div class="tap-hint">Tap</div>
+              <div class="fc-textbox"><p class="fc-label">Stay in tune</p><p class="fc-title">Get the full track — free</p></div>
+            </div>
+            <div class="fc-face fc-back" onclick="event.stopPropagation()" style="height:440px;max-height:440px;overflow-y:visible">
+              <p class="fc-back-label">Stay in tune</p>
+              <p class="fc-body" style="margin-bottom:8px">Not ready yet?</p>
+              <p class="fc-body" style="margin-bottom:8px">Leave your email — we'll send the full 5-minute morning track, free.</p>
+              <p class="fc-body" style="margin-bottom:14px">One follow-up email in a few days with the $6 offer. That's it.</p>
+              <input type="email" id="demo-lead-email" class="input" placeholder="you@email.com" style="margin-bottom:10px"/>
+              <button class="btn btn-primary btn-full" onclick="submitDemoLead()" id="demo-lead-btn">Send me the track</button>
+              <p id="demo-lead-status" style="font-size:12px;color:var(--warm-grey);margin-top:8px"></p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -964,7 +986,11 @@ function route(){
   handleStripeReturn();
   const u=loadUser();
   const state=deriveState(u);
-  if(state==='LANDING'){showScreen('screen-landing');return;}
+  if(state==='LANDING'){
+    const params=new URLSearchParams(window.location.search);
+    if(params.get('demo')==='1'){showScreen('screen-sandbox');window.scrollTo(0,0);return;}
+    showScreen('screen-landing');return;
+  }
   if(state==='ONBOARDING'){showScreen('screen-onboarding');renderOnboarding(u);return;}
   showScreen('screen-app');
   if(state==='REFLECTION_PAUSE'){renderReflectionPause(u);return;}
@@ -1011,6 +1037,26 @@ async function submitRegistration(){
   document.getElementById('modal-form').style.display='none';
   document.getElementById('modal-done').style.display='block';
   setTimeout(()=>{document.getElementById('modal').classList.remove('open');route();},1200);
+}
+
+/* LEAD MAGNET: demo page email capture — sends full morning_01 track, separate from
+   the trial/purchase flow. Posts to a dedicated worker endpoint (/demo-lead), not /register,
+   so it lands in its own MailerLite group and doesn't touch plan/onboarding state. */
+async function submitDemoLead(){
+  const emailInput=document.getElementById('demo-lead-email');
+  const email=emailInput.value.trim().toLowerCase();
+  const status=document.getElementById('demo-lead-status');
+  if(!email){status.textContent='Enter your email first.';return;}
+  const btn=document.getElementById('demo-lead-btn');
+  btn.disabled=true;btn.textContent='Sending\u2026';
+  try{
+    await fetch(API_URL+'/demo-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    status.textContent='Check your inbox — the track is on its way.';
+    emailInput.value='';
+  }catch(e){
+    status.textContent='Something went wrong. Try again.';
+  }
+  btn.disabled=false;btn.textContent='Send me the track';
 }
 
 /* ONBOARDING */
