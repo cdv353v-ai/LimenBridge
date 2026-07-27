@@ -116,6 +116,8 @@ section.blk{padding:64px 24px}
   .flip-card{min-height:290px;background:none;border:none}
   .fc-inner{position:relative;width:100%;height:290px;transition:transform .6s cubic-bezier(.4,.1,.2,1);transform-style:preserve-3d;cursor:pointer}
   .flip-card.flipped .fc-inner{transform:rotateY(180deg)}
+  .flip-card:not(.flipped) .fc-back{pointer-events:none}
+  .flip-card.flipped .fc-front{pointer-events:none}
   .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
   .fc-front{display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
   .fc-back{transform:rotateY(180deg);background:var(--paper);padding:24px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto}
@@ -1050,11 +1052,15 @@ async function submitDemoLead(){
   const btn=document.getElementById('demo-lead-btn');
   btn.disabled=true;btn.textContent='Sending\u2026';
   try{
-    await fetch(API_URL+'/demo-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const resp=await fetch(API_URL+'/demo-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const text=await resp.text();
+    console.log('demo-lead response status:',resp.status,'body:',text);
+    if(!resp.ok){status.textContent='Error '+resp.status+' — see console (F12) for details.';btn.disabled=false;btn.textContent='Send me the track';return;}
     status.textContent='Check your inbox — the track is on its way.';
     emailInput.value='';
   }catch(e){
-    status.textContent='Something went wrong. Try again.';
+    console.log('demo-lead fetch failed:',e);
+    status.textContent='Network error — see console (F12) for details.';
   }
   btn.disabled=false;btn.textContent='Send me the track';
 }
