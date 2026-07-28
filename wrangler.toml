@@ -5,3 +5,6 @@ compatibility_date = "2026-06-12"
 [[kv_namespaces]]
 binding = "LIMENBRIDGE_KV"
 id = "f9074e39d353493097aaa528114deba3"
+
+[vars]
+MAILERLITE_DEMO_LEAD_GROUP_ID = "194217586926290610"
