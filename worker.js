@@ -72,16 +72,50 @@ async function handleSync(body, env) {
 // Stored under its own KV prefix so Mark can see who/when without opening
 // MailerLite — and added to a dedicated MailerLite group so an automation
 // there can send the track + one follow-up email.
+//
+// Uses its own MailerLite call (not upsertMailerLite) so API errors are
+// visible in the response instead of silently swallowed — useful while
+// confirming the group ID / API key are correct.
 async function handleDemoLead(body, env) {
   const email = normalizeEmail(body.email);
   if (!email) return jsonResponse({ error: 'email required' }, 400);
-  const key = 'demo_lead:' + email;
-  const existingRaw = await env.LIMENBRIDGE_KV.get(key);
-  const capturedAt = existingRaw ? JSON.parse(existingRaw).capturedAt : new Date().toISOString();
-  const record = { email, capturedAt };
-  await env.LIMENBRIDGE_KV.put(key, JSON.stringify(record));
-  await upsertMailerLite(email, 'demo_lead', 'active', env, env.MAILERLITE_DEMO_LEAD_GROUP_ID);
-  return jsonResponse({ status: 'ok' });
+  try {
+    const key = 'demo_lead:' + email;
+    const existingRaw = await env.LIMENBRIDGE_KV.get(key);
+    const capturedAt = existingRaw ? JSON.parse(existingRaw).capturedAt : new Date().toISOString();
+    const record = { email, capturedAt };
+    await env.LIMENBRIDGE_KV.put(key, JSON.stringify(record));
+
+    let mailerliteStatus = null;
+    let mailerliteBody = null;
+    try {
+      const mlResp = await fetch('https://connect.mailerlite.com/api/subscribers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + env.MAILERLITE_API_KEY
+        },
+        body: JSON.stringify({
+          email,
+          fields: { source: 'demo_lead' },
+          groups: env.MAILERLITE_DEMO_LEAD_GROUP_ID ? [env.MAILERLITE_DEMO_LEAD_GROUP_ID] : []
+        })
+      });
+      mailerliteStatus = mlResp.status;
+      mailerliteBody = await mlResp.text();
+    } catch (mlErr) {
+      mailerliteBody = 'fetch failed: ' + String(mlErr && mlErr.message || mlErr);
+    }
+
+    return jsonResponse({
+      status: 'ok',
+      mailerlite_status: mailerliteStatus,
+      mailerlite_body: mailerliteBody,
+      group_id_used: env.MAILERLITE_DEMO_LEAD_GROUP_ID || null
+    });
+  } catch (e) {
+    return jsonResponse({ error: 'server error', detail: String(e && e.message || e) }, 500);
+  }
 }
 
 // ── Stripe webhook signature verification ──
