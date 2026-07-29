@@ -118,6 +118,38 @@ async function handleDemoLead(body, env) {
   }
 }
 
+// ── /restore ──
+// Manual fallback for a lost/wiped/stolen device: localStorage is the entire
+// user identity, so if it's gone, the site can't recognize a returning
+// paying user on its own. This endpoint looks the person up by the email
+// used at Stripe checkout and returns enough to rebuild local state —
+// registeredAt (so day-of-cycle math stays correct), plan, and onboarding
+// answers if they were ever synced.
+//
+// Known limitation, by design: mood diary entries (moodLog) are never sent
+// to KV — they only ever live in localStorage — so they cannot be restored
+// this way. Only access/day-count is recoverable, not diary content.
+async function handleRestore(body, env) {
+  const email = normalizeEmail(body.email);
+  if (!email) return jsonResponse({ error: 'email required' }, 400);
+  const key = 'user:' + email;
+  const existingRaw = await env.LIMENBRIDGE_KV.get(key);
+  if (!existingRaw) return jsonResponse({ status: 'not_found' });
+  const u = JSON.parse(existingRaw);
+  return jsonResponse({
+    status: 'ok',
+    user: {
+      registeredAt: u.registeredAt,
+      plan: u.plan || 'free',
+      accountStatus: u.accountStatus || null,
+      onboardingComplete: !!u.onboardingComplete,
+      firstTrack: u.firstTrack || null,
+      morningTime: u.morningTime || null,
+      eveningTime: u.eveningTime || null
+    }
+  });
+}
+
 // ── Stripe webhook signature verification ──
 // Pure Web Crypto HMAC-SHA256, no npm dependency needed.
 async function verifyStripeSignature(payload, sigHeader, secret) {
@@ -300,6 +332,7 @@ export default {
     if (url.pathname === '/register') return handleRegister(body, env);
     if (url.pathname === '/sync') return handleSync(body, env);
     if (url.pathname === '/demo-lead') return handleDemoLead(body, env);
+    if (url.pathname === '/restore') return handleRestore(body, env);
     return jsonResponse({ error: 'not found' }, 404);
   }
 };
