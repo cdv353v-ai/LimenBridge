@@ -195,6 +195,26 @@ function planFromAmount(amountCents) {
   return 'unknown';
 }
 
+// Schedules a subscription to stop after the current paid period instead of
+// auto-renewing. Called right after checkout.session.completed for weekly
+// and monthly plans — the customer pays once, keeps access for the full
+// period they paid for, and the subscription simply doesn't charge again.
+// Runs after the customer has already been redirected, so it never affects
+// checkout completion or the success-page redirect.
+async function cancelSubscriptionAtPeriodEnd(subscriptionId, env) {
+  if (!subscriptionId) return;
+  try {
+    await fetch('https://api.stripe.com/v1/subscriptions/' + subscriptionId, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + env.STRIPE_SECRET_KEY,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'cancel_at_period_end=true'
+    });
+  } catch (e) {}
+}
+
 async function upsertMailerLite(email, plan, accountStatus, env, groupId) {
   try {
     await fetch('https://connect.mailerlite.com/api/subscribers', {
@@ -215,11 +235,12 @@ async function upsertMailerLite(email, plan, accountStatus, env, groupId) {
 // ── /stripe-webhook ──
 // checkout.session.completed: a payment succeeded. Determine the plan by
 // amount, write user:<email> to KV, remember stripe_customer:<id> → email
-// for the next event, and upsert MailerLite.
+// for the next event, and upsert MailerLite. For weekly and monthly plans,
+// also schedule the subscription to stop after this paid period — the
+// customer decides on the site whether to buy again, nothing is auto-charged.
 //
 // customer.subscription.deleted: fires when a subscription ends — including
-// the automatic cancellation from "Limit the number of payments: 1" on the
-// weekly/monthly links. We tell apart "ended naturally after the paid
+// the scheduled stop above. We tell apart "ended naturally after the paid
 // period" from "cancelled early" by comparing when it ended against when
 // the current billing period was scheduled to end (see below) — only
 // genuine early cancellations count as a dissatisfaction signal.
@@ -241,6 +262,7 @@ async function handleStripeWebhook(request, env) {
     const email = normalizeEmail(session.customer_details?.email || session.customer_email);
     const amountCents = session.amount_total || 0;
     const customerId = session.customer;
+    const subscriptionId = session.subscription;
     const plan = planFromAmount(amountCents);
 
     if (email) {
@@ -260,6 +282,13 @@ async function handleStripeWebhook(request, env) {
         await env.LIMENBRIDGE_KV.put('stripe_customer:' + customerId, email);
       }
       await upsertMailerLite(email, plan, 'active', env, env.MAILERLITE_GROUP_ID);
+    }
+
+    // One payment, then the customer decides — no auto-renewal for either
+    // paid tier. Annual is excluded: it's only sold as an in-app upsell to
+    // existing subscribers and follows its own cycle logic (day 29–30).
+    if (plan === 'weekly' || plan === 'monthly') {
+      await cancelSubscriptionAtPeriodEnd(subscriptionId, env);
     }
   }
 
