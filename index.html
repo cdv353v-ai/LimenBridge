@@ -1386,6 +1386,38 @@ function renderWeeklyEnded(u){
 const FB_CONFIG={apiKey:"AIzaSyBP1VOwZt1hOPqFd0HY96x6ipLWa1TGPeg",authDomain:"limenbridge.firebaseapp.com",projectId:"limenbridge",storageBucket:"limenbridge.firebasestorage.app",messagingSenderId:"795817059671",appId:"1:795817059671:web:e40d740c68e984be608a12"};
 const VAPID_KEY="BF6ZfqF0ubdGw77PluD3vk2gtsgMBly5xXUht6SKiaZqHvbs3crnSaZWA1Y1qB9SmZ2jsrUY67FG0Lq8PnlekOM";
 let fbMessaging=null;
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredInstallPrompt=e;showAndroidInstallBanner();});
+function showAndroidInstallBanner(){
+  if(isInStandaloneMode())return;
+  if(document.getElementById('android-install-banner'))return;
+  const banner=document.createElement('div');
+  banner.id='android-install-banner';
+  banner.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#ECE6DC;border-top:1px solid #E3DDD3;padding:1rem 1.25rem;z-index:200;display:flex;align-items:center;gap:.75rem';
+  banner.innerHTML='<div style="flex:1"><p style="font-size:.9rem;font-weight:500;margin-bottom:.25rem">Add LimenBridge to your home screen</p><p style="font-size:.8rem;color:#8C827A;line-height:1.5">One tap — no more searching for the site.</p></div><button id="android-install-btn" style="background:var(--terra);color:var(--paper);border:none;border-radius:20px;padding:.5rem 1.1rem;font-size:.85rem;font-weight:500;cursor:pointer;flex-shrink:0">Install</button><button onclick="document.getElementById(\'android-install-banner\').remove()" style="background:none;border:none;color:#8C827A;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">&times;</button>';
+  document.body.appendChild(banner);
+  document.getElementById('android-install-btn').onclick=async()=>{
+    if(!deferredInstallPrompt)return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt=null;
+    banner.remove();
+  };
+}
+/* Fallback for Android browsers that don't fire beforeinstallprompt (e.g. some in-app
+   webviews, older Samsung Internet). Only shown if the native prompt never arrived. */
+function showAndroidManualFallback(){
+  if(isInStandaloneMode())return;
+  if(document.getElementById('android-install-banner'))return;
+  if(document.getElementById('android-manual-banner'))return;
+  const isAndroidUA=/android/i.test(navigator.userAgent);
+  if(!isAndroidUA)return;
+  const banner=document.createElement('div');
+  banner.id='android-manual-banner';
+  banner.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#ECE6DC;border-top:1px solid #E3DDD3;padding:1rem 1.25rem;z-index:200;display:flex;align-items:flex-start;gap:.75rem';
+  banner.innerHTML='<div style="flex:1"><p style="font-size:.9rem;font-weight:500;margin-bottom:.25rem">Add to your home screen</p><p style="font-size:.8rem;color:#8C827A;line-height:1.5">Tap the <strong style="color:#B87963">⋮ menu</strong> (top right of your browser) &rarr; <strong style="color:#B87963">Add to Home screen</strong>.</p></div><button onclick="document.getElementById(\'android-manual-banner\').remove()" style="background:none;border:none;color:#8C827A;font-size:1.4rem;cursor:pointer;padding:.25rem;line-height:1;flex-shrink:0">&times;</button>';
+  document.body.appendChild(banner);
+}
 async function registerSW(){if(!('serviceWorker'in navigator))return;try{const reg=await navigator.serviceWorker.register('/sw.js');window._swReg=reg;const app=firebase.initializeApp(FB_CONFIG);fbMessaging=firebase.messaging();fbMessaging.onMessage(payload=>{const{title,body}=payload.data||{};if(Notification.permission==='granted')new Notification(title||'LimenBridge',{body:body||'Your track is ready.',icon:'/icon-192.png'});});}catch(e){console.log('SW/FCM init failed:',e);}}
 async function requestPushPermission(){if(!('Notification'in window)||!fbMessaging)return;if(Notification.permission==='denied')return;try{const token=await fbMessaging.getToken({vapidKey:VAPID_KEY});if(token){const u=loadUser();if(u&&u.fcmToken!==token){u.fcmToken=token;saveUser(u);}}}catch(e){console.log('Push failed:',e);}}
 function isInStandaloneMode(){return window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;}
@@ -1394,6 +1426,7 @@ function showInstallPrompt(){if(isInStandaloneMode())return;const isIOS=/iphone|
 registerSW().then(()=>{const u=loadUser();if(u&&u.onboardingComplete)requestPushPermission();});
 route();
 showInstallPrompt();
+setTimeout(()=>{const isAndroidUA=/android/i.test(navigator.userAgent);if(isAndroidUA&&!deferredInstallPrompt)showAndroidManualFallback();},4000);
 
 </script>
 </body>
