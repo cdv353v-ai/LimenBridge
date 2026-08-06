@@ -37,6 +37,13 @@ nav.top{position:sticky;top:0;left:0;width:100%;z-index:200;padding:16px 28px;di
 .nav-cta{font-family:'Manrope',sans-serif;font-size:15px;font-weight:500;color:var(--ink);cursor:pointer}
 .nav-btn-primary{padding:10px 22px;background:var(--terra);color:var(--paper);font-family:'Manrope',sans-serif;font-size:13px;font-weight:500;letter-spacing:.02em;border-radius:30px;cursor:pointer;transition:background .2s;white-space:nowrap}
 .nav-btn-primary:hover{background:var(--terra-dk)}
+.nav-menu-wrap{position:relative}
+.nav-hamburger{width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s}
+.nav-hamburger:hover{border-color:var(--terra)}
+.nav-menu-dropdown{display:none;position:absolute;top:46px;right:0;background:var(--paper);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 24px rgba(44,38,32,.12);padding:8px;min-width:180px;z-index:250}
+.nav-menu-dropdown.open{display:block}
+.nav-menu-dropdown a{display:block;padding:10px 14px;font-size:14px;color:var(--ink-soft);text-decoration:none;border-radius:8px;font-family:'Manrope',sans-serif}
+.nav-menu-dropdown a:hover{background:var(--surface);color:var(--ink)}
 .back-link{font-size:14px;color:var(--warm-grey);cursor:pointer}
 
 /* Hero — pure: one image, one headline, one button */
@@ -316,8 +323,16 @@ input[type=time]:focus{border-color:var(--terra)}
       LimenBridge
     </a>
     <div class="nav-links">
-      <a href="/blog/" class="nav-cta">Blog</a>
       <button class="nav-btn-primary" onclick="openSandbox()">Open the demo</button>
+      <div class="nav-menu-wrap">
+        <button class="nav-hamburger" onclick="toggleNavMenu(event)" aria-label="Menu">
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect y="0" width="20" height="2" rx="1" fill="currentColor"/><rect y="6" width="20" height="2" rx="1" fill="currentColor"/><rect y="12" width="20" height="2" rx="1" fill="currentColor"/></svg>
+        </button>
+        <div class="nav-menu-dropdown" id="nav-menu-dropdown">
+          <a href="/blog/">Blog</a>
+          <a href="/how-to.html">How to use</a>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -826,6 +841,11 @@ input[type=time]:focus{border-color:var(--terra)}
       </div>
     </div></nav>
     <div id="app-content" style="padding-bottom:4rem"></div>
+    <div style="text-align:center;padding:0 0 2.5rem;font-size:.82rem;color:var(--muted)">
+      <a href="/how-to.html" style="color:var(--muted);border-bottom:1px solid var(--border)">How to use</a>
+      &nbsp;·&nbsp;
+      <a href="mailto:cdv353v@gmail.com" style="color:var(--muted);border-bottom:1px solid var(--border)">Support</a>
+    </div>
   </div>
 </div>
 
@@ -850,6 +870,14 @@ input[type=time]:focus{border-color:var(--terra)}
 </div>
 
 <script>
+function toggleNavMenu(e){
+  e.stopPropagation();
+  document.getElementById('nav-menu-dropdown').classList.toggle('open');
+}
+document.addEventListener('click',(e)=>{
+  const dd=document.getElementById('nav-menu-dropdown');
+  if(dd&&dd.classList.contains('open')&&!dd.contains(e.target))dd.classList.remove('open');
+});
 function fcToggle(card){
   if(window.innerWidth>760)return;
   card.classList.toggle('flipped');
@@ -1228,7 +1256,7 @@ function obFinish(){
 function generateICS(u,kinds){
   const now=new Date();const dateStr=now.toISOString().slice(0,10).replace(/-/g,'');
   const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LimenBridge//EN','CALSCALE:GREGORIAN'];
-  kinds.forEach(kind=>{const timeStr=(kind==='morning'?(u.morningTime||'07:00'):(u.eveningTime||'22:00')).replace(':','');lines.push('BEGIN:VEVENT',`UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,`SUMMARY:LimenBridge — ${kind==='morning'?'Morning':'Evening'} track`,`DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,'RRULE:FREQ=DAILY','DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.','END:VEVENT');});
+  kinds.forEach(kind=>{const timeStr=(kind==='morning'?(u.morningTime||'07:00'):(u.eveningTime||'22:00')).replace(':','');lines.push('BEGIN:VEVENT',`UID:limenbridge-${kind}-${dateStr}@limenbridge.cc`,`SUMMARY:LimenBridge — ${kind==='morning'?'Morning':'Evening'} track`,`DTSTART:${dateStr}T${timeStr}00`,`DTEND:${dateStr}T${timeStr}00`,'RRULE:FREQ=DAILY','DESCRIPTION:Your daily LimenBridge track. Open limenbridge.cc to listen.','URL:https://limenbridge.cc','END:VEVENT');});
   lines.push('END:VCALENDAR');
   const blob=new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'});return URL.createObjectURL(blob);
 }
