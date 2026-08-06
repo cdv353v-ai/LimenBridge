@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Как открыть LimenBridge — LimenBridge</title>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cream:#F4F1EA;--paper:#FFFDFB;--ink:#2C2620;--ink-soft:#4A3F35;
+  --warm-grey:#8C827A;--terra:#C98A73;--terra-dk:#B87963;
+  --border:#E3DDD3;--surface:#ECE6DC;--radius:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Manrope',sans-serif;font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto;padding:32px 22px 80px}
+.logo{font-family:'Manrope',sans-serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px}
+h1{font-size:clamp(24px,5vw,32px);font-weight:700;line-height:1.25;margin:18px 0 10px}
+.lead{color:var(--ink-soft);font-size:16px;margin-bottom:26px}
+.lead b{color:var(--ink);font-weight:600}
+.tabs{display:flex;gap:8px;margin-bottom:24px;position:sticky;top:14px;z-index:10}
+.tab{flex:1;padding:12px;text-align:center;border-radius:30px;background:var(--paper);border:1px solid var(--border);font-weight:600;font-size:14px;cursor:pointer;color:var(--warm-grey);transition:all .15s}
+.tab.active{background:var(--terra);border-color:var(--terra);color:var(--paper)}
+.panel{display:none}
+.panel.active{display:block}
+.step{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;display:flex;gap:14px;align-items:flex-start}
+.step-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--terra);color:var(--paper);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}
+.step-body p{margin:0;font-size:15px;color:var(--ink-soft)}
+.step-body p.title{color:var(--ink);font-weight:600;margin-bottom:4px;font-size:15.5px}
+.step-body code{background:var(--surface);padding:2px 7px;border-radius:5px;font-size:14px;color:var(--terra-dk);font-weight:600}
+.note{background:var(--surface);border-radius:var(--radius);padding:16px 18px;margin-top:22px;font-size:14px;color:var(--ink-soft)}
+.note b{color:var(--ink)}
+a.cta{display:block;text-align:center;background:var(--terra);color:var(--paper);text-decoration:none;font-weight:600;padding:15px;border-radius:30px;margin-top:26px;font-size:16px}
+.lang-switch{text-align:right;margin-bottom:10px}
+.lang-switch a{color:var(--warm-grey);font-size:13px;text-decoration:underline;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang-switch"><a onclick="showLang('en')" id="lang-en-link">In English</a><a onclick="showLang('ru')" id="lang-ru-link" style="display:none">На русском</a></div>
+  <div class="logo">LimenBridge</div>
+  <h1 id="h1">Как открыть ваши треки</h1>
+  <p class="lead" id="lead">Отдельного личного кабинета нет, треки не приходят по почте каждый день. Всё происходит на одной странице — <b>limenbridge.cc</b>. Выберите свой телефон ниже.</p>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('android')" id="tab-android">Android</div>
+    <div class="tab" onclick="showTab('iphone')" id="tab-iphone">iPhone</div>
+  </div>
+
+  <div id="panel-android" class="panel active">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><p class="title" id="a1t">Откройте Chrome</p><p id="a1p">Используйте браузер Chrome на телефоне.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><p class="title" id="a2t">Перейдите на limenbridge.cc</p><p id="a2p">Введите <code>limenbridge.cc</code> в адресной строке и нажмите Enter.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><p class="title" id="a3t">Включите сегодняшний трек</p><p id="a3p">Сайт сам покажет нужный трек и кнопку Play.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><p class="title" id="a4t">Нажмите «Install», если появится</p><p id="a4p">Снизу экрана может появиться баннер. Нажмите на него и подтвердите — на главном экране появится значок LimenBridge, как у обычного приложения.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><p class="title" id="a5t">Если баннер не появился</p><p id="a5p">Нажмите на три точки (⋮) в правом верхнем углу Chrome → «Добавить на главный экран» → подтвердите.</p></div></div>
+    <div class="note" id="a-note">С этого момента просто нажимайте на значок LimenBridge на главном экране каждый день — как любое другое приложение.</div>
+  </div>
+
+  <div id="panel-iphone" class="panel">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><p class="title" id="i1t">Откройте Safari</p><p id="i1p">Именно Safari, не Chrome — на iPhone так надёжнее.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><p class="title" id="i2t">Перейдите на limenbridge.cc</p><p id="i2p">Введите <code>limenbridge.cc</code> в адресной строке и нажмите Enter.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><p class="title" id="i3t">Включите сегодняшний трек</p><p id="i3p">Сайт сам покажет нужный трек и кнопку Play.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><p class="title" id="i4t">Нажмите значок «Поделиться»</p><p id="i4p">Квадрат со стрелкой вверх (⬆️), внизу экрана.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><p class="title" id="i5t">Нажмите «На экран Домой»</p><p id="i5p">Пролистайте открывшийся список вниз и найдите этот пункт.</p></div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-body"><p class="title" id="i6t">Нажмите «Добавить»</p><p id="i6p">В правом верхнем углу. Готово — значок LimenBridge теперь на главном экране.</p></div></div>
+    <div class="note" id="i-note">С этого момента просто нажимайте на значок LimenBridge на главном экране каждый день — как любое другое приложение.</div>
+  </div>
+
+  <div class="note" id="cal-note">Если вы настраивали напоминания в календаре — это просто сигнал открыть приложение, сам трек внутри напоминания не лежит. Когда придёт уведомление — открывайте LimenBridge через значок на главном экране (или limenbridge.cc), а не ищите ссылку внутри самого напоминания.</div>
+
+  <a class="cta" href="https://limenbridge.cc" id="cta">Открыть LimenBridge</a>
+</div>
+<script>
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+}
+const EN={h1:"How to open your tracks",lead:"There's <b>no separate account page and no daily emails with tracks</b>. Everything happens on one page — <b>limenbridge.cc</b>. Pick your phone below.",tabAndroid:"Android",tabIphone:"iPhone",a1t:"Open Chrome",a1p:"Use the Chrome browser on your phone.",a2t:"Go to limenbridge.cc",a2p:"Type <code>limenbridge.cc</code> in the address bar and press Go.",a3t:"Play today's track",a3p:"You'll see today's track automatically and a Play button.",a4t:'Tap "Install" if it appears',a4p:"A banner may appear at the bottom of the screen. Tap it, then confirm — a LimenBridge icon appears on your home screen, just like a normal app.",a5t:"If no banner appeared",a5p:"Tap the three dots (⋮) in the top right corner of Chrome → <code>Add to Home screen</code> → confirm.",aNote:"From now on, just tap the LimenBridge icon on your home screen every day — same as any other app.",i1t:"Open Safari",i1p:"Use Safari specifically — not Chrome, it's more reliable on iPhone.",i2t:"Go to limenbridge.cc",i2p:"Type <code>limenbridge.cc</code> in the address bar and press Go.",i3t:"Play today's track",i3p:"You'll see today's track automatically and a Play button.",i4t:"Tap the Share icon",i4p:"It's the square with an arrow pointing up (⬆️), at the bottom of the screen.",i5t:'Tap "Add to Home Screen"',i5p:"Scroll down the menu that opens and tap it.",i6t:'Tap "Add"',i6p:"Top right corner. Done — the LimenBridge icon is now on your home screen.",iNote:"From now on, just tap the LimenBridge icon on your home screen every day — same as any other app.",calNote:"If you set up calendar reminders — that's just a nudge to open the app. It doesn't contain the track itself. When it reminds you, open LimenBridge from your home screen icon (or limenbridge.cc), not from inside the reminder.",cta:"Open LimenBridge now"};
+function showLang(lang){
+  document.getElementById('lang-en-link').style.display=lang==='ru'?'inline':'none';
+  document.getElementById('lang-ru-link').style.display=lang==='en'?'inline':'none';
+  if(lang==='en'){
+    document.getElementById('h1').textContent=EN.h1;
+    document.getElementById('lead').innerHTML=EN.lead;
+    document.getElementById('tab-android').textContent=EN.tabAndroid;
+    document.getElementById('tab-iphone').textContent=EN.tabIphone;
+    ['a1','a2','a3','a4','a5','i1','i2','i3','i4','i5','i6'].forEach(k=>{
+      document.getElementById(k+'t').innerHTML=EN[k+'t'];
+      document.getElementById(k+'p').innerHTML=EN[k+'p'];
+    });
+    document.getElementById('a-note').textContent=EN.aNote;
+    document.getElementById('i-note').textContent=EN.iNote;
+    document.getElementById('cal-note').textContent=EN.calNote;
+    document.getElementById('cta').textContent=EN.cta;
+  }
+}
+</script>
+</body>
+</html>
