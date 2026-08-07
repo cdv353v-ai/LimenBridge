@@ -270,9 +270,10 @@ async function handleStripeWebhook(request, env) {
       const existingRaw = await env.LIMENBRIDGE_KV.get(key);
       const existing = existingRaw
         ? JSON.parse(existingRaw)
-        : { email, registeredAt: new Date().toISOString(), onboardingComplete: false };
+        : { email, onboardingComplete: false };
       const updated = Object.assign({}, existing, {
         plan,
+        registeredAt: new Date().toISOString(),
         planStartedAt: new Date().toISOString(),
         accountStatus: 'active'
       });
