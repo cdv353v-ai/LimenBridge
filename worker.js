@@ -274,6 +274,7 @@ async function handleStripeWebhook(request, env) {
       const updated = Object.assign({}, existing, {
         plan,
         registeredAt: new Date().toISOString(),
+        onboardingComplete: false,
         planStartedAt: new Date().toISOString(),
         accountStatus: 'active'
       });
