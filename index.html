@@ -986,8 +986,9 @@ function handleStripeReturn(){
     if(!u){u={onboardingComplete:false,moodLog:[],lastListened:{date:todayISO()}};}
     u.plan=plan;
     u.registeredAt=new Date().toISOString();
+    u.onboardingComplete=false;
     saveUser(u);
-    syncUser(u.email,{plan,registeredAt:u.registeredAt});
+    syncUser(u.email,{plan,registeredAt:u.registeredAt,onboardingComplete:false});
     window.history.replaceState({},'','/');
   }
 }
