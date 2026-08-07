@@ -43,6 +43,7 @@ a.cta{display:block;text-align:center;background:var(--terra);color:var(--paper)
   <div class="logo">LimenBridge</div>
   <h1 id="h1">Как открыть ваши треки</h1>
   <p class="lead" id="lead">Отдельного личного кабинета нет, треки не приходят по почте каждый день. Всё происходит на одной странице — <b>limenbridge.cc</b>. Выберите свой телефон ниже.</p>
+  <div class="note" id="ig-note"><b>Если вы перешли по ссылке из Instagram, Facebook или другой соцсети:</b> откройте её в обычном браузере телефона, а не во встроенном браузере самого приложения. В Instagram — нажмите на три точки в правом верхнем углу и выберите «Открыть в браузере».</div>
 
   <div class="tabs">
     <div class="tab active" onclick="showTab('android')" id="tab-android">Android</div>
@@ -54,7 +55,7 @@ a.cta{display:block;text-align:center;background:var(--terra);color:var(--paper)
     <div class="step"><div class="step-num">2</div><div class="step-body"><p class="title" id="a2t">Перейдите на limenbridge.cc</p><p id="a2p">Введите <code>limenbridge.cc</code> в адресной строке и нажмите Enter.</p></div></div>
     <div class="step"><div class="step-num">3</div><div class="step-body"><p class="title" id="a3t">Включите сегодняшний трек</p><p id="a3p">Сайт сам покажет нужный трек и кнопку Play.</p></div></div>
     <div class="step"><div class="step-num">4</div><div class="step-body"><p class="title" id="a4t">Нажмите «Install», если появится</p><p id="a4p">Снизу экрана может появиться баннер. Нажмите на него и подтвердите — на главном экране появится значок LimenBridge, как у обычного приложения.</p></div></div>
-    <div class="step"><div class="step-num">5</div><div class="step-body"><p class="title" id="a5t">Если баннер не появился</p><p id="a5p">Нажмите на три точки (⋮) в правом верхнем углу Chrome → «Добавить на главный экран» → подтвердите.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><p class="title" id="a5t">Если баннер не появился</p><p id="a5p">Это может означать, что значок уже был установлен раньше — тогда ничего делать не нужно. Если значка нет: нажмите на три точки (⋮) в правом верхнем углу Chrome → «Добавить на главный экран» → подтвердите.</p></div></div>
     <div class="note" id="a-note">С этого момента просто нажимайте на значок LimenBridge на главном экране каждый день — как любое другое приложение.</div>
   </div>
 
@@ -70,6 +71,8 @@ a.cta{display:block;text-align:center;background:var(--terra);color:var(--paper)
 
   <div class="note" id="cal-note">Если вы настраивали напоминания в календаре — это просто сигнал открыть приложение, сам трек внутри напоминания не лежит. Когда придёт уведомление — открывайте LimenBridge через значок на главном экране (или limenbridge.cc), а не ищите ссылку внутри самого напоминания.</div>
 
+  <div class="note" id="restore-note"><b>Если вместо трека открылась страница с оплатой</b> — программа вас не узнала. Это не значит, что оплата пропала. На главной странице limenbridge.cc долистайте вниз до самого низа и нажмите терракотовую кнопку «Restore access», затем введите тот же email, который указывали при оплате — доступ вернётся. Не пытайтесь «починить» это очисткой кэша браузера — это, наоборот, стирает то, что сайт про вас помнит.</div>
+
   <a class="cta" href="https://limenbridge.cc" id="cta">Открыть LimenBridge</a>
 </div>
 <script>
@@ -79,13 +82,14 @@ function showTab(name){
   event.currentTarget.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
 }
-const EN={h1:"How to open your tracks",lead:"There's <b>no separate account page and no daily emails with tracks</b>. Everything happens on one page — <b>limenbridge.cc</b>. Pick your phone below.",tabAndroid:"Android",tabIphone:"iPhone",a1t:"Open Chrome",a1p:"Use the Chrome browser on your phone.",a2t:"Go to limenbridge.cc",a2p:"Type <code>limenbridge.cc</code> in the address bar and press Go.",a3t:"Play today's track",a3p:"You'll see today's track automatically and a Play button.",a4t:'Tap "Install" if it appears',a4p:"A banner may appear at the bottom of the screen. Tap it, then confirm — a LimenBridge icon appears on your home screen, just like a normal app.",a5t:"If no banner appeared",a5p:"Tap the three dots (⋮) in the top right corner of Chrome → <code>Add to Home screen</code> → confirm.",aNote:"From now on, just tap the LimenBridge icon on your home screen every day — same as any other app.",i1t:"Open Safari",i1p:"Use Safari specifically — not Chrome, it's more reliable on iPhone.",i2t:"Go to limenbridge.cc",i2p:"Type <code>limenbridge.cc</code> in the address bar and press Go.",i3t:"Play today's track",i3p:"You'll see today's track automatically and a Play button.",i4t:"Tap the Share icon",i4p:"It's the square with an arrow pointing up (⬆️), at the bottom of the screen.",i5t:'Tap "Add to Home Screen"',i5p:"Scroll down the menu that opens and tap it.",i6t:'Tap "Add"',i6p:"Top right corner. Done — the LimenBridge icon is now on your home screen.",iNote:"From now on, just tap the LimenBridge icon on your home screen every day — same as any other app.",calNote:"If you set up calendar reminders — that's just a nudge to open the app. It doesn't contain the track itself. When it reminds you, open LimenBridge from your home screen icon (or limenbridge.cc), not from inside the reminder.",cta:"Open LimenBridge now"};
+const EN={h1:"How to open your tracks",lead:"There's <b>no separate account page and no daily emails with tracks</b>. Everything happens on one page — <b>limenbridge.cc</b>. Pick your phone below.",igNote:"<b>If you came from a link in Instagram, Facebook, or another app:</b> open it in your phone's regular browser, not the app's built-in browser. In Instagram — tap the three dots in the top right corner and choose \"Open in browser\".",tabAndroid:"Android",tabIphone:"iPhone",a1t:"Open Chrome",a1p:"Use the Chrome browser on your phone.",a2t:"Go to limenbridge.cc",a2p:"Type <code>limenbridge.cc</code> in the address bar and press Go.",a3t:"Play today's track",a3p:"You'll see today's track automatically and a Play button.",a4t:'Tap "Install" if it appears',a4p:"A banner may appear at the bottom of the screen. Tap it, then confirm — a LimenBridge icon appears on your home screen, just like a normal app.",a5t:"If no banner appeared",a5p:"That may mean the icon was already installed earlier — nothing to do in that case. If there's no icon: tap the three dots (⋮) in the top right corner of Chrome → <code>Add to Home screen</code> → confirm.",aNote:"From now on, just tap the LimenBridge icon on your home screen every day — same as any other app.",i1t:"Open Safari",i1p:"Use Safari specifically — not Chrome, it's more reliable on iPhone.",i2t:"Go to limenbridge.cc",i2p:"Type <code>limenbridge.cc</code> in the address bar and press Go.",i3t:"Play today's track",i3p:"You'll see today's track automatically and a Play button.",i4t:"Tap the Share icon",i4p:"It's the square with an arrow pointing up (⬆️), at the bottom of the screen.",i5t:'Tap "Add to Home Screen"',i5p:"Scroll down the menu that opens and tap it.",i6t:'Tap "Add"',i6p:"Top right corner. Done — the LimenBridge icon is now on your home screen.",iNote:"From now on, just tap the LimenBridge icon on your home screen every day — same as any other app.",calNote:"If you set up calendar reminders — that's just a nudge to open the app. It doesn't contain the track itself. When it reminds you, open LimenBridge from your home screen icon (or limenbridge.cc), not from inside the reminder.",restoreNote:"<b>If a payment page opens instead of your track</b> — the site didn't recognize you. That doesn't mean your payment is gone. On the limenbridge.cc homepage, scroll all the way down and tap the terracotta \"Restore access\" button, then enter the same email you used to pay — access will come back. Don't try to \"fix\" this by clearing your browser cache — that erases what the site remembers about you instead.",cta:"Open LimenBridge now"};
 function showLang(lang){
   document.getElementById('lang-en-link').style.display=lang==='ru'?'inline':'none';
   document.getElementById('lang-ru-link').style.display=lang==='en'?'inline':'none';
   if(lang==='en'){
     document.getElementById('h1').textContent=EN.h1;
     document.getElementById('lead').innerHTML=EN.lead;
+    document.getElementById('ig-note').innerHTML=EN.igNote;
     document.getElementById('tab-android').textContent=EN.tabAndroid;
     document.getElementById('tab-iphone').textContent=EN.tabIphone;
     ['a1','a2','a3','a4','a5','i1','i2','i3','i4','i5','i6'].forEach(k=>{
@@ -95,6 +99,7 @@ function showLang(lang){
     document.getElementById('a-note').textContent=EN.aNote;
     document.getElementById('i-note').textContent=EN.iNote;
     document.getElementById('cal-note').textContent=EN.calNote;
+    document.getElementById('restore-note').innerHTML=EN.restoreNote;
     document.getElementById('cta').textContent=EN.cta;
   }
 }
