@@ -1000,6 +1000,7 @@ function todayISO(){return new Date().toISOString().slice(0,10);}
 function daysSince(iso){const s=new Date(iso);s.setHours(0,0,0,0);const t=new Date();t.setHours(0,0,0,0);return Math.floor((t-s)/86400000);}
 function cyclePosition(u){const d=daysSince(u.registeredAt)+1;return((d-1)%30)+1;}
 function currentCycle(u){const d=daysSince(u.registeredAt)+1;return Math.floor((d-1)/30)+1;}
+function cycleStartDate(u){const start=new Date(u.registeredAt);start.setHours(0,0,0,0);const offset=daysSince(u.registeredAt)-(cyclePosition(u)-1);start.setDate(start.getDate()+offset);return start;}
 function programDay(u){return Math.min(cyclePosition(u),28);}
 function trackIndex(u){return((programDay(u)-1)%14)+1;}
 
@@ -1345,10 +1346,20 @@ function setupAudio(url,kind,u){
 }
 
 function togglePlay(url,kind){
-  if(isPlaying){audioEl.pause();setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');}
-  else{if(!audioEl.src||audioEl.src!==url)audioEl.src=url;audioEl.play().catch(()=>{});setPlayIcon(true);document.getElementById('player-wave')?.classList.add('playing');}
-  isPlaying=!isPlaying;
+  if(isPlaying){
+    audioEl.pause();setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');isPlaying=false;
+    return;
+  }
+  if(!audioEl.src||audioEl.src!==url)audioEl.src=url;
+  audioEl.play().then(()=>{
+    setPlayIcon(true);document.getElementById('player-wave')?.classList.add('playing');isPlaying=true;
+    const st=document.getElementById('track-status');if(st&&st.textContent.indexOf('unavailable')!==-1)st.textContent='';
+  }).catch(()=>{
+    setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');isPlaying=false;
+    const st=document.getElementById('track-status');if(st)st.textContent='Track unavailable — try reloading.';
+  });
 }
+audioEl && (audioEl.onerror=()=>{setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');isPlaying=false;const st=document.getElementById('track-status');if(st)st.textContent='Track unavailable — try reloading.';});
 function setPlayIcon(playing){const path=document.getElementById('play-path');if(!path)return;path.setAttribute('d',playing?'M6 19h4V5H6v14zm8-14v14h4V5h-4z':'M8 5v14l11-7z');}
 function showMoodSection(kind,u){
   const el=document.getElementById('mood-section');if(!el)return;
@@ -1371,7 +1382,8 @@ function drawGraph(u,totalDays){
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#ECE6DC';ctx.fillRect(0,0,W,H);
   ctx.strokeStyle='#DCD4C7';ctx.lineWidth=1;
   for(let i=1;i<=4;i++){const y=pad.top+(iH/4)*i;ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+iW,y);ctx.stroke();}
-  const days=[];for(let i=totalDays-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toISOString().slice(0,10));}
+  const start=cycleStartDate(u);
+  const days=[];for(let i=0;i<totalDays;i++){const d=new Date(start);d.setDate(d.getDate()+i);days.push(d.toISOString().slice(0,10));}
   function avg(entries){if(!entries.length)return null;return entries.reduce((s,e)=>s+e.score,0)/entries.length;}
   const morning=days.map(d=>avg(u.moodLog.filter(m=>m.date===d&&m.time==='morning')));
   const evening=days.map(d=>avg(u.moodLog.filter(m=>m.date===d&&m.time==='evening')));
