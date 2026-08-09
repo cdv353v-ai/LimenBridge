@@ -12,7 +12,7 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-const CACHE = 'limenbridge-v1';
+const CACHE = 'limenbridge-v2';
 const STATIC = ['/', '/index.html', '/icon-192.png', '/icon-512.png'];
 
 // Install
@@ -31,9 +31,14 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Fetch — network first, cache fallback
+// Fetch — network first, cache fallback (audio + range requests bypass cache entirely)
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  if (url.hostname === 'audio.limenbridge.cc' || e.request.headers.has('range')) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
   e.respondWith(
     fetch(e.request)
       .then(res => {
