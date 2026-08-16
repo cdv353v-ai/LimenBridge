@@ -589,11 +589,9 @@ input[type=time]:focus{border-color:var(--terra)}
   <div class="sandbox-wrap">
     <div class="sandbox-intro">
       <h2 id="sandbox-h2">Listen first.<br><em style="color:var(--terra);font-style:normal;font-weight:700">Then decide.</em></h2>
-      <p id="sandbox-p">60-second clips of the morning and evening track. No account, no card.</p>
+      <p id="sandbox-p">60-second clips of the morning and evening track — no account, no card. Just enough to hear the sound and know if it's yours. Morning track plays in the morning, evening in the evening.</p>
     </div>
     <div style="margin-top:8px">
-      <h3 id="sb-listen-h3" style="font-family:'Manrope',sans-serif;font-weight:700;font-size:20px;margin-bottom:8px">Now listen — tap a clock to play</h3>
-      <p id="sb-listen-p" style="font-size:14px;color:var(--warm-grey);margin-bottom:8px">Each track is 5–7 minutes long in the real programme. This clip is 60 seconds — enough to hear how it sounds before you decide. Morning arrives in the morning, evening in the evening; here you can hear both right away.</p>
       <div class="flip-grid cols-2" style="margin-top:20px">
         <div class="flip-card" id="demo-card-morning" onclick="demoFlipPlay('morning')">
           <div class="fc-inner">
@@ -670,7 +668,7 @@ input[type=time]:focus{border-color:var(--terra)}
       <div class="flip-card" onclick="fcToggle(this)">
         <div class="fc-inner">
           <div class="fc-face fc-front">
-            <img class="fc-img" src="assets/step3-play.jpg" alt=""/>
+            <img class="fc-img" id="sb-step3-img" src="assets/step3-play.jpg" alt=""/>
             <div class="fc-scrim"></div>
             <div class="tap-hint tap-hint-generic">Tap</div>
             <div class="fc-textbox"><p class="fc-label" id="sb-step3-label">Step 3</p><p class="fc-title" id="sb-step3-title">The track arrives — you just press play</p></div>
@@ -710,7 +708,7 @@ input[type=time]:focus{border-color:var(--terra)}
         <a class="convert-price-btn month" id="sandbox-btn-month" style="width:100%;display:block;text-align:center" href="https://buy.stripe.com/eVq6oH2wpgxRdT8d6X6sw02">Start — $19 / month</a>
         <a href="/blog/chronobiology-morning-evening-anxiety.html" class="sandbox-blog-link" id="sandbox-blog-link">Still not sure? Read the science behind the tracks →</a>
       </div>
-      <p class="sandbox-trust" id="sandbox-trust">No auto-renewal, ever · No registration required to listen</p>
+      <p class="sandbox-trust" id="sandbox-trust">No auto-renewal or registration — nothing needed</p>
       <div style="margin-top:22px;padding-top:20px;border-top:1px solid var(--border)">
         <div class="flip-card" onclick="fcToggle(this)" style="max-width:320px;margin:0 auto;min-height:440px">
           <div class="fc-inner" style="height:440px">
@@ -718,13 +716,13 @@ input[type=time]:focus{border-color:var(--terra)}
               <img class="fc-img" src="assets/lead-magnet-track.jpg" alt=""/>
               <div class="fc-scrim"></div>
               <div class="tap-hint tap-hint-generic">Tap</div>
-              <div class="fc-textbox"><p class="fc-label" id="sb-lead-label">Stay in tune</p><p class="fc-title" id="sb-lead-title">Get the full track — free</p></div>
+              <div class="fc-textbox"><p class="fc-label" id="sb-lead-label">Stay in tune</p><p class="fc-title" id="sb-lead-title">If you're not sure yet</p></div>
             </div>
             <div class="fc-face fc-back" onclick="event.stopPropagation()" style="height:440px;max-height:440px;overflow-y:visible">
               <p class="fc-back-label" id="sb-lead-backlabel">Stay in tune</p>
-              <p class="fc-body" id="sb-lead-body1" style="margin-bottom:8px">Not ready yet?</p>
-              <p class="fc-body" id="sb-lead-body2" style="margin-bottom:8px">Leave your email — we'll send the full 5-minute morning track, free.</p>
-              <p class="fc-body" id="sb-lead-body3" style="margin-bottom:14px">One follow-up email in a few days with the $6 offer. That's it.</p>
+              <p class="fc-body" id="sb-lead-body1" style="margin-bottom:8px">Leave your email — we'll send the full morning track, free.</p>
+              <p class="fc-body" id="sb-lead-body2" style="margin-bottom:8px">One email in a couple of days with the offer. That's it.</p>
+              <p class="fc-body" id="sb-lead-body3" style="margin-bottom:14px"></p>
               <input type="email" id="demo-lead-email" class="input" placeholder="you@email.com" style="margin-bottom:10px"/>
               <button class="btn btn-primary btn-full" onclick="submitDemoLead()" id="demo-lead-btn">Send me the track</button>
               <p id="demo-lead-status" style="font-size:12px;color:var(--warm-grey);margin-top:8px"></p>
@@ -975,7 +973,7 @@ function applyRuSandboxIntro(){
   const h2=document.getElementById('sandbox-h2');
   const p=document.getElementById('sandbox-p');
   if(h2)h2.innerHTML='Сначала послушай,<br><em style="color:var(--terra);font-style:normal;font-weight:700">потом решай.</em>';
-  if(p)p.textContent='60-секундные фрагменты утреннего и вечернего трека. Без регистрации и карты.';
+  if(p)p.textContent='60-секундные фрагменты утреннего и вечернего трека — без регистрации и карты, чтобы услышать звук и понять, твоё это или нет. Утренний трек звучит утром, вечерний — вечером.';
   const ctaH3=document.getElementById('sandbox-cta-h3');
   const ctaP=document.getElementById('sandbox-cta-p');
   const btnWeek=document.getElementById('sandbox-btn-week');
@@ -985,7 +983,7 @@ function applyRuSandboxIntro(){
   if(ctaP)ctaP.innerHTML='Утро и вечер. Одна и та же понятная опора для нервной системы — каждый день.<br>Попробуй 7 дней за $6 или сразу возьми полный 28-дневный цикл за $19/месяц.';
   if(btnWeek)btnWeek.textContent='Начать — $6 / неделя';
   if(btnMonth)btnMonth.textContent='Начать — $19 / месяц';
-  if(trust)trust.textContent='Без автопродления, никогда · Регистрация для прослушивания не нужна';
+  if(trust)trust.textContent='Без автопродления и регистрации — ничего не нужно';
   document.querySelectorAll('.tap-hint-generic').forEach(function(el){el.textContent='Тап';});
   var t=function(id,text){var el=document.getElementById(id);if(el)el.textContent=text;};
   t('sb-step1-label','Шаг 1');
@@ -1009,13 +1007,12 @@ function applyRuSandboxIntro(){
   t('sb-step3-title','Трек уже готов — просто нажимаешь play');
   t('sb-step3-backlabel','Шаг 3');
   t('sb-step3-body','Никакого плейлиста и решений, что выбрать. Нужный трек для нужного момента уже на месте — утренний утром, вечерний вечером. Одна кнопка.');
+  var step3Img=document.getElementById('sb-step3-img');if(step3Img)step3Img.src='assets/step3-play-ru.jpg';
   t('sb-step4-label','Шаг 4');
   t('sb-step4-title','Твой прогресс — виден с первого дня');
   t('sb-step4-backlabel','Шаг 4');
   t('sb-step4-body','После каждого трека — один вопрос: как ты себя чувствуешь прямо сейчас. Из ответов строится график — утреннее и вечернее состояние, день за днём. Он растёт с каждой сессией с самого начала.');
   t('sb-mini4-label','Твой прогресс · 28 дней');
-  t('sb-listen-h3','А теперь слушай — тапни по треку');
-  t('sb-listen-p','В реальной программе каждый трек длится 5–7 минут. Этот отрывок — 60 секунд, чтобы услышать звук перед решением. Утренний приходит утром, вечерний вечером; здесь можно услышать оба сразу.');
   t('sb-morning-label','☼ Утренний трек');
   t('sb-morning-title','Запускаем ресурс');
   t('sb-evening-label','☾ Вечерний трек');
@@ -1025,11 +1022,11 @@ function applyRuSandboxIntro(){
   t('demo-status-morning','Тапни, чтобы включить');
   t('demo-status-evening','Тапни, чтобы включить');
   t('sb-lead-label','Оставайся на связи');
-  t('sb-lead-title','Получи полный трек — бесплатно');
+  t('sb-lead-title','Если пока не решил');
   t('sb-lead-backlabel','Оставайся на связи');
-  t('sb-lead-body1','Пока не готов решиться?');
-  t('sb-lead-body2','Оставь email — пришлём полный 5-минутный утренний трек бесплатно.');
-  t('sb-lead-body3','Через несколько дней — одно письмо с предложением за $6. И всё.');
+  t('sb-lead-body1','Оставь почту — пришлём полный утренний трек бесплатно.');
+  t('sb-lead-body2','Через пару дней — одно письмо с предложением. И всё.');
+  t('sb-lead-body3','');
   var leadBtn=document.getElementById('demo-lead-btn');if(leadBtn)leadBtn.textContent='Пришлите мне трек';
   var leadEmail=document.getElementById('demo-lead-email');if(leadEmail)leadEmail.placeholder='ты@email.com';
   var blogLink=document.getElementById('sandbox-blog-link');if(blogLink)blogLink.style.display='none';
