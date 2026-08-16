@@ -529,7 +529,7 @@ input[type=time]:focus{border-color:var(--terra)}
       </div>
       <h2 class="blk-title">Вопросы, прежде чем решить</h2>
       <details class="faq-item"><summary>Чем это отличается от Calm или Headspace?</summary><div class="faq-body">Есть приложения, которые обещают 500 техник расслабления. LimenBridge — это одна кнопка. Мы убрали всё остальное, потому что вечером выбор — это уже нагрузка. Calm и Headspace — широкие платформы, где есть что-то для каждого в любое время суток. LimenBridge делает одно: структурированный утренний и вечерний трек, привязанный к естественным ритмам тела.</div></details>
-      <details class="faq-item"><summary>Что на самом деле входит в программу?</summary><div class="faq-body">28-дневный цикл утренних и вечерних аудиосессий на основе дыхательных техник и музыки, плюс дневник настроения и график прогресса с первого дня.</div></details>
+      <details class="faq-item"><summary>Что на самом деле входит в программу?</summary><div class="faq-body">Ежедневные утренние и вечерние аудиосессии на основе дыхательных техник и музыки, плюс дневник настроения и график прогресса с первого дня. Есть два варианта: неделя — 7 дней, чтобы попробовать, и месяц — полный 28-дневный цикл.</div></details>
       <details class="faq-item"><summary>Где хранятся мои данные?</summary><div class="faq-body">История прослушивания и оценки настроения хранятся локально на твоём устройстве. Мы не ведём базу данных, не продаём данные и не показываем рекламу.</div></details>
       <details class="faq-item"><summary>Что если мне не подойдёт?</summary><div class="faq-body">Послушай оба трека в демо, прежде чем что-то решать. Без автопродления — платишь только за выбранный период.</div></details>
     </div>
@@ -704,8 +704,10 @@ input[type=time]:focus{border-color:var(--terra)}
       <h3 id="sandbox-cta-h3">Готов начать?</h3>
       <p id="sandbox-cta-p">Утро и вечер. Одна и та же понятная опора для нервной системы — каждый день.<br>Попробуй 7 дней за $6 или сразу возьми полный 28-дневный цикл за $19/месяц.</p>
       <div class="sandbox-btns">
-        <a class="convert-price-btn week" id="sandbox-btn-week" style="width:100%;display:block;text-align:center" href="https://buy.stripe.com/cNi4gz4Ex81l7uK7MD6sw05">Начать — $6 / неделя</a>
-        <a class="convert-price-btn month" id="sandbox-btn-month" style="width:100%;display:block;text-align:center" href="https://buy.stripe.com/eVq6oH2wpgxRdT8d6X6sw02">Начать — $19 / месяц</a>
+        <a class="convert-price-btn week" id="sandbox-btn-week" style="width:100%;display:block;text-align:center" href="https://buy.stripe.com/cNi4gz4Ex81l7uK7MD6sw05">Начать — $6 / неделя (карта)</a>
+        <button class="convert-price-btn week" onclick="openTributeModal('weekly')" style="width:100%;display:block;text-align:center;margin-top:8px">690₽ / неделя (рубли)</button>
+        <a class="convert-price-btn month" id="sandbox-btn-month" style="width:100%;display:block;text-align:center" href="https://buy.stripe.com/eVq6oH2wpgxRdT8d6X6sw02">Начать — $19 / месяц (карта)</a>
+        <button class="convert-price-btn month" onclick="openTributeModal('monthly')" style="width:100%;display:block;text-align:center;margin-top:8px">1950₽ / месяц (рубли)</button>
         <a href="/blog/chronobiology-morning-evening-anxiety.html" class="sandbox-blog-link" id="sandbox-blog-link" style="display:none">Всё ещё сомневаешься? Прочитай науку за треками →</a>
       </div>
       <p class="sandbox-trust" id="sandbox-trust">Без автопродления и регистрации — ничего не нужно</p>
@@ -768,6 +770,22 @@ input[type=time]:focus{border-color:var(--terra)}
       <div class="field"><label class="eyebrow" for="restore-email">Email</label><input type="email" id="restore-email" class="input" placeholder="you@email.com" required/></div>
       <button class="btn btn-primary btn-full" id="restore-submit" onclick="submitRestore()">Восстановить доступ</button>
       <p id="restore-status" style="font-size:.82rem;color:var(--muted);margin-top:.75rem;text-align:center"></p>
+    </div>
+  </div>
+</div>
+<!-- MODAL: TRIBUTE CHECKOUT (rubles) -->
+<!-- Order is created server-side via the Worker (needs the Tribute API key,
+     which never reaches the browser), so we need the email up front —
+     Tribute's hosted payment page isn't guaranteed to collect it, unlike
+     Stripe's own checkout. -->
+<div id="modal-tribute" class="modal-overlay" onclick="closeTributeModal(event)">
+  <div class="modal-box fade-in" onclick="event.stopPropagation()">
+    <div id="tribute-form">
+      <h3 class="display" style="font-size:1.4rem;margin-bottom:1rem">Оплата в рублях</h3>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.25rem;line-height:1.55">Укажи email — на него придёт подтверждение, и по нему привяжется доступ к программе.</p>
+      <div class="field"><label class="eyebrow" for="tribute-email">Email</label><input type="email" id="tribute-email" class="input" placeholder="you@email.com" required/></div>
+      <button class="btn btn-primary btn-full" id="tribute-submit" onclick="submitTributeCheckout()">Перейти к оплате</button>
+      <p id="tribute-status" style="font-size:.82rem;color:var(--muted);margin-top:.75rem;text-align:center"></p>
     </div>
   </div>
 </div>
@@ -925,9 +943,45 @@ function handleStripeReturn(){
     u.plan=plan;
     u.registeredAt=new Date().toISOString();
     u.onboardingComplete=false;
+    /* Tribute return (provider=tribute): unlike Stripe, we already collected
+       the email on our own site before redirecting (see submitTributeCheckout),
+       so attach it locally too instead of leaving u.email unset. */
+    const pendingTributeEmail=localStorage.getItem('limenbridge_pending_tribute_email');
+    if(pendingTributeEmail){u.email=pendingTributeEmail;localStorage.removeItem('limenbridge_pending_tribute_email');}
     saveUser(u);
     syncUser(u.email,{plan,registeredAt:u.registeredAt,onboardingComplete:false});
     window.history.replaceState({},'','/');
+  }
+}
+/* MODAL: Tribute checkout (rubles). Creates the order server-side via the
+   Worker (API key stays off the client), then redirects to the paymentUrl
+   Tribute returns — same shape as the Stripe redirect flow. */
+let tributePendingPlan=null;
+function openTributeModal(plan){
+  tributePendingPlan=plan;
+  document.getElementById('tribute-status').textContent='';
+  const btn=document.getElementById('tribute-submit');btn.disabled=false;btn.textContent='Перейти к оплате';
+  const u=loadUser();
+  if(u&&u.email)document.getElementById('tribute-email').value=u.email;
+  document.getElementById('modal-tribute').classList.add('open');
+}
+function closeTributeModal(e){if(!e||e.target===document.getElementById('modal-tribute'))document.getElementById('modal-tribute').classList.remove('open');}
+async function submitTributeCheckout(){
+  const email=document.getElementById('tribute-email').value.trim().toLowerCase();
+  const status=document.getElementById('tribute-status');
+  if(!email){status.textContent='Введи email.';return;}
+  const btn=document.getElementById('tribute-submit');
+  btn.disabled=true;btn.textContent='Загрузка…';
+  status.textContent='';
+  try{
+    const resp=await fetch(API_URL+'/tribute-create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan:tributePendingPlan,email})});
+    const data=await resp.json();
+    if(!resp.ok||!data.paymentUrl)throw new Error('no paymentUrl');
+    localStorage.setItem('limenbridge_pending_tribute_email',email);
+    window.location.href=data.paymentUrl;
+  }catch(e){
+    btn.disabled=false;btn.textContent='Перейти к оплате';
+    status.textContent='Не получилось создать заказ. Попробуй ещё раз через минуту.';
   }
 }
 const KEY='limenbridge_user';
@@ -1254,7 +1308,7 @@ function saveReflection(field){const answer=(document.getElementById('reflection
 /* NEW: weekly plan ended (after 7 days) — upsell to Monthly for the full 28-day programme */
 function renderWeeklyEnded(u){
   const el=document.getElementById('app-content');
-  el.innerHTML=`<div style="max-width:480px;margin:0 auto;padding-top:3rem"><div class="card fade-in" style="text-align:center"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Твои 7 дней завершены</p><h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">Продолжим?</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.65;margin-bottom:1.5rem">Полная программа длится 28 дней — в четыре раза больше того, что было в пробном периоде, с полным графиком прогресса и ежедневными напоминаниями.</p><button class="btn btn-primary btn-full" onclick="startCheckout('monthly',this)" style="margin-bottom:.75rem">Продолжить с месячным тарифом — $19/месяц</button><button class="btn btn-ghost btn-full" onclick="goHome()">Не сейчас</button></div></div>`;
+  el.innerHTML=`<div style="max-width:480px;margin:0 auto;padding-top:3rem"><div class="card fade-in" style="text-align:center"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Твои 7 дней завершены</p><h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">Продолжим?</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.65;margin-bottom:1.5rem">Полная программа длится 28 дней — в четыре раза больше того, что было в пробном периоде, с полным графиком прогресса и ежедневными напоминаниями.</p><button class="btn btn-primary btn-full" onclick="startCheckout('monthly',this)" style="margin-bottom:.75rem">Продолжить — $19/месяц (карта)</button><button class="btn btn-primary btn-full" onclick="openTributeModal('monthly')" style="margin-bottom:.75rem">Продолжить — 1950₽/месяц (рубли)</button><button class="btn btn-ghost btn-full" onclick="goHome()">Не сейчас</button></div></div>`;
 }
 /* PWA */
 const FB_CONFIG={apiKey:"AIzaSyBP1VOwZt1hOPqFd0HY96x6ipLWa1TGPeg",authDomain:"limenbridge.firebaseapp.com",projectId:"limenbridge",storageBucket:"limenbridge.firebasestorage.app",messagingSenderId:"795817059671",appId:"1:795817059671:web:e40d740c68e984be608a12"};
