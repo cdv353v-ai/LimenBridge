@@ -337,6 +337,158 @@ async function handleStripeWebhook(request, env) {
   });
 }
 
+// ── Tribute Shop API ──
+// Same pattern as Stripe: create the order server-side (so the API key never
+// reaches the browser), redirect the customer to the returned paymentUrl,
+// and confirm via webhook. Prices are fixed RUB amounts chosen by Mark —
+// Tribute does not do live currency conversion, so these numbers don't move
+// on their own if USD pricing changes; update TRIBUTE_PRICING by hand.
+const TRIBUTE_API_BASE = 'https://tribute.tg/api/v1';
+const TRIBUTE_PRICING = {
+  weekly: { amount: 69000, title: 'LimenBridge — недельный доступ', description: 'Доступ к ежедневным трекам на 7 дней' },
+  monthly: { amount: 195000, title: 'LimenBridge — месячный доступ', description: 'Доступ к ежедневным трекам на 28 дней' }
+};
+
+// ── /tribute-create-order ──
+// Email is required (unlike Stripe, where Stripe's own hosted checkout
+// collects it) because we create the order ourselves before redirecting —
+// Tribute's docs don't guarantee its payment page asks for email, and the
+// webhook handler below needs one to know which KV user record to update.
+async function handleTributeCreateOrder(body, env) {
+  const plan = body.plan;
+  const pricing = TRIBUTE_PRICING[plan];
+  if (!pricing) return jsonResponse({ error: 'invalid plan' }, 400);
+  const email = normalizeEmail(body.email);
+  if (!email) return jsonResponse({ error: 'email required' }, 400);
+
+  const origin = 'https://limenbridge.cc';
+  const payload = {
+    currency: 'rub',
+    amount: pricing.amount,
+    title: pricing.title,
+    description: pricing.description,
+    period: 'onetime',
+    email,
+    successUrl: origin + '/?payment=success&plan=' + plan + '&provider=tribute',
+    failUrl: origin + '/'
+  };
+
+  let resp, data;
+  try {
+    resp = await fetch(TRIBUTE_API_BASE + '/shop/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-Key': env.TRIBUTE_API_KEY
+      },
+      body: JSON.stringify(payload)
+    });
+    data = await resp.json();
+  } catch (e) {
+    return jsonResponse({ error: 'tribute request failed', detail: String(e && e.message || e) }, 502);
+  }
+  if (!resp.ok || !data.paymentUrl) {
+    return jsonResponse({ error: 'tribute order failed', detail: data }, 502);
+  }
+  return jsonResponse({ paymentUrl: data.paymentUrl, orderUuid: data.uuid });
+}
+
+// ── Tribute webhook signature verification ──
+// Docs confirm HMAC-SHA256 of the raw body using the API key as the secret,
+// delivered via the trbt-signature header, but don't state hex vs base64
+// encoding — this checks both. Confirm against a real "Отправить тестовый
+// запрос" once live and simplify to whichever one actually matches.
+async function verifyTributeSignature(payload, sigHeader, secret) {
+  if (!sigHeader) return false;
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sigBuffer = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+  const bytes = new Uint8Array(sigBuffer);
+  const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+  const b64 = btoa(String.fromCharCode.apply(null, bytes));
+  return sigHeader === hex || sigHeader === b64;
+}
+
+function planFromTributeAmount(amountKopecks) {
+  if (amountKopecks >= TRIBUTE_PRICING.monthly.amount) return 'monthly';
+  if (amountKopecks >= TRIBUTE_PRICING.weekly.amount) return 'weekly';
+  return 'unknown';
+}
+
+// ── /tribute-webhook ──
+// Rather than branch on event.type (naming is inconsistent across Tribute's
+// own docs), treat the webhook only as a "check this order" nudge: look the
+// order up straight from Tribute via GET /shop/orders/{uuid} and act only if
+// status is genuinely "paid". Slightly more defensive, and doubles as
+// dedup/idempotency protection against webhook retries.
+async function handleTributeWebhook(request, env) {
+  const payload = await request.text();
+  const sig = request.headers.get('trbt-signature');
+  const valid = await verifyTributeSignature(payload, sig, env.TRIBUTE_API_KEY);
+  if (!valid) return new Response('Invalid signature', { status: 400 });
+
+  let event;
+  try {
+    event = JSON.parse(payload);
+  } catch (e) {
+    return new Response('Invalid JSON', { status: 400 });
+  }
+
+  const orderUuid = event.orderUuid || event.uuid
+    || (event.data && (event.data.orderUuid || event.data.uuid))
+    || (event.order && event.order.uuid)
+    || (event.payload && event.payload.orderUuid);
+  if (!orderUuid) {
+    return new Response(JSON.stringify({ received: true, note: 'no orderUuid in payload' }), {
+      status: 200, headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  let order;
+  try {
+    const orderResp = await fetch(TRIBUTE_API_BASE + '/shop/orders/' + orderUuid, {
+      headers: { 'Api-Key': env.TRIBUTE_API_KEY }
+    });
+    order = await orderResp.json();
+  } catch (e) {
+    return new Response('order lookup failed', { status: 502 });
+  }
+
+  if (order && order.status === 'paid') {
+    const email = normalizeEmail(order.email || '');
+    const plan = planFromTributeAmount(order.amount || 0);
+    if (email) {
+      const key = 'user:' + email;
+      const existingRaw = await env.LIMENBRIDGE_KV.get(key);
+      const existing = existingRaw ? JSON.parse(existingRaw) : { email, onboardingComplete: false };
+      const updated = Object.assign({}, existing, {
+        plan,
+        registeredAt: new Date().toISOString(),
+        onboardingComplete: existing.onboardingComplete || false,
+        planStartedAt: new Date().toISOString(),
+        accountStatus: 'active'
+      });
+      await env.LIMENBRIDGE_KV.put(key, JSON.stringify(updated));
+      await upsertMailerLite(email, plan, 'active', env, env.MAILERLITE_GROUP_ID);
+    }
+    // Marks this order processed — lets /tribute-webhook safely no-op on
+    // Tribute's automatic retries instead of reprocessing every time.
+    await env.LIMENBRIDGE_KV.put('tribute_order:' + orderUuid, JSON.stringify({
+      email, plan, processedAt: new Date().toISOString()
+    }));
+  }
+
+  return new Response(JSON.stringify({ received: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
 export default {
   async fetch(request, env) {
     if (request.method === 'OPTIONS') {
@@ -353,6 +505,10 @@ export default {
     if (url.pathname === '/stripe-webhook') {
       return handleStripeWebhook(request, env);
     }
+    // Tribute webhook also needs the raw body for signature verification.
+    if (url.pathname === '/tribute-webhook') {
+      return handleTributeWebhook(request, env);
+    }
 
     let body;
     try {
@@ -364,6 +520,7 @@ export default {
     if (url.pathname === '/sync') return handleSync(body, env);
     if (url.pathname === '/demo-lead') return handleDemoLead(body, env);
     if (url.pathname === '/restore') return handleRestore(body, env);
+    if (url.pathname === '/tribute-create-order') return handleTributeCreateOrder(body, env);
     return jsonResponse({ error: 'not found' }, 404);
   }
 };
