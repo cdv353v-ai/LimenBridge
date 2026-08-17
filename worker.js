@@ -373,6 +373,11 @@ async function handleTributeCreateOrder(body, env) {
     failUrl: origin + '/'
   };
 
+  // Logged without the key value itself — only whether it's present and how
+  // long it is, so we can tell "env var truly empty" apart from "wrong value"
+  // straight from the Cloudflare log, without ever printing the secret.
+  console.log('tribute create-order: key present=' + !!env.TRIBUTE_API_KEY + ' length=' + (env.TRIBUTE_API_KEY ? env.TRIBUTE_API_KEY.length : 0) + ' plan=' + plan);
+
   let resp, data;
   try {
     resp = await fetch(TRIBUTE_API_BASE + '/shop/orders', {
@@ -385,9 +390,11 @@ async function handleTributeCreateOrder(body, env) {
     });
     data = await resp.json();
   } catch (e) {
+    console.error('tribute create-order: fetch threw', String(e && e.message || e));
     return jsonResponse({ error: 'tribute request failed', detail: String(e && e.message || e) }, 502);
   }
   if (!resp.ok || !data.paymentUrl) {
+    console.error('tribute create-order: rejected, status=' + resp.status + ' body=' + JSON.stringify(data));
     return jsonResponse({ error: 'tribute order failed', detail: data }, 502);
   }
   return jsonResponse({ paymentUrl: data.paymentUrl, orderUuid: data.uuid });
