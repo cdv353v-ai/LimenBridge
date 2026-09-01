@@ -262,13 +262,11 @@ h1,h2,h3,h4,.display{font-family:'Manrope',sans-serif;font-weight:600;line-heigh
 .waveform-player.playing span:nth-child(2n){animation-delay:.1s}
 .waveform-player.playing span:nth-child(3n){animation-delay:.2s}
 .waveform-player.playing span:nth-child(5n){animation-delay:.35s}
-.progress-wrap{height:2px;background:var(--border);border-radius:2px;width:100%;overflow:hidden}
-.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 500ms linear}
 .mood-scale{display:flex;gap:.5rem;flex-wrap:wrap}
 .mood-btn{flex:1;min-width:44px;padding:.65rem .5rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:1rem;transition:border-color 200ms,color 200ms,background 200ms;cursor:pointer}
 .mood-btn:hover,.mood-btn.selected{border-color:var(--terra);color:var(--fg);background:rgba(201,138,115,.12)}
-.graph-wrap{position:relative;margin-top:1.25rem}
-.streak-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(201,138,115,.15);border:1px solid rgba(201,138,115,.3);border-radius:20px;padding:.35rem .9rem;font-size:.85rem;color:var(--terra-dk)}
+.player-divider{width:48px;height:1px;background:var(--border);margin:1.25rem auto 0}
+.player-visual{width:100%;max-width:400px;border-radius:var(--radius);display:block;margin-inline:auto}
 .steps{display:flex;gap:.4rem;justify-content:center;margin-bottom:2rem}
 .step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background 250ms}
 .step-dot.active{background:var(--accent)}
@@ -279,8 +277,6 @@ h1,h2,h3,h4,.display{font-family:'Manrope',sans-serif;font-weight:600;line-heigh
 .play-btn svg{pointer-events:none}
 .track-label{font-size:.8rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
 .track-status{font-size:.82rem;color:var(--success);margin-top:.75rem;min-height:1.2rem}
-.day-prog{margin-top:1.75rem}
-.day-prog-label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:.4rem}
 .onboard-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem}
 .onboard-card{width:100%;max-width:520px}
 .option-btn{width:100%;text-align:left;padding:1rem 1.25rem;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;color:var(--fg);font-size:1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color 150ms,background 150ms,color 150ms;font-family:'Manrope',sans-serif}
@@ -965,7 +961,7 @@ function deriveState(u){
 }
 function currentTrackKind(){return new Date().getHours()<14?'morning':'evening';}
 function greeting(name){const h=new Date().getHours();const g=h<12?'Доброе утро':h<17?'Добрый день':'Добрый вечер';return name?`${g}, ${name}`:g;}
-function streakDays(u){const byDate=new Set(u.moodLog.map(m=>m.date));let streak=0;const d=new Date();d.setHours(0,0,0,0);if(!byDate.has(d.toISOString().slice(0,10)))d.setDate(d.getDate()-1);while(byDate.has(d.toISOString().slice(0,10))){streak++;d.setDate(d.getDate()-1);}return streak;}
+
 function hasListenedToday(u,kind){const l=u.lastListened;if(!l||l.date!==todayISO())return false;return kind==='morning'?!!l.morning:!!l.evening;}
 function markListened(u,kind){if(!u.lastListened||u.lastListened.date!==todayISO())u.lastListened={date:todayISO()};u.lastListened[kind]=true;saveUser(u);}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
@@ -1145,8 +1141,7 @@ function renderApp(u){
   const el=document.getElementById('app-content');
   const kind=currentTrackKind();const idx=String(trackIndex(u)).padStart(2,'0');
   const trackUrl=`https://audio.limenbridge.cc/${kind}_${idx}.mp3`;
-  const listened=hasListenedToday(u,kind);const pDay=programDay(u);const streak=streakDays(u);
-  const totalDays=u.plan==='weekly'?7:28;
+  const listened=hasListenedToday(u,kind);const pDay=programDay(u);
   const planLabels={weekly:'НЕДЕЛЯ',monthly:'МЕСЯЦ',annual:'ГОД'};
   document.getElementById('plan-badge').textContent=planLabels[u.plan]||u.plan.toUpperCase();
   el.innerHTML=`
@@ -1158,24 +1153,12 @@ function renderApp(u){
        <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="var(--paper)"><path id="play-path" d="M8 5v14l11-7z"/></svg>
       </button>
       <p style="font-size:.78rem;color:var(--muted);margin-top:-.5rem">Нажми, чтобы включить &middot; нажми ещё раз, чтобы поставить на паузу</p>
-      <div class="progress-wrap" style="margin:0 auto;max-width:320px"><div class="progress-fill" id="track-progress" style="width:0%"></div></div>
+      <div class="player-divider"></div>
       <div class="track-status" id="track-status">${listened?'&#10003; Прослушано сегодня':''}</div>
     </div>
-    <div class="day-prog">
-      <div class="day-prog-label"><span>Прогресс программы</span><span>День ${pDay} из ${totalDays}</span></div>
-      <div class="progress-wrap"><div class="progress-fill" style="width:${(pDay/totalDays*100).toFixed(1)}%"></div></div>
-    </div>
-    ${streak>=2?`<div style="margin-top:1.25rem"><span class="streak-badge">&#128293; ${streak} дней подряд</span></div>`:''}
-    <div style="margin-top:2.5rem">
-      <h3 class="display" style="font-size:1.2rem;margin-bottom:.25rem">Твой прогресс</h3>
-      <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem">Настроение утром и вечером &middot; ${totalDays} дней</p>
-      <div class="graph-wrap">
-        <canvas id="mood-graph" width="640" height="180" style="width:100%;height:180px;display:block;border-radius:var(--radius)"></canvas>
-      </div>
-    </div>
+    <img class="player-visual" src="assets/player-visual.jpg" alt="" style="margin-top:1.5rem" onerror="this.style.display='none'">
     <div id="mood-section" style="display:none"></div>
   `;
-  drawGraph(u,totalDays);
   setupAudio(trackUrl,kind,u);
 }
 function setupAudio(url,kind,u){
@@ -1183,7 +1166,6 @@ function setupAudio(url,kind,u){
   audioEl.ontimeupdate=()=>{
     if(!audioEl.duration)return;
     const pct=audioEl.currentTime/audioEl.duration*100;
-    document.getElementById('track-progress').style.width=pct.toFixed(1)+'%';
     if(pct>=80&&!hasListenedToday(u,kind)){markListened(u,kind);document.getElementById('track-status').textContent='✓ Прослушано сегодня';showMoodSection(kind,u);}
   };
   audioEl.onended=()=>{setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');};
@@ -1214,35 +1196,6 @@ function showMoodSection(kind,u){
 let selectedMoodScore=null;
 function selectMood(n,btn){selectedMoodScore=n;document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
 function saveMood(kind){const u=loadUser();const note=document.getElementById('mood-note')?.value||'';if(selectedMoodScore){u.moodLog.push({date:todayISO(),time:kind,score:selectedMoodScore,note:note||undefined});saveUser(u);}document.getElementById('mood-section').innerHTML=`<p class="fade-in" style="margin-top:1.5rem;color:var(--success)">Сохранено ✓</p>`;selectedMoodScore=null;}
-/* GRAPH — MODIFIED vs production: x-axis now spans totalDays (7 for weekly, 28 otherwise)
-   instead of always assuming 28, so weekly users don't see a mostly-empty 28-day graph. */
-function drawGraph(u,totalDays){
-  totalDays=totalDays||28;
-  const canvas=document.getElementById('mood-graph');if(!canvas)return;
-  const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;
-  const pad={top:16,right:16,bottom:28,left:28};const iW=W-pad.left-pad.right,iH=H-pad.top-pad.bottom;
-  ctx.clearRect(0,0,W,H);ctx.fillStyle='#ECE6DC';ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='#DCD4C7';ctx.lineWidth=1;
-  for(let i=1;i<=4;i++){const y=pad.top+(iH/4)*i;ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+iW,y);ctx.stroke();}
-  const start=cycleStartDate(u);
-  const days=[];for(let i=0;i<totalDays;i++){const d=new Date(start);d.setDate(d.getDate()+i);days.push(d.toISOString().slice(0,10));}
-  function avg(entries){if(!entries.length)return null;return entries.reduce((s,e)=>s+e.score,0)/entries.length;}
-  const morning=days.map(d=>avg(u.moodLog.filter(m=>m.date===d&&m.time==='morning')));
-  const evening=days.map(d=>avg(u.moodLog.filter(m=>m.date===d&&m.time==='evening')));
-  const lastIdx=totalDays-1;
-  function drawLine(data,color){
-    const points=data.map((v,i)=>({x:pad.left+(i/lastIdx)*iW,y:v===null?null:pad.top+iH-((v-1)/4)*iH}));
-    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;ctx.lineJoin='round';let started=false;
-    points.forEach(p=>{if(p.y===null)return;if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);});ctx.stroke();
-    points.forEach(p=>{if(p.y===null)return;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();});
-  }
-  drawLine(morning,'#C98A73');drawLine(evening,'#6E9072');
-  ctx.fillStyle='#8C827A';ctx.font='11px Jost, sans-serif';ctx.textAlign='center';
-  const midIdx=Math.floor(lastIdx/2);
-  [0,midIdx,lastIdx].forEach(i=>{ctx.fillText('День '+(i+1),pad.left+(i/lastIdx)*iW,H-6);});
-  ctx.fillStyle='#C98A73';ctx.fillRect(pad.left,6,10,3);ctx.fillStyle='#8C827A';ctx.font='10px Jost, sans-serif';ctx.textAlign='left';ctx.fillText('Утро',pad.left+14,11);
-  ctx.fillStyle='#6E9072';ctx.fillRect(pad.left+70,6,10,3);ctx.fillText('Вечер',pad.left+84,11);
-}
 /* REFLECTION PAUSE (monthly plan only, day 29-30 of each 28-day cycle — legacy
    annual holders, if any, bypass this and stay ACTIVE, same as before) */
 function renderReflectionPause(u){
