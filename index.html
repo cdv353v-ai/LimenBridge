@@ -265,7 +265,8 @@ h1,h2,h3,h4,.display{font-family:'Manrope',sans-serif;font-weight:600;line-heigh
 .mood-scale{display:flex;gap:.5rem;flex-wrap:wrap}
 .mood-btn{flex:1;min-width:44px;padding:.65rem .5rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:1rem;transition:border-color 200ms,color 200ms,background 200ms;cursor:pointer}
 .mood-btn:hover,.mood-btn.selected{border-color:var(--terra);color:var(--fg);background:rgba(201,138,115,.12)}
-.player-divider{width:48px;height:1px;background:var(--border);margin:1.25rem auto 0}
+.progress-wrap{height:2px;background:var(--border);border-radius:2px;width:100%;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 500ms linear}
 .player-visual{width:100%;max-width:400px;border-radius:var(--radius);display:block;margin-inline:auto}
 .steps{display:flex;gap:.4rem;justify-content:center;margin-bottom:2rem}
 .step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background 250ms}
@@ -1153,7 +1154,7 @@ function renderApp(u){
        <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="var(--paper)"><path id="play-path" d="M8 5v14l11-7z"/></svg>
       </button>
       <p style="font-size:.78rem;color:var(--muted);margin-top:-.5rem">Нажми, чтобы включить &middot; нажми ещё раз, чтобы поставить на паузу</p>
-      <div class="player-divider"></div>
+      <div class="progress-wrap" style="margin:0 auto;max-width:320px"><div class="progress-fill" id="track-progress" style="width:0%"></div></div>
       <div class="track-status" id="track-status">${listened?'&#10003; Прослушано сегодня':''}</div>
     </div>
     <img class="player-visual" src="assets/player-visual.jpg" alt="" style="margin-top:1.5rem" onerror="this.style.display='none'">
@@ -1166,6 +1167,7 @@ function setupAudio(url,kind,u){
   audioEl.ontimeupdate=()=>{
     if(!audioEl.duration)return;
     const pct=audioEl.currentTime/audioEl.duration*100;
+    document.getElementById('track-progress').style.width=pct.toFixed(1)+'%';
     if(pct>=80&&!hasListenedToday(u,kind)){markListened(u,kind);document.getElementById('track-status').textContent='✓ Прослушано сегодня';showMoodSection(kind,u);}
   };
   audioEl.onended=()=>{setPlayIcon(false);document.getElementById('player-wave')?.classList.remove('playing');};
