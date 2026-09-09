@@ -956,6 +956,7 @@ function deriveState(u){
     if(pos<=28)return'ACTIVE';
     if(u.plan==='annual')return'ACTIVE';
     if(pos===29||(pos===30&&!u.reflectionQ2))return'REFLECTION_PAUSE';
+    if(currentCycle(u)>1)return'MONTHLY_ENDED';
     return'ACTIVE';
   }
   return'LANDING';
@@ -979,6 +980,7 @@ function route(){
   showScreen('screen-app');
   if(state==='REFLECTION_PAUSE'){renderReflectionPause(u);return;}
   if(state==='WEEKLY_ENDED'){renderWeeklyEnded(u);return;}
+  if(state==='MONTHLY_ENDED'){renderMonthlyEnded(u);return;}
   renderApp(u);
 }
 function goHome(){if(isPlaying){audioEl.pause();isPlaying=false;}showScreen('screen-landing');}
@@ -1210,6 +1212,10 @@ function saveReflection(field){const answer=(document.getElementById('reflection
 function renderWeeklyEnded(u){
   const el=document.getElementById('app-content');
   el.innerHTML=`<div style="max-width:480px;margin:0 auto;padding-top:3rem"><div class="card fade-in" style="text-align:center"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Твои 7 дней завершены</p><h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">Продолжим?</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.65;margin-bottom:1.5rem">Полная программа длится 28 дней — в четыре раза больше того, что было в пробном периоде, с полным графиком прогресса и ежедневными напоминаниями.</p><button class="btn btn-primary btn-full" onclick="startCheckout('monthly',this)" style="margin-bottom:.75rem">Продолжить с месячным тарифом — $19/месяц</button><button class="btn btn-ghost btn-full" onclick="goHome()">Не сейчас</button></div></div>`;
+}
+function renderMonthlyEnded(u){
+  const el=document.getElementById('app-content');
+  el.innerHTML=`<div style="max-width:480px;margin:0 auto;padding-top:3rem"><div class="card fade-in" style="text-align:center"><p style="color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem">Твой цикл завершён</p><h2 class="display" style="font-size:1.6rem;margin-bottom:.75rem">Продолжим?</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.65;margin-bottom:1.5rem">28 дней программы позади. Начни новый цикл, чтобы продолжить с полным доступом и графиком прогресса.</p><button class="btn btn-primary btn-full" onclick="startCheckout('monthly',this)" style="margin-bottom:.75rem">Начать новый цикл — $19/месяц</button><button class="btn btn-ghost btn-full" onclick="goHome()">Не сейчас</button></div></div>`;
 }
 /* PWA */
 const FB_CONFIG={apiKey:"AIzaSyBP1VOwZt1hOPqFd0HY96x6ipLWa1TGPeg",authDomain:"limenbridge.firebaseapp.com",projectId:"limenbridge",storageBucket:"limenbridge.firebasestorage.app",messagingSenderId:"795817059671",appId:"1:795817059671:web:e40d740c68e984be608a12"};
